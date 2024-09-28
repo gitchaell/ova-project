@@ -1,0 +1,11 @@
+GET http://localhost:9002/api/users HTTP/1.1
+content-type: application/json
+
+###
+
+POST http://localhost:9002/api/users HTTP/1.1
+content-type: application/json
+
+{
+	"names": "New User",
+}

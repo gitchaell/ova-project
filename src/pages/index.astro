@@ -1,0 +1,33 @@
+---
+import '@/styles/globals.css'
+import { Button } from '@/components/ui/button'
+import { UserAvatar } from '@/components/UserAvatar'
+---
+
+<html lang='en'>
+	<head>
+		<meta charset='utf-8' />
+		<meta name='viewport' content='width=device-width' />
+		<meta name='generator' content={Astro.generator} />
+		<link rel='icon' type='image/svg+xml' href='/favicon.svg' />
+		<link
+			href='https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap'
+			rel='stylesheet'
+		/>
+		<style>
+			html,
+			body {
+				margin: 0;
+			}
+		</style>
+	</head>
+	<body>
+		<main>
+			<h1 class='text-gray-600 font-bold p-10'>Hello, OVA!</h1>
+
+			<UserAvatar />
+
+			<Button onClick={() => alert('clicked')}>Enviar</Button>
+		</main>
+	</body>
+</html>
