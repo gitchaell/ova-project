@@ -5,5 +5,6 @@
     "editor.tabSize": 2,
     "explorer.compactFolders": false,
     "editor.stickyScroll.scrollWithEditor": false,
-    "workbench.tree.enableStickyScroll": false
+    "workbench.tree.enableStickyScroll": false,
+    "editor.stickyScroll.enabled": false
 }

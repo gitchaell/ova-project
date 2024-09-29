@@ -1,0 +1,50 @@
+---
+
+---
+
+<html lang='en'>
+	<head>
+		<meta charset='utf-8' />
+		<meta name='viewport' content='width=device-width' />
+		<meta name='generator' content={Astro.generator} />
+		<title>Lucia example</title>
+	</head>
+	<body>
+		<h1>Create an account</h1>
+		<form method='post' action='/api/signup'>
+			<label for='names'>Names</label>
+			<input name='names' id='names' value='Jane Doe' /><br />
+
+			<label for='email'>Email</label>
+			<input name='email' id='email' value='jane.doe@ovaia.com' /><br />
+
+			<label for='password'>Password</label>
+			<input type='password' name='password' id='password' value='janedoe' /><br
+			/>
+
+			<button>Sign Up</button>
+
+			<p id='form-error'></p>
+		</form>
+		<a href='/login'>Sign in</a>
+	</body>
+</html>
+
+<script>
+	const errorMessageElement = document.getElementById('form-error')!
+
+	document.forms[0].addEventListener('submit', async (e) => {
+		e.preventDefault()
+		errorMessageElement.innerText = ''
+		const formElement = e.target as HTMLFormElement
+		const response = await fetch(formElement.action, {
+			method: formElement.method,
+			body: new FormData(formElement),
+		})
+		if (response.ok) {
+			window.location.href = '/'
+		} else {
+			errorMessageElement.innerText = (await response.json()).error
+		}
+	})
+</script>
