@@ -1,0 +1,51 @@
+---
+if (Astro.locals.user) {
+	return Astro.redirect('/')
+}
+---
+
+<html lang='en'>
+	<head>
+		<meta charset='utf-8' />
+		<meta name='viewport' content='width=device-width' />
+		<meta name='generator' content={Astro.generator} />
+		<title>OVA-IA | Inicio de sesión</title>
+	</head>
+
+	<body>
+		<h1>OVA-IA</h1>
+		<form method='post' action='/api/login'>
+			<label for='email'>E-mail</label>
+			<input name='email' id='email' value='admin@ovaia.com' /><br />
+
+			<label for='password'>Contraseña</label>
+			<input type='password' name='password' id='password' value='12345678' /><br
+			/>
+
+			<button>Iniciar sesión</button>
+
+			<p id='form-error'></p>
+		</form>
+
+		<a href='/signup'>Registrarme</a>
+	</body>
+</html>
+
+<script>
+	const errorMessageElement = document.getElementById('form-error')!
+
+	document.forms[0].addEventListener('submit', async (e) => {
+		e.preventDefault()
+		errorMessageElement.innerText = ''
+		const formElement = e.target as HTMLFormElement
+		const response = await fetch(formElement.action, {
+			method: formElement.method,
+			body: new FormData(formElement),
+		})
+		if (response.ok) {
+			window.location.href = '/'
+		} else {
+			errorMessageElement.innerText = (await response.json()).error
+		}
+	})
+</script>

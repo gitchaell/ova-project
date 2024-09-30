@@ -1,7 +1,28 @@
 ---
 import '@/styles/globals.css'
+import { actions } from 'astro:actions'
 import { Button } from '@/components/ui/button'
 import { UserAvatar } from '@/components/UserAvatar'
+
+const logoutResult = Astro.getActionResult(actions.user.logout)
+
+if (logoutResult && !logoutResult.error) {
+	return Astro.redirect(`/login`)
+}
+
+if (!Astro.locals.user) {
+	return Astro.redirect('/login')
+}
+
+const result = await Astro.callAction(actions.user.get, {
+	id: Astro.locals.user.id,
+})
+
+if (!result || result.error || !result.data) {
+	return Astro.redirect('/login')
+}
+
+const user = result.data
 ---
 
 <html lang='en'>
@@ -25,9 +46,11 @@ import { UserAvatar } from '@/components/UserAvatar'
 		<main>
 			<h1 class='text-gray-600 font-bold p-10'>Hello, OVA!</h1>
 
-			<UserAvatar />
+			<UserAvatar user={user} />
 
-			<Button onClick={() => alert('clicked')}>Enviar</Button>
+			<form method='POST' action={actions.user.logout}>
+				<Button type='submit'>Logout</Button>
+			</form>
 		</main>
 	</body>
 </html>

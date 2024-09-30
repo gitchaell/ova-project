@@ -10,8 +10,14 @@ export default defineConfig({
 	output: 'server',
 	adapter: node({
 		mode: 'standalone',
-	}),security: {
-		checkOrigin: true
+	}),
+	security: {
+		checkOrigin: false,
+	},
+	vite: {
+		optimizeDeps: {
+			exclude: ['astro:db'],
+		},
 	},
 	integrations: [
 		react(),

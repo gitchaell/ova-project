@@ -4,21 +4,17 @@ import { db, User, Ova } from 'astro:db'
 export default async function seed() {
 	await db.insert(User).values([
 		{
-			id: '1',
+			id: '8b7d3fbe-b34a-4079-bdc3-d89efe334b1c',
+			photoUrl:
+				'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqWGZTXqSnfiSHoCSGhh8vT2mr04RKgSeoTw&s',
 			names: 'Admin',
 			email: 'admin@ovaia.com',
-			passwordHash: 'admin',
-		},
-		{
-			id: '2',
-			names: 'Jhon Doe',
-			email: 'jhon.doe@ovaia.com',
-			passwordHash: 'jhon.doe',
+			passwordHash:
+				'$argon2id$v=19$m=19456,t=2,p=1$xikzHoEOuxEJ9VvQpHGtWg$fyGKT+foZ1j/ilrp+5EZpSL65nvayw/nvp1LBxtizT8',
 		},
 	])
-
-	await db.insert(Ova).values([
-		{ id: '1', title: 'Espero que te guste Astro DB!', userId: '1' },
-		{ id: '2', title: 'Disfruta!', userId: '2' },
-	])
+	// await db.insert(Ova).values([
+	// 	{ id: '1', title: 'Espero que te guste Astro DB!', userId: '1' },
+	// 	{ id: '2', title: 'Disfruta!', userId: '2' },
+	// ])
 }
