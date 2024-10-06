@@ -22,12 +22,18 @@ async function save(user: User): Promise<void> {
 		.execute()
 }
 
-async function get(id: string): Promise<User | null> {
-	const users = await db
-		.select()
-		.from(UserTable)
-		.where(eq(UserTable.id, id))
-		.execute()
+async function get({ id, email }: Partial<User>): Promise<User | null> {
+	let users: User[] = []
+
+	const query = db.select().from(UserTable)
+
+	if (id) {
+		users = await query.where(eq(UserTable.id, id)).execute()
+	}
+
+	if (email) {
+		users = await query.where(eq(UserTable.email, email)).execute()
+	}
 
 	return users?.[0] || null
 }

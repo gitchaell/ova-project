@@ -3,7 +3,7 @@ import type { User } from '@/core/users/domain/User'
 
 export async function getUser(
 	userRepository: UserRepository,
-	userId: string,
+	query: Partial<User>,
 ): Promise<User | null> {
-	return await userRepository.get(userId)
+	return await userRepository.get(query)
 }
