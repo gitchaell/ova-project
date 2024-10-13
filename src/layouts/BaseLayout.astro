@@ -1,0 +1,42 @@
+---
+import { cn } from '@/lib/utils'
+import { Toaster } from '@/components/ui/toaster'
+
+type Props = {
+	title: string
+	description?: string
+	bodyClass?: string
+}
+
+const { title, description, bodyClass } = Astro.props
+---
+
+<!doctype html>
+<html lang='en' class='scroll-smooth'>
+	<head>
+		<meta charset='utf-8' />
+		<meta name='viewport' content='width=device-width' />
+		<meta name='generator' content={Astro.generator} />
+		<link rel='icon' type='image/svg+xml' href='/favicon.svg' />
+
+		<title>{title ? `${title} | OVA-IA` : 'OVA-IA'}</title>
+		<meta name='title' content={title ? `${title} | OVA-IA` : 'OVA-IA'} />
+		<meta name='description' content={description} />
+
+		<link
+			href='https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap'
+			rel='stylesheet'
+		/>
+		<style>
+			html,
+			body {
+				margin: 0;
+			}
+		</style>
+	</head>
+
+	<body class={cn('min-h-screen', bodyClass)}>
+		<slot />
+		<Toaster client:load />
+	</body>
+</html>

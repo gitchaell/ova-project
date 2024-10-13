@@ -1,59 +1,12 @@
 ---
-
+import '@/styles/globals.css'
+import { UserSignupForm } from '@/components/user/UserSignupForm'
+import AuthLayout from '@/layouts/AuthLayout.astro'
 ---
 
-<html lang='en'>
-	<head>
-		<meta charset='utf-8' />
-		<meta name='viewport' content='width=device-width' />
-		<meta name='generator' content={Astro.generator} />
-		<title>OVA-IA | Registro</title>
-	</head>
-	<body>
-		<h1>Registro de usuarios</h1>
-		<form>
-			<label for='names'>Nombres</label>
-			<input name='names' id='names' value='Admin' /><br />
-
-			<label for='email'>E-mail</label>
-			<input name='email' id='email' value='admin@ovaia.com' /><br />
-
-			<label for='password'>Contraseña</label>
-			<input
-				type='password'
-				name='password'
-				id='password'
-				value='12345678'
-			/><br />
-
-			<button>Registrarme</button>
-
-			<p id='form-error'></p>
-		</form>
-
-		<a href='/login'>Inicia sesión</a>
-	</body>
-</html>
-
-<script>
-	import { actions } from 'astro:actions'
-	import { navigate } from 'astro:transitions/client'
-
-	const messageBox = document.getElementById('form-error')!
-	const form = document.querySelector('form')
-
-	form?.addEventListener('submit', async (event) => {
-		event.preventDefault()
-
-		messageBox.innerText = ''
-
-		const formData = new FormData(form)
-		const { error } = await actions.user.signup(formData)
-
-		if (error) {
-			messageBox.innerText = error.message
-		} else {
-			navigate('/')
-		}
-	})
-</script>
+<AuthLayout
+	title='Registro de usuarios'
+	description='Ingresa tu información para registrarte como nuevo usuario'
+>
+	<UserSignupForm client:load />
+</AuthLayout>

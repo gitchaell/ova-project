@@ -17,6 +17,8 @@ export class User {
 	names!: string
 	email!: string
 	passwordHash!: string
+	school?: string | undefined | null
+	skills?: string | undefined | null
 
 	static createUser({
 		id,

@@ -14,12 +14,16 @@ export const user = {
 	signup: defineAction({
 		accept: 'form',
 		input: z.object({
-			names: z.string(),
+			firstname: z.string().min(2).max(50),
+			lastname: z.string().min(2).max(50),
 			email: z.string().email(),
 			password: z.string(),
 		}),
-		handler: async ({ names, email, password }, context: ActionAPIContext) => {
+		handler: async (input, context: ActionAPIContext) => {
 			try {
+				console.log(input)
+				const { firstname, lastname, email, password } = input
+
 				const id = randomUUID()
 
 				const passwordHash = await hash(password, {
@@ -31,7 +35,12 @@ export const user = {
 
 				await signupUser(
 					repository,
-					User.createUser({ id, names, email, passwordHash }),
+					User.createUser({
+						id,
+						names: ''.concat(firstname.trim(), ' ', lastname.trim()),
+						email,
+						passwordHash,
+					}),
 				)
 
 				const session = await lucia.createSession(id, {})

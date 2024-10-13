@@ -7,6 +7,8 @@ const User = defineTable({
 		names: column.text({ optional: false }),
 		email: column.text({ optional: false, unique: true }),
 		passwordHash: column.text({ optional: false }),
+		school: column.text({ optional: true }),
+		skills: column.text({ optional: true }),
 	},
 })
 

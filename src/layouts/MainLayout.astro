@@ -1,0 +1,49 @@
+---
+import '@/styles/globals.css'
+import { actions } from 'astro:actions'
+import { cn } from '@/lib/utils'
+import BaseLayout from './BaseLayout.astro'
+import { Header } from '@/components/layout/Header'
+import { Menu } from '@/components/layout/Menu'
+
+type Props = {
+	title: string
+	headerTitle: string
+	description?: string
+	bodyClass?: string
+}
+
+const { title, headerTitle, description, bodyClass } = Astro.props
+
+const logoutResult = Astro.getActionResult(actions.user.logout)
+
+if (logoutResult && !logoutResult.error) {
+	return Astro.redirect(`/login`)
+}
+
+if (!Astro.locals.user) {
+	return Astro.redirect('/login')
+}
+
+const result = await Astro.callAction(actions.user.get, {
+	id: Astro.locals.user.id,
+})
+
+if (!result || result.error || !result.data) {
+	return Astro.redirect('/login')
+}
+
+const user = result.data
+---
+
+<BaseLayout title={title} description={description}>
+	<Header title={headerTitle} user={user} client:load />
+
+	<main class={cn(bodyClass)}>
+		<slot />
+	</main>
+
+	<Menu client:load />
+
+	<!-- <Footer /> -->
+</BaseLayout>
