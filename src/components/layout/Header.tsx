@@ -1,7 +1,7 @@
 import type { User } from '@/core/users/domain/User'
 import { UserAvatar } from '../user/UserAvatar'
 import { Button } from '../ui/button'
-import { Sparkles } from 'lucide-react'
+import { Sparkles, Search } from 'lucide-react'
 
 const Header = ({ title, user }: { title: string; user: User }) => {
 	const handleOpenMenu = () => {
@@ -16,15 +16,15 @@ const Header = ({ title, user }: { title: string; user: User }) => {
 				{title}
 			</Button>
 
-			{/* <Button type='button' size='icon' onClick={handleOpenMenu}>
+			<Button type='button' size='icon' onClick={handleOpenMenu}>
 				<Search className='h-4 w-4' />
-			</Button> */}
+			</Button>
 
-			<form method='POST' action='/api/lessons/playground'>
-				<Button type='submit' size='icon' >
+			{/* <form method='POST' action='/api/lessons/playground'>
+				<Button type='submit' size='icon'>
 					<Sparkles className='h-4 w-4' />
 				</Button>
-			</form>
+			</form> */}
 
 			{/* <form method='POST' action='/api/users/logout'>
 				<Button type='submit'>Logout</Button>

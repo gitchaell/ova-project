@@ -2,7 +2,7 @@ import { type User } from './User.ts'
 
 export interface UserRepository {
 	save: (user: User) => Promise<void>
-	get: (query: Partial<User>) => Promise<User | null>
-	getAll: () => Promise<User[]>
+	find: (criteria: Partial<User>) => Promise<User>
+	search: (criteria: Partial<User>) => Promise<User[]>
 	remove: (id: string) => Promise<void>
 }

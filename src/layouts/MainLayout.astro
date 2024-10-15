@@ -15,25 +15,24 @@ type Props = {
 
 const { title, headerTitle, description, bodyClass } = Astro.props
 
-const logoutResult = Astro.getActionResult(actions.user.logout)
-
-if (logoutResult && !logoutResult.error) {
-	return Astro.redirect(`/login`)
-}
-
 if (!Astro.locals.user) {
 	return Astro.redirect('/login')
 }
 
-const result = await Astro.callAction(actions.user.get, {
+const userResult = await Astro.callAction(actions.user.find, {
 	id: Astro.locals.user.id,
 })
 
-if (!result || result.error || !result.data) {
+if (!userResult || userResult.error || !userResult.data) {
 	return Astro.redirect('/login')
 }
 
-const user = result.data
+const coursesResult = await Astro.callAction(actions.course.search, {
+	userId: Astro.locals.user.id,
+})
+
+const user = userResult.data
+const courses = coursesResult?.data || []
 ---
 
 <BaseLayout title={title} description={description}>
@@ -43,7 +42,7 @@ const user = result.data
 		<slot />
 	</main>
 
-	<Menu client:load />
+	<Menu {courses} client:load />
 
 	<!-- <Footer /> -->
 </BaseLayout>

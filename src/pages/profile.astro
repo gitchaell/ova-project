@@ -7,7 +7,7 @@ if (!Astro.locals.user) {
 	return Astro.redirect('/login')
 }
 
-const result = await Astro.callAction(actions.user.get, {
+const result = await Astro.callAction(actions.user.find, {
 	id: Astro.locals.user.id,
 })
 

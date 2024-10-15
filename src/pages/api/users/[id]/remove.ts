@@ -1,19 +1,18 @@
 import type { APIContext, APIRoute } from 'astro'
-import { createAstroDBUserRepository } from '@/core/users/infrastructure/AstroDBUserRepository'
-import { removeUser } from '@/core/users/application/remove/removeUser'
-import { lucia } from '@/lib/auth'
-
-const repository = createAstroDBUserRepository()
+import { userService } from '@/services/UserService'
 
 export const POST: APIRoute = async (context: APIContext) => {
 	try {
-		const id = context.params.id
+		if (!context.locals.session) {
+			return new Response(JSON.stringify({ message: 'Sesión expirada' }), {
+				status: 401,
+			})
+		}
 
-		await removeUser(repository, id!)
+		const userId = context.params.id!
+		const sessionId = context.locals.session.id
 
-		await lucia.invalidateSession(context.locals.session!.id)
-
-		const sessionCookie = lucia.createBlankSessionCookie()
+		const sessionCookie = await userService.removeUser(userId, sessionId)
 
 		context.cookies.set(
 			sessionCookie.name,

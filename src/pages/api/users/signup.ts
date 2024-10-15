@@ -1,39 +1,11 @@
 import type { APIContext, APIRoute } from 'astro'
-import { randomUUID } from 'node:crypto'
-import { hash } from '@node-rs/argon2'
-import { signupUser } from '@/core/users/application/signup/signupUser'
-import { createAstroDBUserRepository } from '@/core/users/infrastructure/AstroDBUserRepository'
-import { User } from '@/core/users/domain/User'
-import { lucia } from '@/lib/auth'
-
-const repository = createAstroDBUserRepository()
+import { userService } from '@/services/UserService'
 
 export const POST: APIRoute = async (context: APIContext) => {
 	try {
-		const { firstname, lastname, email, password } =
-			await context.request.json()
+		const params = await context.request.json()
 
-		const id = randomUUID()
-
-		const passwordHash = await hash(password, {
-			memoryCost: 19456,
-			timeCost: 2,
-			outputLen: 32,
-			parallelism: 1,
-		})
-
-		await signupUser(
-			repository,
-			User.createUser({
-				id,
-				names: ''.concat(firstname.trim(), ' ', lastname.trim()),
-				email,
-				passwordHash,
-			}),
-		)
-
-		const session = await lucia.createSession(id, {})
-		const sessionCookie = lucia.createSessionCookie(session.id)
+		const sessionCookie = await userService.singUp(params)
 
 		context.cookies.set(
 			sessionCookie.name,

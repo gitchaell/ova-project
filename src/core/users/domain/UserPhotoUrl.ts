@@ -12,4 +12,4 @@ export function UserPhotoUrlNotValidError(photoUrl: string): Error {
 }
 
 export const USER_PHOTO_URL_DEFAULT =
-	'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqWGZTXqSnfiSHoCSGhh8vT2mr04RKgSeoTw&s'
+	'https://m.media-amazon.com/images/I/41+jrimaRpL._UXNaN_FMjpg_QL85_.jpg'

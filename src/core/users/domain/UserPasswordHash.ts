@@ -3,5 +3,5 @@ export function isUserPasswordHashValid(passwordHash: string): boolean {
 }
 
 export function UserPasswordHashNotValidError(passwordHash: string): Error {
-	return new Error(`Email ${passwordHash} is not valid`)
+	return new Error(`Password hash ${passwordHash} not found`)
 }

@@ -3,7 +3,7 @@ import type { User } from '@/core/users/domain/User'
 
 export async function saveUser(
 	userRepository: UserRepository,
-	query: Partial<User>,
-): Promise<User | null> {
-	return await userRepository.get(query)
+	user: User,
+): Promise<void> {
+	return await userRepository.save(user)
 }

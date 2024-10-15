@@ -31,7 +31,7 @@ const Course = defineTable({
 		concepts: column.text({ optional: false }),
 		start: column.date({ optional: false }),
 		end: column.date({ optional: false }),
-		schedules: column.text({ optional: false }),
+		schedules: column.text({ optional: true, default: '0 0-2 * * 1-5' }),
 		userId: column.text({
 			optional: false,
 			references: () => User.columns.id,

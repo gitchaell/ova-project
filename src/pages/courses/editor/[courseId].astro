@@ -1,0 +1,26 @@
+---
+import MainLayout from '@/layouts/MainLayout.astro'
+import { actions } from 'astro:actions'
+
+if (!Astro.locals.user) {
+	return Astro.redirect('/login')
+}
+
+const result = await Astro.callAction(actions.user.find, {
+	id: Astro.locals.user.id,
+})
+
+if (!result || result.error || !result.data) {
+	return Astro.redirect('/login')
+}
+
+const user = result.data
+---
+
+<MainLayout
+	title='Formulario de Curso'
+	headerTitle='Formulario de curso'
+	bodyClass='px-4'
+>
+	Course Form
+</MainLayout>

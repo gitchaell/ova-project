@@ -6,5 +6,5 @@ export function isUserIdValid(id: string): boolean {
 }
 
 export function UserIdNotValidError(id: string): Error {
-	return new Error(`Id ${id} is not valid`)
+	return new Error(`User ID ${id} is not valid`)
 }

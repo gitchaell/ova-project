@@ -103,7 +103,7 @@ const UserProfileForm = ({ user }: { user: User }) => {
 				</AlertTitle>
 				<AlertDescription className='text-blue-600'>
 					En este espacio puede detallar datos que pueden ser de mayor utilidad
-					en la generación de tus OVAs.
+					en la generación de las lecciones de tus cursos.
 				</AlertDescription>
 			</Alert>
 
@@ -188,7 +188,7 @@ const UserProfileForm = ({ user }: { user: User }) => {
 					</AlertDialogTitle>
 					<AlertDialogDescription>
 						Esta acción no se podrá deshacer. Todos los datos de tu cuenta serán
-						eliminados permanentemente del servidor de base de datos.
+						eliminados permanentemente de la de base de datos.
 					</AlertDialogDescription>
 				</AlertDialogHeader>
 				<AlertDialogFooter>

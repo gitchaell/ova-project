@@ -1,6 +1,6 @@
 import { type User, ensureUserIsValid } from '@/core/users/domain/User.ts'
 import { type UserRepository } from '@/core/users/domain/UserRepository.ts'
-import { UserAlreadyExistsException } from '../../domain/UserAlreadyExistsException'
+import { UserAlreadyExistsException } from '@/core/users/domain/UserAlreadyExistsException'
 
 export async function signupUser(
 	userRepository: UserRepository,
@@ -8,11 +8,11 @@ export async function signupUser(
 ): Promise<void> {
 	ensureUserIsValid(user)
 
-	const exists = await userRepository.get({
+	const usersMatching = await userRepository.search({
 		email: user.email,
 	})
 
-	if (exists) {
+	if (usersMatching?.length > 0) {
 		throw new UserAlreadyExistsException()
 	}
 
