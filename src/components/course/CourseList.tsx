@@ -4,14 +4,14 @@ import { Info } from 'lucide-react'
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert'
 import type { User } from '@/core/users/domain/User'
 import type { Course } from '@/core/courses/domain/Course'
-import { Skeleton } from '@/components/ui/skeleton'
 import { CourseCard } from './CourseCard'
-import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { CourseCardSkeleton } from './CourseCardSkeleton'
+import { CourseListNotFound } from './CourseListNotFound'
+import { Badge } from '../ui/badge'
 
 const CourseList = ({ user }: { user: User }) => {
 	const [loading, setLoading] = useState<boolean>(true)
-	const [allCourses, setAllCourses] = useState<Course[]>([])
 	const [inProgressCourses, setInProgressCourses] = useState<Course[]>([])
 	const [upcomingCourses, setUpcomingCourses] = useState<Course[]>([])
 	const [pastCourses, setPastCourses] = useState<Course[]>([])
@@ -31,28 +31,13 @@ const CourseList = ({ user }: { user: User }) => {
 		const data = await response.json()
 
 		if (data.message === 'success') {
-			setAllCourses(data.courses)
-			setInProgressCourses(
-				data.courses.filter(
-					(course: Course) =>
-						new Date(course.start) <= new Date() &&
-						new Date() <= new Date(course.end),
-				),
-			)
-			setUpcomingCourses(
-				data.courses.filter(
-					(course: Course) => new Date() < new Date(course.start),
-				),
-			)
-			setPastCourses(
-				data.courses.filter(
-					(course: Course) => new Date(course.end) < new Date(),
-				),
-			)
+			setInProgressCourses(data.courses.inProgress)
+			setUpcomingCourses(data.courses.upcoming)
+			setPastCourses(data.courses.past)
 		} else {
 			toast({
 				title: 'Error',
-				description: 'No se pudieron cargar los cursos.',
+				description: data.messages,
 				variant: 'destructive',
 			})
 		}
@@ -66,48 +51,23 @@ const CourseList = ({ user }: { user: User }) => {
 		}
 	}, [user.id])
 
-	const getContent = (filter: 'inprogress' | 'upcoming' | 'past') => {
+	const getContent = (filter: 'IN_PROGRESS' | 'UPCOMING' | 'PAST') => {
 		const courses = {
-			inprogress: inProgressCourses,
-			upcoming: upcomingCourses,
-			past: pastCourses,
+			IN_PROGRESS: inProgressCourses,
+			UPCOMING: upcomingCourses,
+			PAST: pastCourses,
 		}[filter]
 
 		return (
-			<>
+			<div className='grid grid-flow-row auto-rows-min gap-2'>
 				{loading ?
-					Array.from({ length: 3 })
-						.fill(null)
-						.map((_, index) => (
-							<div
-								key={index}
-								className='flex border border-gray-100 p-4 space-x-4 rounded-md'
-							>
-								<Skeleton className='h-12 w-12 rounded-full' />
-								<div className='space-y-4'>
-									<Skeleton className='h-8 w-[250px]' />
-									<Skeleton className='h-4 w-[200px]' />
-									<Skeleton className='h-3 w-[200px]' />
-								</div>
-							</div>
-						))
+					[1, 2, 3].map((key) => <CourseCardSkeleton key={key} />)
 				: courses.length > 0 ?
-					<div className='grid grid-flow-row auto-rows-min gap-2'>
-						{courses.map((course) => (
-							<CourseCard key={course.id} course={course} />
-						))}
-					</div>
-				:	<div className='grid place-content-center gap-4 py-10'>
-						<p className='text-gray-600'>Cursos no encontrados</p>
-						<Button
-							variant='outline'
-							onClick={() => (window.location.href = '/courses/editor')}
-						>
-							Crear curso
-						</Button>
-					</div>
-				}
-			</>
+					courses.map((course) => (
+						<CourseCard key={course.id} course={course} />
+					))
+				:	<CourseListNotFound />}
+			</div>
 		)
 	}
 
@@ -123,20 +83,33 @@ const CourseList = ({ user }: { user: User }) => {
 				</AlertDescription>
 			</Alert>
 
-			<Tabs defaultValue='inprogress'>
+			<Tabs defaultValue='IN_PROGRESS'>
 				<TabsList>
-					<TabsTrigger value='inprogress'>
-						En Progreso ({inProgressCourses.length})
+					<TabsTrigger value='IN_PROGRESS'>
+						En Progreso
+						<Badge variant='outline' className='ml-1'>
+							{inProgressCourses.length}
+						</Badge>
 					</TabsTrigger>
-					<TabsTrigger value='upcoming'>
-						Próximos ({upcomingCourses.length})
+					<TabsTrigger value='UPCOMING'>
+						Próximos
+						<Badge variant='outline' className='ml-1'>
+							{upcomingCourses.length}
+						</Badge>
 					</TabsTrigger>
-					<TabsTrigger value='past'>Pasados ({pastCourses.length})</TabsTrigger>
+					<TabsTrigger value='PAST'>
+						Pasados
+						<Badge variant='outline' className='ml-1'>
+							{pastCourses.length}
+						</Badge>
+					</TabsTrigger>
 				</TabsList>
 
-				<TabsContent value='inprogress'>{getContent('inprogress')}</TabsContent>
-				<TabsContent value='upcoming'>{getContent('upcoming')}</TabsContent>
-				<TabsContent value='past'>{getContent('past')}</TabsContent>
+				<TabsContent value='IN_PROGRESS'>
+					{getContent('IN_PROGRESS')}
+				</TabsContent>
+				<TabsContent value='UPCOMING'>{getContent('UPCOMING')}</TabsContent>
+				<TabsContent value='PAST'>{getContent('PAST')}</TabsContent>
 			</Tabs>
 		</div>
 	)

@@ -4,6 +4,7 @@ import * as dotenv from 'dotenv'
 import { z } from 'zod'
 import type { User } from '@/core/users/domain/User'
 import type { Course } from '@/core/courses/domain/Course'
+import { courseDateFormatter } from '@/core/courses/domain/CourseDate'
 
 dotenv.config()
 
@@ -14,12 +15,6 @@ export const POST: APIRoute = async (context: APIContext) => {
 			course: Course
 		}
 
-		const formatter = new Intl.DateTimeFormat('es', {
-			year: 'numeric',
-			month: 'long',
-			day: 'numeric',
-		})
-
 		const model = new ChatGoogleGenerativeAI({
 			modelName: 'gemini-1.5-flash',
 			// modelName: 'gemini-1.5-pro',
@@ -28,7 +23,7 @@ export const POST: APIRoute = async (context: APIContext) => {
 		const prompt = [
 			`Eres un experto planificador de Objetos Virtuales de Aprendizaje (OVAs) y resursos didácticos que son de utilidad para las clases de profesores.`,
 			`Mi nombre es ${user.names}, y soy profesor en ${user.school}. Mis especialidades son: ${user.skills}.`,
-			`Genera un plan de OVAs para el curso de ${course.title}. Los temas o conceptos clave de este curso son: ${course.concepts}. El nivel de mis estudiantes es: ${course.level}. El curso inicia en ${formatter.format(new Date(course.start))} y termina en ${formatter.format(new Date(course.end))}. Los días de la semana en las que imparto el curso son: ${course.schedules}.`,
+			`Genera un plan de OVAs para el curso de ${course.title}. Los temas o conceptos clave de este curso son: ${course.concepts}. El nivel de mis estudiantes es: ${course.level}. El curso inicia en ${courseDateFormatter.format(new Date(course.start))} y termina en ${courseDateFormatter.format(new Date(course.end))}. Los días de la semana en las que imparto el curso son: ${course.schedules}.`,
 			'Tus instrucciones son:',
 			'1. Genera una lista de OVAs por cada sesión diaria que tendré mientras dure el curso.',
 			'2. El contenido de cada OVA debe ser muy bien pensada y adecuada para el nivel de mis estudiantes.',

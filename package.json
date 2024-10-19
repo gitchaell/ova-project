@@ -16,7 +16,7 @@
 		"@astrojs/react": "^3.6.2",
 		"@astrojs/tailwind": "^5.1.0",
 		"@hookform/resolvers": "^3.9.0",
-		"@langchain/core": "^0.3.10",
+		"@langchain/core": "^0.3.13",
 		"@langchain/google-genai": "^0.1.0",
 		"@radix-ui/react-accordion": "^1.2.1",
 		"@radix-ui/react-alert-dialog": "^1.1.2",

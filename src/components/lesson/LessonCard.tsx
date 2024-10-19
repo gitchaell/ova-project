@@ -25,6 +25,8 @@ import {
 	AlertDialogCancel,
 	AlertDialogAction,
 } from '../ui/alert-dialog'
+import { lessonDateFormatter } from '@/core/lessons/domain/LessonDate'
+import { Badge } from '../ui/badge'
 
 const LessonCard = ({ lesson }: { lesson: Lesson }) => {
 	const { toast } = useToast()
@@ -66,21 +68,24 @@ const LessonCard = ({ lesson }: { lesson: Lesson }) => {
 					>
 						<CardHeader>
 							<CardTitle>{lesson.title}</CardTitle>
-							<CardDescription className='line-clamp-3'>
+							<CardDescription>
 								<div className='grid gap-1'>
-									<span className='text-slate-700'>{lesson.caption}</span>
-									<div className='flex items-center gap-1'>
-										<CalendarDays className='h-4 w-4 mr-2' />
+									<span className='text-slate-700 line-clamp-2'>
+										{lesson.caption}
+									</span>
+									<div className='grid grid-cols-[min-content_1fr_min-content] items-center gap-2'>
+										<CalendarDays className='w-4 h-4' />
 										<span>
-											{new Intl.DateTimeFormat('es', {
-												year: 'numeric',
-												month: 'long',
-												day: 'numeric',
-											}).formatRange(
+											{lessonDateFormatter.formatRange(
 												new Date(lesson.start),
 												new Date(lesson.end),
 											)}
 										</span>
+										{lesson.done ?
+											<Badge className='bg-green-100 border-green-500 text-green-600 hover:bg-green-200'>
+												Finalizado
+											</Badge>
+										:	<Badge variant='outline'>Pendiente</Badge>}
 									</div>
 								</div>
 							</CardDescription>

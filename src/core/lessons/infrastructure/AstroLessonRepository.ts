@@ -32,6 +32,7 @@ async function save(lesson: Lesson): Promise<void> {
 	} else {
 		const matchingTitle = await search({
 			title: lesson.title,
+			courseId: lesson.courseId,
 		})
 
 		if (matchingTitle?.length > 0) {

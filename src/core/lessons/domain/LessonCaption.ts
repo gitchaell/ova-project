@@ -1,5 +1,5 @@
 export const LESSON_CAPTION_MIN_LENGTH = 5
-export const LESSON_CAPTION_MAX_LENGTH = 300
+export const LESSON_CAPTION_MAX_LENGTH = 600
 
 export function isLessonCaptionValid(caption: string): boolean {
 	return (
@@ -9,5 +9,7 @@ export function isLessonCaptionValid(caption: string): boolean {
 }
 
 export function LessonCaptionNotValidError(caption: string): Error {
-	return new Error(`Caption ${caption} is not valid`)
+	return new Error(
+		`Caption ${caption} must be between ${LESSON_CAPTION_MIN_LENGTH} and ${LESSON_CAPTION_MAX_LENGTH} characters`,
+	)
 }

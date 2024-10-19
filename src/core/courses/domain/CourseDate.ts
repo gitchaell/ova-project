@@ -5,3 +5,10 @@ export function isCourseDateValid(date: Date): boolean {
 export function CourseDateNotValidError(date: Date): Error {
 	return new Error(`Date ${date} is not valid`)
 }
+
+export const courseDateFormatter = new Intl.DateTimeFormat('es', {
+	year: 'numeric',
+	month: 'long',
+	day: 'numeric',
+	timeZone: 'UTC',
+})

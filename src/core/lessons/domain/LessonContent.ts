@@ -1,5 +1,5 @@
-export const LESSON_CONTENT_MIN_LENGTH = 500
-export const LESSON_CONTENT_MAX_LENGTH = 2000
+export const LESSON_CONTENT_MIN_LENGTH = 3000
+export const LESSON_CONTENT_MAX_LENGTH = 5000
 
 export function isLessonContentValid(content: string): boolean {
 	return (
@@ -9,5 +9,7 @@ export function isLessonContentValid(content: string): boolean {
 }
 
 export function LessonContentNotValidError(content: string): Error {
-	return new Error(`Content ${content} is not valid`)
+	return new Error(
+		`Content ${content} must be between ${LESSON_CONTENT_MIN_LENGTH} and ${LESSON_CONTENT_MAX_LENGTH} characters`,
+	)
 }

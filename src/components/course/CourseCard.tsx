@@ -1,5 +1,5 @@
 import { useToast } from '@/hooks/use-toast'
-import { CalendarDays } from 'lucide-react'
+import { CalendarDays, Clock } from 'lucide-react'
 import type { Course } from '@/core/courses/domain/Course'
 import {
 	ContextMenu,
@@ -24,7 +24,8 @@ import {
 	AlertDialogDescription,
 	AlertDialogCancel,
 	AlertDialogAction,
-} from '../ui/alert-dialog'
+} from '@/components/ui/alert-dialog'
+import { courseDateFormatter } from '@/core/courses/domain/CourseDate'
 
 const CourseCard = ({ course }: { course: Course }) => {
 	const { toast } = useToast()
@@ -66,22 +67,23 @@ const CourseCard = ({ course }: { course: Course }) => {
 					>
 						<CardHeader>
 							<CardTitle>{course.title}</CardTitle>
-							<CardDescription className='line-clamp-3'>
+							<CardDescription>
 								<div className='grid gap-1'>
-									<span className='text-slate-700'>{course.concepts}</span>
-									<div className='flex items-center gap-1'>
-										<CalendarDays className='h-4 w-4 mr-2' />
+									<span className='text-slate-700 line-clamp-2'>
+										{course.concepts}
+									</span>
+									<div className='grid grid-cols-[min-content_1fr] items-center gap-2'>
+										<CalendarDays className='w-4 h-4' />
 										<span>
-											{new Intl.DateTimeFormat('es', {
-												year: 'numeric',
-												month: 'long',
-												day: 'numeric',
-											}).formatRange(
+											{courseDateFormatter.formatRange(
 												new Date(course.start),
 												new Date(course.end),
 											)}
-											, {course.schedules}
 										</span>
+									</div>
+									<div className='grid grid-cols-[min-content_1fr] items-center gap-2'>
+										<Clock className='w-4 h-4' />
+										<span> {course.schedules}</span>
 									</div>
 								</div>
 							</CardDescription>

@@ -34,6 +34,7 @@ import {
 } from '@/components/ui/popover'
 import { cn } from '@/lib/utils'
 import { Calendar } from '@/components/ui/calendar'
+import { lessonDateFormatter } from '@/core/lessons/domain/LessonDate'
 
 const formSchema = z.object({
 	id: z.string(),
@@ -246,11 +247,7 @@ const CourseForm = ({
 													)}
 												>
 													{field.value ?
-														new Intl.DateTimeFormat('es', {
-															year: 'numeric',
-															month: 'long',
-															day: 'numeric',
-														}).format(new Date(field.value))
+														lessonDateFormatter.format(new Date(field.value))
 													:	<span>Seleccionar ...</span>}
 													<CalendarIcon className='ml-auto h-4 w-4 opacity-50' />
 												</Button>
@@ -288,11 +285,7 @@ const CourseForm = ({
 													)}
 												>
 													{field.value ?
-														new Intl.DateTimeFormat('es', {
-															year: 'numeric',
-															month: 'long',
-															day: 'numeric',
-														}).format(new Date(field.value))
+														lessonDateFormatter.format(new Date(field.value))
 													:	<span>Seleccionar ...</span>}
 													<CalendarIcon className='ml-auto h-4 w-4 opacity-50' />
 												</Button>

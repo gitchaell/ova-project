@@ -3,7 +3,10 @@ import { courseService } from '@/services/CourseService'
 import type { APIContext, APIRoute } from 'astro'
 
 export const GET: APIRoute = async (context: APIContext) => {
-	let courses: Course[] = []
+	let allCourses: Course[] = []
+	let inProgressCourses: Course[] = []
+	let upcomingCourses: Course[] = []
+	let pastCourses: Course[] = []
 
 	try {
 		const { userId } =
@@ -22,7 +25,21 @@ export const GET: APIRoute = async (context: APIContext) => {
 			)
 		}
 
-		courses = await courseService.searchCourses({ userId })
+		allCourses = await courseService.searchCourses({ userId })
+
+		inProgressCourses = allCourses.filter(
+			(course: Course) =>
+				new Date(course.start) <= new Date() &&
+				new Date() <= new Date(course.end),
+		)
+
+		upcomingCourses = allCourses.filter(
+			(course: Course) => new Date() < new Date(course.start),
+		)
+
+		pastCourses = allCourses.filter(
+			(course: Course) => new Date(course.end) < new Date(),
+		)
 	} catch (error) {
 		if (error instanceof Error) {
 			return new Response(
@@ -36,9 +53,20 @@ export const GET: APIRoute = async (context: APIContext) => {
 		}
 	}
 
-	return new Response(JSON.stringify({ message: 'success', courses }), {
-		status: 200,
-	})
+	return new Response(
+		JSON.stringify({
+			message: 'success',
+			courses: {
+				all: allCourses,
+				inProgress: inProgressCourses,
+				upcoming: upcomingCourses,
+				past: pastCourses,
+			},
+		}),
+		{
+			status: 200,
+		},
+	)
 }
 
 export const POST: APIRoute = async (context: APIContext) => {

@@ -6,6 +6,7 @@ import type { Lesson } from '@/core/lessons/domain/Lesson'
 import { Skeleton } from '@/components/ui/skeleton'
 import { LessonCard } from './LessonCard'
 import { Button } from '@/components/ui/button'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import type { Course } from '@/core/courses/domain/Course'
 import {
 	Accordion,
@@ -14,11 +15,27 @@ import {
 	AccordionTrigger,
 } from '@/components/ui/accordion'
 import type { User } from '@/core/users/domain/User'
+import { Badge } from '../ui/badge'
+import { LessonListNotFound } from './LessonListNotFound'
+import { LessonCardSkeleton } from './LessonCardSkeleton'
+
+interface LessonGroup {
+	key: string
+	year: number
+	week: number
+	lessons: Lesson[]
+}
 
 const LessonList = ({ course, user }: { course: Course; user: User }) => {
 	const [loading, setLoading] = useState<boolean>(true)
-	const [generating, setGenerating] = useState<boolean>(false)
-	const [lessons, setAllLessons] = useState<Lesson[]>([])
+
+	const [allLessonsCount, setAllLessonsCount] = useState<number>(0)
+	const [doneLessonsCount, setDoneLessonsCount] = useState<number>(0)
+	const [undoneLessonsCount, setUndoneLessonsCount] = useState<number>(0)
+
+	const [allLessons, setAllLessons] = useState<LessonGroup[]>([])
+	const [undoneLessons, setUndoneLessons] = useState<LessonGroup[]>([])
+	const [doneLessons, setDoneLessons] = useState<LessonGroup[]>([])
 
 	const { toast } = useToast()
 
@@ -35,7 +52,13 @@ const LessonList = ({ course, user }: { course: Course; user: User }) => {
 		const data = await response.json()
 
 		if (data.message === 'success') {
-			setAllLessons(data.lessons)
+			setAllLessonsCount(data.count.all)
+			setDoneLessonsCount(data.count.done)
+			setUndoneLessonsCount(data.count.undone)
+
+			setAllLessons(data.lessons.all)
+			setUndoneLessons(data.lessons.undone)
+			setDoneLessons(data.lessons.done)
 		} else {
 			toast({
 				title: 'Error',
@@ -47,131 +70,54 @@ const LessonList = ({ course, user }: { course: Course; user: User }) => {
 		setLoading(false)
 	}
 
-	const onGenerateLessons = async () => {
-		setGenerating(true)
-
-		const response = await fetch(`/api/lessons/generate/array`, {
-			method: 'POST',
-			headers: {
-				'Accept': 'application/json',
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({ course, user }),
-		})
-		const data = await response.json()
-
-		if (data.message === 'success') {
-			console.log(data)
-			setAllLessons(data.lessons)
-		} else {
-			toast({
-				title: 'Error',
-				description: data.message,
-				variant: 'destructive',
-			})
-		}
-
-		setGenerating(false)
-	}
-
 	useEffect(() => {
 		if (course.id) {
 			fetchLessons(course.id)
 		}
 	}, [course.id])
 
-	const getContent = () => {
+	const getContent = (filter: 'ALL' | 'DONE' | 'UNDONE') => {
+		const groups = {
+			ALL: allLessons,
+			DONE: doneLessons,
+			UNDONE: undoneLessons,
+		}[filter]
+
 		return (
 			<>
 				{loading ?
-					Array.from({ length: 3 })
-						.fill(null)
-						.map((_, index) => (
-							<div
-								key={index}
-								className='flex border border-gray-100 p-4 space-x-4 rounded-md'
-							>
-								<Skeleton className='h-12 w-12 rounded-full' />
-								<div className='space-y-4'>
-									<Skeleton className='h-8 w-[250px]' />
-									<Skeleton className='h-4 w-[200px]' />
-									<Skeleton className='h-3 w-[200px]' />
-								</div>
-							</div>
-						))
-				: lessons.length > 0 ?
+					[1, 2, 3].map((index) => <LessonCardSkeleton key={index} />)
+				: groups.length > 0 ?
 					<Accordion
 						type='multiple'
 						className='w-full'
-						defaultValue={['week-1']}
+						defaultValue={groups.map((group) => group.key)}
 					>
-						<AccordionItem value='week-1'>
-							<AccordionTrigger>
-								<div className='grid grid-flow-col gap-2 items-center'>
-									<CalendarIcon className='h-4 w-4' />
-									Semana 1
-								</div>
-							</AccordionTrigger>
-							<AccordionContent>
-								{
-									<div className='grid grid-flow-row auto-rows-min gap-2'>
-										{lessons.map((lesson) => (
-											<LessonCard key={lesson.id} lesson={lesson} />
-										))}
+						{groups.map((group) => (
+							<AccordionItem key={group.key} value={group.key}>
+								<AccordionTrigger>
+									<div className='grid grid-flow-col gap-2 items-center'>
+										<CalendarIcon className='h-4 w-4' />
+										Semana {group.week}, {group.year}
 									</div>
-								}
-							</AccordionContent>
-						</AccordionItem>
-						<AccordionItem value='week-2'>
-							<AccordionTrigger>
-								<div className='grid grid-flow-col gap-2 items-center'>
-									<CalendarIcon className='h-4 w-4' />
-									Semana 2
-								</div>
-							</AccordionTrigger>
-							<AccordionContent>
-								{
-									<div className='grid grid-flow-row auto-rows-min gap-2'>
-										{lessons.map((lesson) => (
-											<LessonCard key={lesson.id} lesson={lesson} />
-										))}
-									</div>
-								}
-							</AccordionContent>
-						</AccordionItem>
-						<AccordionItem value='week-3'>
-							<AccordionTrigger>
-								<div className='grid grid-flow-col gap-2 items-center'>
-									<CalendarIcon className='h-4 w-4' />
-									Semana 3
-								</div>
-							</AccordionTrigger>
-							<AccordionContent>
-								{
-									<div className='grid grid-flow-row auto-rows-min gap-2'>
-										{lessons.map((lesson) => (
-											<LessonCard key={lesson.id} lesson={lesson} />
-										))}
-									</div>
-								}
-							</AccordionContent>
-						</AccordionItem>
+								</AccordionTrigger>
+								<AccordionContent>
+									{
+										<div className='grid grid-flow-row auto-rows-min gap-2'>
+											{group.lessons.map((lesson) => (
+												<LessonCard key={lesson.id} lesson={lesson} />
+											))}
+										</div>
+									}
+								</AccordionContent>
+							</AccordionItem>
+						))}
 					</Accordion>
-				:	<div className='grid place-content-center gap-4 py-10'>
-						<p className='text-gray-600 text-center'>
-							Lecciones no encontradas
-						</p>
-						{generating ?
-							<Button disabled>
-								<LoaderCircle className='h-4 w-4 mr-2' />
-								Generando lecciones automáticamente
-							</Button>
-						:	<Button onClick={onGenerateLessons}>
-								<Sparkles className='h-4 w-4 mr-2' />
-								Generar lecciones automáticamente
-							</Button>
-						}
-					</div>
+				:	<LessonListNotFound
+						course={course}
+						user={user}
+						enableAI={filter === 'ALL'}
+					/>
 				}
 			</>
 		)
@@ -190,7 +136,34 @@ const LessonList = ({ course, user }: { course: Course; user: User }) => {
 				</AlertDescription>
 			</Alert>
 
-			{getContent()}
+			<Tabs defaultValue='ALL'>
+				<TabsList>
+					<TabsTrigger value='ALL'>
+						Todos
+						<Badge variant='outline' className='ml-1'>
+							{allLessonsCount}
+						</Badge>
+					</TabsTrigger>
+
+					<TabsTrigger value='UNDONE'>
+						Pendientes
+						<Badge variant='outline' className='ml-1'>
+							{undoneLessonsCount}
+						</Badge>
+					</TabsTrigger>
+
+					<TabsTrigger value='DONE'>
+						Finalizados
+						<Badge variant='outline' className='ml-1'>
+							{doneLessonsCount}
+						</Badge>
+					</TabsTrigger>
+				</TabsList>
+
+				<TabsContent value='ALL'>{getContent('ALL')}</TabsContent>
+				<TabsContent value='UNDONE'>{getContent('UNDONE')}</TabsContent>
+				<TabsContent value='DONE'>{getContent('DONE')}</TabsContent>
+			</Tabs>
 		</div>
 	)
 }

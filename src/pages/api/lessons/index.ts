@@ -1,6 +1,7 @@
 import type { Lesson } from '@/core/lessons/domain/Lesson'
 import { lessonService } from '@/services/LessonService'
 import type { APIContext, APIRoute } from 'astro'
+import { getWeek, getWeekYear } from 'date-fns'
 
 export const GET: APIRoute = async (context: APIContext) => {
 	let lessons: Lesson[] = []
@@ -36,9 +37,24 @@ export const GET: APIRoute = async (context: APIContext) => {
 		}
 	}
 
-	return new Response(JSON.stringify({ message: 'success', lessons }), {
-		status: 200,
-	})
+	return new Response(
+		JSON.stringify({
+			message: 'success',
+			count: {
+				all: lessons.length,
+				done: lessons.filter((lesson) => lesson.done).length,
+				undone: lessons.filter((lesson) => !lesson.done).length,
+			},
+			lessons: {
+				all: groupLessons(lessons),
+				done: groupLessons(lessons.filter((lesson) => lesson.done)),
+				undone: groupLessons(lessons.filter((lesson) => !lesson.done)),
+			},
+		}),
+		{
+			status: 200,
+		},
+	)
 }
 
 export const POST: APIRoute = async (context: APIContext) => {
@@ -80,4 +96,43 @@ export const DELETE: APIRoute = async (context: APIContext) => {
 	}
 
 	return new Response(JSON.stringify({ message: 'success' }), { status: 200 })
+}
+
+interface LessonGroup {
+	key: string
+	year: number
+	week: number
+	lessons: Lesson[]
+}
+
+const groupLessons = (lessons: Lesson[]): LessonGroup[] => {
+	const lessonMap = new Map<string, Lesson[]>()
+
+	lessons.forEach((lesson) => {
+		const startDate = new Date(lesson.start)
+		const week = getWeek(startDate)
+		const year = getWeekYear(startDate)
+
+		const key = `${year}-${week}`
+
+		if (!lessonMap.has(key)) {
+			lessonMap.set(key, [])
+		}
+
+		lessonMap.get(key)!.push(lesson)
+	})
+
+	const groups: LessonGroup[] = Array.from(lessonMap, ([key, lessons]) => {
+		const [year, week] = key.split('-').map(Number)
+		return {
+			key,
+			year,
+			week,
+			lessons,
+		}
+	})
+
+	groups.sort((a, b) => (a.year === b.year ? a.week - b.week : a.year - b.year))
+
+	return groups
 }

@@ -1,86 +1,110 @@
 [
 	{
-		"title": "Introducción a Astro: Un Framework para la Web Moderna",
-		"caption": "Comenzaremos explorando las ventajas de Astro como framework para el desarrollo web. Aprenderemos sobre sus características clave, incluyendo la renderización de componentes web, el enfoque en la velocidad y el SEO, y la integración con otros frameworks y bibliotecas.",
-		"start": "2024-10-01",
-		"end": "2024-10-01"
+		"title": "Introducción a Astro",
+		"caption": "Comprender los conceptos fundamentales de Astro y su arquitectura. Exploración de las ventajas de Astro para el desarrollo web moderno.",
+		"start": "2024-09-01",
+		"end": "2024-09-01"
 	},
 	{
-		"title": "Instalación y Configuración de Astro",
-		"caption": "En esta sesión, instalaremos Astro en nuestro entorno de desarrollo y configuraremos un proyecto básico. Exploraremos la estructura de un proyecto de Astro, el archivo `astro.config.mjs` y cómo ejecutar el servidor de desarrollo.",
-		"start": "2024-10-04",
-		"end": "2024-10-04"
+		"title": "Instalación y configuración de Astro",
+		"caption": "Instalación de Astro en el entorno de desarrollo. Configuración inicial del proyecto Astro y exploración de la estructura de archivos.",
+		"start": "2024-09-08",
+		"end": "2024-09-08"
 	},
 	{
 		"title": "Componentes Web con Astro",
-		"caption": "Profundizaremos en el concepto de componentes web en Astro. Crearemos componentes reutilizables con HTML, CSS y JavaScript, utilizando el sistema de componentes de Astro para gestionar la lógica y el estado.",
-		"start": "2024-10-11",
-		"end": "2024-10-11"
+		"caption": "Introducción a los componentes web en Astro. Creación de componentes reutilizables y su uso en diferentes páginas.",
+		"start": "2024-09-15",
+		"end": "2024-09-15"
 	},
 	{
-		"title": "Enrutamiento en Astro: Creando Páginas Dinámicas",
-		"caption": "Aprenderemos a implementar enrutamiento en Astro para crear páginas dinámicas y organizar la estructura de nuestro sitio web. Exploraremos el sistema de enrutamiento basado en archivos y cómo definir rutas para diferentes secciones de nuestro sitio.",
-		"start": "2024-10-18",
-		"end": "2024-10-18"
+		"title": "Enrutamiento en Astro",
+		"caption": "Manejo de rutas en Astro para la creación de páginas y componentes dinámicos. Utilización de la configuración de enrutamiento y la creación de rutas anidadas.",
+		"start": "2024-09-22",
+		"end": "2024-09-22"
 	},
 	{
-		"title": "AstroDB: Gestionando Datos en Astro",
-		"caption": "Presentaremos AstroDB, una solución para gestionar datos en aplicaciones Astro. Exploraremos las características de AstroDB, incluyendo la creación de bases de datos, el acceso a datos y la integración con componentes web.",
-		"start": "2024-10-25",
-		"end": "2024-10-25"
+		"title": "End-Points y Actions en Astro",
+		"caption": "Introducción a End-Points y Actions en Astro. Creación de funciones que manejan datos del servidor y la interacción con API externas.",
+		"start": "2024-09-29",
+		"end": "2024-09-29"
 	},
 	{
-		"title": "Trabajando con Endpoints en Astro",
-		"caption": "Exploraremos el concepto de endpoints en Astro y cómo definir rutas para interactuar con datos y realizar acciones del lado del servidor. Aprenderemos a manejar solicitudes HTTP y respuestas, utilizando la API de `fetch` de Astro.",
-		"start": "2024-11-01",
-		"end": "2024-11-01"
+		"title": "AstroDB: Gestión de datos en Astro",
+		"caption": "Introducción a AstroDB para la gestión de datos en aplicaciones Astro. Manejo de bases de datos, almacenamiento de datos y recuperación de información.",
+		"start": "2024-10-06",
+		"end": "2024-10-06"
 	},
 	{
-		"title": "Integración con Bibliotecas y Frameworks",
-		"caption": "Analizaremos cómo integrar Astro con otras bibliotecas y frameworks populares como React, Vue y Tailwind CSS. Aprenderemos a utilizar sus componentes y funcionalidades dentro de un proyecto de Astro.",
-		"start": "2024-11-08",
-		"end": "2024-11-08"
+		"title": "Integración de Astro con otras tecnologías",
+		"caption": "Exploración de la integración de Astro con otras tecnologías como React, Vue.js y otras bibliotecas populares.",
+		"start": "2024-10-13",
+		"end": "2024-10-13"
 	},
 	{
-		"title": "Optimización del Rendimiento y SEO",
-		"caption": "Exploraremos las estrategias para optimizar el rendimiento de las aplicaciones Astro, enfocándonos en la velocidad de carga, el SEO y la accesibilidad. Aprenderemos a utilizar herramientas y técnicas para mejorar el SEO de nuestro sitio web.",
-		"start": "2024-11-15",
-		"end": "2024-11-15"
+		"title": "Optimización de rendimiento en Astro",
+		"caption": "Introducción a las técnicas de optimización del rendimiento de las aplicaciones Astro. Optimización de código, imágenes y recursos.",
+		"start": "2024-10-20",
+		"end": "2024-10-20"
 	},
 	{
-		"title": "Despliegue de Aplicaciones Astro",
-		"caption": "Aprenderemos a desplegar aplicaciones Astro en diferentes plataformas de hosting. Exploraremos opciones como Netlify, Vercel y GitHub Pages, y configuraremos el proceso de despliegue para nuestro proyecto.",
-		"start": "2024-11-22",
-		"end": "2024-11-22"
+		"title": "Pruebas unitarias en Astro",
+		"caption": "Introducción a las pruebas unitarias en Astro. Creación de pruebas para componentes y funciones.",
+		"start": "2024-10-27",
+		"end": "2024-10-27"
 	},
 	{
-		"title": "Prácticas Avanzadas con Astro",
-		"caption": "Exploraremos prácticas avanzadas con Astro, incluyendo el uso de funciones de servidor, la creación de aplicaciones de servidor sin servidor y la integración con servicios de terceros. Analizaremos casos de uso y ejemplos reales.",
-		"start": "2024-11-29",
-		"end": "2024-11-29"
+		"title": "Implementación de aplicaciones Astro",
+		"caption": "Práctica de la implementación de aplicaciones Astro en diferentes entornos de alojamiento.",
+		"start": "2024-11-03",
+		"end": "2024-11-03"
 	},
 	{
-		"title": "Proyecto Final: Desarrollo de una Aplicación Web con Astro",
-		"caption": "En esta sesión, los estudiantes trabajarán en un proyecto final donde aplicarán los conocimientos adquiridos en el curso para desarrollar una aplicación web completa utilizando Astro.",
-		"start": "2024-12-06",
-		"end": "2024-12-06"
+		"title": "Casos de uso y ejemplos de proyectos con Astro",
+		"caption": "Análisis de diferentes casos de uso de Astro en proyectos reales. Estudio de ejemplos de proyectos exitosos implementados con Astro.",
+		"start": "2024-11-10",
+		"end": "2024-11-10"
 	},
 	{
-		"title": "Presentación y Análisis del Proyecto Final",
-		"caption": "Los estudiantes presentarán sus proyectos finales y se llevará a cabo una sesión de análisis y retroalimentación sobre los proyectos desarrollados.",
-		"start": "2024-12-13",
-		"end": "2024-12-13"
+		"title": "Tendencias y futuro de Astro",
+		"caption": "Análisis de las últimas tendencias en el desarrollo web con Astro. Exploración del futuro de Astro y sus posibles aplicaciones.",
+		"start": "2024-11-17",
+		"end": "2024-11-17"
 	},
 	{
-		"title": "Cierre del Curso: Resumen y Recursos Adicionales",
-		"caption": "Realizaremos un resumen de los temas cubiertos en el curso y se proporcionarán recursos adicionales para continuar aprendiendo sobre Astro.",
-		"start": "2024-12-20",
-		"end": "2024-12-20"
+		"title": "Proyecto final: Desarrollo de una aplicación web con Astro",
+		"caption": "Aplicación práctica de los conocimientos adquiridos en el curso. Desarrollo de una aplicación web completa utilizando Astro.",
+		"start": "2024-11-24",
+		"end": "2024-12-01"
 	},
 	{
-		"title": "Sesión de Preguntas y Respuestas",
-		"caption": "Se abrirá una sesión para responder preguntas y aclarar dudas sobre los temas abordados durante el curso.",
-		"start": "2024-12-27",
-		"end": "2024-12-27"
+		"title": "Presentación de proyectos finales y cierre del curso",
+		"caption": "Presentación de los proyectos finales desarrollados por los estudiantes. Discusión de los resultados y cierre del curso.",
+		"start": "2024-12-08",
+		"end": "2024-12-08"
+	},
+	{
+		"title": "Sesión de preguntas y respuestas",
+		"caption": "Resolución de dudas finales de los estudiantes. Discusión sobre temas relacionados con el curso y el desarrollo web.",
+		"start": "2024-12-15",
+		"end": "2024-12-15"
+	},
+	{
+		"title": "Evaluación final del curso",
+		"caption": "Entrega de la evaluación final del curso. Retroalimentación y análisis de los resultados.",
+		"start": "2024-12-22",
+		"end": "2024-12-22"
+	},
+	{
+		"title": "Cierre del curso",
+		"caption": "Palabras de despedida y agradecimiento a los estudiantes por su participación en el curso.",
+		"start": "2024-12-29",
+		"end": "2024-12-29"
+	},
+	{
+		"title": "Sesión de seguimiento y apoyo",
+		"caption": "Disponible para ofrecer apoyo y orientación a los estudiantes después de finalizar el curso.",
+		"start": "2024-12-31",
+		"end": "2024-12-31"
 	}
 ]
