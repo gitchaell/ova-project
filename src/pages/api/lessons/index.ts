@@ -1,28 +1,28 @@
-import type { Course } from '@/core/courses/domain/Course'
-import { courseService } from '@/services/CourseService'
+import type { Lesson } from '@/core/lessons/domain/Lesson'
+import { lessonService } from '@/services/LessonService'
 import type { APIContext, APIRoute } from 'astro'
 
 export const GET: APIRoute = async (context: APIContext) => {
-	let courses: Course[] = []
+	let lessons: Lesson[] = []
 
 	try {
-		const { userId } =
+		const { courseId } =
 			context.request.url.includes('?') ?
 				Object.fromEntries(
 					new URLSearchParams(context.request.url.split('?')[1]),
 				)
-			:	{ userId: null }
+			:	{ courseId: null }
 
-		if (!userId) {
+		if (!courseId) {
 			return new Response(
-				JSON.stringify({ message: 'El Id del usuario es requerido.' }),
+				JSON.stringify({ message: 'El Id del curso es requerido.' }),
 				{
 					status: 400,
 				},
 			)
 		}
 
-		courses = await courseService.searchCourses({ userId })
+		lessons = await lessonService.searchLessons({ courseId })
 	} catch (error) {
 		if (error instanceof Error) {
 			return new Response(
@@ -36,15 +36,15 @@ export const GET: APIRoute = async (context: APIContext) => {
 		}
 	}
 
-	return new Response(JSON.stringify({ message: 'success', courses }), {
+	return new Response(JSON.stringify({ message: 'success', lessons }), {
 		status: 200,
 	})
 }
 
 export const POST: APIRoute = async (context: APIContext) => {
 	try {
-		const course = await context.request.json()
-		await courseService.saveCourse(course)
+		const lesson = await context.request.json()
+		await lessonService.saveLesson(lesson)
 	} catch (error) {
 		if (error instanceof Error) {
 			console.log(error)
@@ -65,7 +65,7 @@ export const POST: APIRoute = async (context: APIContext) => {
 export const DELETE: APIRoute = async (context: APIContext) => {
 	try {
 		const params = await context.request.json()
-		await courseService.removeCourse(params.courseId)
+		await lessonService.removeLesson(params.lessonId)
 	} catch (error) {
 		if (error instanceof Error) {
 			return new Response(
@@ -80,12 +80,4 @@ export const DELETE: APIRoute = async (context: APIContext) => {
 	}
 
 	return new Response(JSON.stringify({ message: 'success' }), { status: 200 })
-}
-
-export const PUT: APIRoute = ({ request }) => {
-	return new Response(
-		JSON.stringify({
-			message: 'This was a PUT!',
-		}),
-	)
 }

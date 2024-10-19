@@ -1,6 +1,6 @@
 import { useToast } from '@/hooks/use-toast'
 import { CalendarDays } from 'lucide-react'
-import type { Course } from '@/core/courses/domain/Course'
+import type { Lesson } from '@/core/lessons/domain/Lesson'
 import {
 	ContextMenu,
 	ContextMenuContent,
@@ -26,24 +26,24 @@ import {
 	AlertDialogAction,
 } from '../ui/alert-dialog'
 
-const CourseCard = ({ course }: { course: Course }) => {
+const LessonCard = ({ lesson }: { lesson: Lesson }) => {
 	const { toast } = useToast()
 
 	const onDelete = async () => {
-		const response = await fetch(`/api/courses`, {
+		const response = await fetch(`/api/lessons`, {
 			method: 'DELETE',
 			headers: {
 				'Accept': 'application.json',
 				'Content-Type': 'application/json',
 			},
-			body: JSON.stringify({ courseId: course.id }),
+			body: JSON.stringify({ lessonId: lesson.id }),
 		})
 		const data = await response.json()
 
 		if (data.message === 'success') {
 			toast({
-				title: 'Curso eliminado',
-				description: `El curso "${course.title}" ha sido eliminado`,
+				title: 'Lección eliminada',
+				description: `La lección "${lesson.title}" ha sido eliminada`,
 			})
 		} else {
 			toast({
@@ -61,14 +61,14 @@ const CourseCard = ({ course }: { course: Course }) => {
 					<Card
 						className='cursor-pointer hover:bg-slate-50'
 						onClick={() =>
-							(window.location.href = '/courses/details/' + course.id)
+							(window.location.href = '/lessons/editor/' + lesson.id)
 						}
 					>
 						<CardHeader>
-							<CardTitle>{course.title}</CardTitle>
+							<CardTitle>{lesson.title}</CardTitle>
 							<CardDescription className='line-clamp-3'>
 								<div className='grid gap-1'>
-									<span className='text-slate-700'>{course.concepts}</span>
+									<span className='text-slate-700'>{lesson.caption}</span>
 									<div className='flex items-center gap-1'>
 										<CalendarDays className='h-4 w-4 mr-2' />
 										<span>
@@ -77,10 +77,9 @@ const CourseCard = ({ course }: { course: Course }) => {
 												month: 'long',
 												day: 'numeric',
 											}).formatRange(
-												new Date(course.start),
-												new Date(course.end),
+												new Date(lesson.start),
+												new Date(lesson.end),
 											)}
-											, {course.schedules}
 										</span>
 									</div>
 								</div>
@@ -91,18 +90,10 @@ const CourseCard = ({ course }: { course: Course }) => {
 				<ContextMenuContent>
 					<ContextMenuItem
 						onSelect={() =>
-							(window.location.href = '/courses/editor/' + course.id)
+							(window.location.href = '/lessons/editor/' + lesson.id)
 						}
 					>
 						Editar
-					</ContextMenuItem>
-
-					<ContextMenuItem
-						onSelect={() =>
-							(window.location.href = '/courses/details/' + course.id)
-						}
-					>
-						Lecciones
 					</ContextMenuItem>
 
 					<ContextMenuSeparator />
@@ -116,10 +107,10 @@ const CourseCard = ({ course }: { course: Course }) => {
 			<AlertDialogContent>
 				<AlertDialogHeader>
 					<AlertDialogTitle>
-						¿Está seguro de eliminar el curso "{course.title}"?
+						¿Está seguro de eliminar la lección "{lesson.title}"?
 					</AlertDialogTitle>
 					<AlertDialogDescription>
-						Esta acción no se podrá deshacer. Todos los datos de este curso
+						Esta acción no se podrá deshacer. Todos los datos de esta lección
 						serán eliminados permanentemente de la de base de datos.
 					</AlertDialogDescription>
 				</AlertDialogHeader>
@@ -129,7 +120,7 @@ const CourseCard = ({ course }: { course: Course }) => {
 						className='bg-destructive text-destructive-foreground hover:bg-destructive/90'
 						onClick={onDelete}
 					>
-						Eliminar curso
+						Eliminar lección
 					</AlertDialogAction>
 				</AlertDialogFooter>
 			</AlertDialogContent>
@@ -137,4 +128,4 @@ const CourseCard = ({ course }: { course: Course }) => {
 	)
 }
 
-export { CourseCard }
+export { LessonCard }

@@ -1,26 +1,36 @@
 ---
+import { LessonList } from '@/components/lesson/LessonList'
 import MainLayout from '@/layouts/MainLayout.astro'
 import { actions } from 'astro:actions'
 
-if (!Astro.locals.user) {
+if (!Astro.locals.user || !Astro.params.courseId) {
 	return Astro.redirect('/login')
 }
 
-const result = await Astro.callAction(actions.user.find, {
-	id: Astro.locals.user.id,
-})
+const [courseResult, userResult] = await Promise.all([
+	Astro.callAction(actions.course.find, { id: Astro.params.courseId }),
+	Astro.callAction(actions.user.find, { id: Astro.locals.user.id }),
+])
 
-if (!result || result.error || !result.data) {
+if (
+	!courseResult ||
+	courseResult.error ||
+	!courseResult.data ||
+	!userResult ||
+	userResult.error ||
+	!userResult.data
+) {
 	return Astro.redirect('/login')
 }
 
-const user = result.data
+const user = userResult.data
+const course = courseResult.data
 ---
 
 <MainLayout
-	title='Detalle de Curso'
-	headerTitle='Detalle de Curso'
+	title='Detalles del Curso'
+	headerTitle='Detalles del curso'
 	bodyClass='px-4'
 >
-	Course Details
+	<LessonList course={course} user={user} client:load />
 </MainLayout>

@@ -7,7 +7,11 @@ import { CourseDateNotValidError, isCourseDateValid } from './CourseDate'
 import { CourseIdNotValidError, isCourseIdValid } from './CourseId'
 import { CourseLevelNotValidError, isCourseLevelValid } from './CourseLevel'
 import { CourseTitleNotValidError, isCourseTitleValid } from './CourseTitle'
-import { COURSE_SCHEDULE_DEFAULT } from './CourseSchedule'
+import {
+	COURSE_SCHEDULE_DEFAULT,
+	CourseScheduleNotValidError,
+	isCourseScheduleValid,
+} from './CourseSchedule'
 
 export class Course {
 	id!: string
@@ -29,21 +33,21 @@ export class Course {
 		userId,
 	}: {
 		id: string
-		title: string
-		level: string
-		concepts: string
-		start: Date
-		end: Date
+		title?: string | null | undefined
+		level?: string | null | undefined
+		concepts?: string | null | undefined
+		start?: Date | null | undefined
+		end?: Date | null | undefined
 		schedules?: string | null | undefined
 		userId: string
 	}) {
 		const course = new Course()
 		course.id = id
-		course.title = title
-		course.concepts = concepts
-		course.level = level
-		course.start = start
-		course.end = end
+		course.title = title || ''
+		course.concepts = concepts || ''
+		course.level = level || ''
+		course.start = start!
+		course.end = end!
 		course.schedules = COURSE_SCHEDULE_DEFAULT
 		course.userId = userId
 		return course
@@ -59,6 +63,7 @@ export function ensureCourseIsValid({
 	level,
 	start,
 	end,
+	schedules,
 	userId,
 }: Course): void {
 	if (!isCourseIdValid(id)) {
@@ -78,6 +83,9 @@ export function ensureCourseIsValid({
 	}
 	if (!isCourseDateValid(end)) {
 		throw CourseDateNotValidError(end)
+	}
+	if (schedules && !isCourseScheduleValid(schedules)) {
+		throw CourseScheduleNotValidError(schedules)
 	}
 	if (!isUserIdValid(userId)) {
 		throw UserIdNotValidError(userId)

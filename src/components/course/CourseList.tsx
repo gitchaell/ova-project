@@ -92,10 +92,12 @@ const CourseList = ({ user }: { user: User }) => {
 							</div>
 						))
 				: courses.length > 0 ?
-					courses.map((course) => (
-						<CourseCard key={course.id} course={course} />
-					))
-				:	<div className='grid place-content-center gap-4 py-8'>
+					<div className='grid grid-flow-row auto-rows-min gap-2'>
+						{courses.map((course) => (
+							<CourseCard key={course.id} course={course} />
+						))}
+					</div>
+				:	<div className='grid place-content-center gap-4 py-10'>
 						<p className='text-gray-600'>Cursos no encontrados</p>
 						<Button
 							variant='outline'

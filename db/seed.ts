@@ -1,7 +1,5 @@
 import { db, User, Course } from 'astro:db'
 
-// password: '12345678'
-
 // https://astro.build/db/seed
 export default async function seed() {
 	await db.insert(User).values([
@@ -9,8 +7,9 @@ export default async function seed() {
 			id: '8b7d3fbe-b34a-4079-bdc3-d89efe334b1c',
 			photoUrl:
 				'https://m.media-amazon.com/images/I/41+jrimaRpL._UXNaN_FMjpg_QL85_.jpg',
-			names: 'Michaell Alavedra',
-			email: 'michaell.alavedra@ovaia.com',
+			names: 'John Doe',
+			email: 'john.doe@ovaia.com',
+			// password:'12345678',
 			passwordHash:
 				'$argon2id$v=19$m=19456,t=2,p=1$xikzHoEOuxEJ9VvQpHGtWg$fyGKT+foZ1j/ilrp+5EZpSL65nvayw/nvp1LBxtizT8',
 			school: 'Tengo mi propia plataforma online en donde imparto mis cursos',
@@ -24,8 +23,10 @@ export default async function seed() {
 			title: 'Programación web con el framework Astro',
 			concepts: 'Componentes Web, Enrutamiento, End-points, Actions, AstroDB',
 			level: 'Programadores con conocimiento de nivel intermedio y avanzado',
-			start: new Date(2024, 8, 15),
-			end: new Date(2024, 11, 15),
+			start: new Date(2024, 9, 1),
+			end: new Date(2024, 11, 31),
+			schedules: 'Cada viernes, 5 horas al día',
+			// cronSchedules: '0 0-2 * * 1-5'
 			userId: '8b7d3fbe-b34a-4079-bdc3-d89efe334b1c',
 		},
 	])

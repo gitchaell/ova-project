@@ -9,6 +9,7 @@ import {
 import { type Course } from '@/core/courses/domain/Course.ts'
 import { type CourseRepository } from '@/core/courses/domain/CourseRepository.ts'
 import { CourseNotFoundException } from '@/core/courses/domain/CourseNotFoundException'
+import { CourseAlreadyExistsException } from '../domain/CourseAlreadyExistsException'
 
 export function createAstroCourseRepository(): CourseRepository {
 	return {
@@ -20,22 +21,30 @@ export function createAstroCourseRepository(): CourseRepository {
 }
 
 async function save(course: Course): Promise<void> {
-	const coursesMatching = await search({ id: course.id })
+	const matchingId = await search({ id: course.id })
 
-	if (coursesMatching?.length > 0) {
+	if (matchingId?.length > 0) {
 		await db
 			.update(CourseTable)
 			.set({
 				title: course.title,
 				concepts: course.concepts,
 				level: course.level,
-				start: course.start,
-				end: course.end,
+				start: new Date(course.start),
+				end: new Date(course.end),
 				schedules: course.schedules,
 			})
 			.where(eq(CourseTable.id, course.id))
 			.execute()
 	} else {
+		const matchingTitle = await search({
+			title: course.title,
+		})
+
+		if (matchingTitle?.length > 0) {
+			throw new CourseAlreadyExistsException()
+		}
+
 		await db
 			.insert(CourseTable)
 			.values({
@@ -43,8 +52,8 @@ async function save(course: Course): Promise<void> {
 				title: course.title,
 				concepts: course.concepts,
 				level: course.level,
-				start: course.start,
-				end: course.end,
+				start: new Date(course.start),
+				end: new Date(course.end),
 				schedules: course.schedules,
 				userId: course.userId,
 			})

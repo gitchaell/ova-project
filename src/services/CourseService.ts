@@ -6,8 +6,6 @@ import { saveCourse } from '@/core/courses/application/save/saveCourse'
 import { removeCourse } from '@/core/courses/application/remove/removeCourse'
 import { searchCourses } from '@/core/courses/application/search/searchCourses'
 
-type CreateCourseDTO = Course
-type UpdateCourseDTO = Omit<Course, 'userId'>
 type FindCourseDTO = Partial<Pick<Course, 'id' | 'title' | 'userId'>>
 type SearchCoursesDTO = Partial<Pick<Course, 'title'>> & Pick<Course, 'userId'>
 
@@ -19,12 +17,8 @@ class CourseService {
 		// this.repository = createPostgreSQLCourseRepository()
 	}
 
-	async createCourse(course: CreateCourseDTO): Promise<void> {
+	async saveCourse(course: Course): Promise<void> {
 		await saveCourse(this.repository, course)
-	}
-
-	async updateCourse(course: UpdateCourseDTO): Promise<void> {
-		await saveCourse(this.repository, course as Course)
 	}
 
 	async searchCourses({ title, userId }: SearchCoursesDTO): Promise<Course[]> {

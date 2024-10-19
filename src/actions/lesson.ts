@@ -1,18 +1,18 @@
 import { ActionError, defineAction } from 'astro:actions'
 import { z } from 'astro:schema'
-import { Course } from '@/core/courses/domain/Course'
-import { courseService } from '@/services/CourseService'
+import { Lesson } from '@/core/lessons/domain/Lesson'
+import { lessonService } from '@/services/LessonService'
 
-export const course = {
+export const lesson = {
 	find: defineAction({
 		input: z.object({
 			id: z.string().uuid(),
 		}),
-		handler: async ({ id }): Promise<Course> => {
-			let course: Course
+		handler: async ({ id }): Promise<Lesson> => {
+			let lesson: Lesson
 
 			try {
-				course = await courseService.findCourse({ id })
+				lesson = await lessonService.findLesson({ id })
 			} catch (error) {
 				if (error instanceof Error) {
 					throw new ActionError({
@@ -23,19 +23,19 @@ export const course = {
 				}
 			}
 
-			return course!
+			return lesson!
 		},
 	}),
 	search: defineAction({
 		input: z.object({
 			title: z.string().optional(),
-			userId: z.string().uuid(),
+			courseId: z.string().uuid(),
 		}),
-		handler: async ({ title, userId }): Promise<Course[]> => {
-			let courses: Course[] = []
+		handler: async ({ title, courseId }): Promise<Lesson[]> => {
+			let lessons: Lesson[] = []
 
 			try {
-				courses = await courseService.searchCourses({ title, userId })
+				lessons = await lessonService.searchLessons({ title, courseId })
 			} catch (error) {
 				if (error instanceof Error) {
 					throw new ActionError({
@@ -46,7 +46,7 @@ export const course = {
 				}
 			}
 
-			return courses
+			return lessons
 		},
 	}),
 }

@@ -11,13 +11,5 @@ export async function saveCourse(
 ): Promise<void> {
 	ensureCourseIsValid(course)
 
-	const coursesMatching = await courseRepository.search({
-		title: course.title,
-	})
-
-	if (coursesMatching?.length > 0) {
-		throw new CourseAlreadyExistsException()
-	}
-
 	await courseRepository.save(course)
 }
