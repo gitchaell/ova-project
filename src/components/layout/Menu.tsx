@@ -1,7 +1,6 @@
 import { CommandDialog } from 'cmdk'
 import {
 	User,
-	CreditCard,
 	Settings,
 	BadgeCheck,
 	House,

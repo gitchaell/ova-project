@@ -77,10 +77,10 @@ async function search({ id, names, email }: Partial<User>): Promise<User[]> {
 	return users
 }
 
-async function findAll(): Promise<User[]> {
-	const users = await db.select().from(UserTable).execute()
-	return users
-}
+// async function findAll(): Promise<User[]> {
+// 	const users = await db.select().from(UserTable).execute()
+// 	return users
+// }
 
 async function remove(id: string): Promise<void> {
 	await db.delete(SessionTable).where(eq(SessionTable.userId, id)).execute()

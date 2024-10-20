@@ -1,11 +1,9 @@
 import { useEffect, useState } from 'react'
 import { useToast } from '@/hooks/use-toast'
-import { CalendarIcon, Info, LoaderCircle, Sparkles } from 'lucide-react'
+import { CalendarIcon, Info } from 'lucide-react'
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert'
 import type { Lesson } from '@/core/lessons/domain/Lesson'
-import { Skeleton } from '@/components/ui/skeleton'
 import { LessonCard } from './LessonCard'
-import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import type { Course } from '@/core/courses/domain/Course'
 import {

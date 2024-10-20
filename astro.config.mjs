@@ -6,12 +6,13 @@ import react from '@astrojs/react'
 import tailwind from '@astrojs/tailwind'
 import remarkToc from 'remark-toc'
 
+// import vercel from '@astrojs/vercel/serverless'
+
 // https://astro.build/config
 export default defineConfig({
 	output: 'server',
-	adapter: node({
-		mode: 'standalone',
-	}),
+	// adapter: vercel(), // to deploy
+	adapter: node({ mode: 'standalone' }), // to dev
 	security: {
 		checkOrigin: false,
 	},

@@ -110,10 +110,10 @@ export const DELETE: APIRoute = async (context: APIContext) => {
 	return new Response(JSON.stringify({ message: 'success' }), { status: 200 })
 }
 
-export const PUT: APIRoute = ({ request }) => {
-	return new Response(
-		JSON.stringify({
-			message: 'This was a PUT!',
-		}),
-	)
-}
+// export const PUT: APIRoute = ({ request }) => {
+// 	return new Response(
+// 		JSON.stringify({
+// 			message: 'This was a PUT!',
+// 		}),
+// 	)
+// }
