@@ -9,5 +9,7 @@ export function isCourseConceptsValid(concepts: string): boolean {
 }
 
 export function CourseConceptsNotValidError(concepts: string): Error {
-	return new Error(`Concepts ${concepts} is not valid`)
+	return new Error(
+		`Concepts ${concepts} must be between ${COURSE_CONCEPTS_MIN_LENGTH} and ${COURSE_CONCEPTS_MAX_LENGTH} characters`,
+	)
 }

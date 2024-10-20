@@ -1,7 +1,7 @@
 ---
-import { LessonForm } from '@/components/lesson/LessonForm'
-import MainLayout from '@/layouts/MainLayout.astro'
+import styles from '@/styles/markdown.css?raw'
 import { actions } from 'astro:actions'
+import { marked } from 'marked'
 
 if (!Astro.locals.user || !Astro.params.lessonId) {
 	return Astro.redirect('/login')
@@ -16,10 +16,15 @@ if (!result || result.error || !result.data) {
 }
 
 const lesson = result.data
+
+const content = marked.parse(lesson.content || '')
 ---
 
-<MainLayout title={lesson.title} headerTitle={lesson.title} bodyClass='px-4'>
-	<div class='grid pb-20'>
-		<LessonForm lesson={lesson} mode='UPDATE' client:load />
-	</div>
-</MainLayout>
+<main>
+	<style is:inline set:html={styles}></style>
+	<article
+		class='markdown-body'
+		style='padding: 24px; max-width: 900px; margin: 0 auto;'
+		set:html={content}
+	/>
+</main>

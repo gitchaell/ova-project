@@ -20,27 +20,25 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useToast } from '@/hooks/use-toast'
 import { ArrowRight, Info } from 'lucide-react'
-import { Alert, AlertTitle, AlertDescription } from '../ui/alert'
+import { Alert, AlertDescription } from '../ui/alert'
+import {
+	USER_PASSWORD_MAX_LENGTH,
+	USER_PASSWORD_MIN_LENGTH,
+} from '@/core/users/domain/UserPasswordHash'
 
 const formSchema = z.object({
 	email: z.string().email(),
-	password: z.string().min(8).max(50),
+	password: z
+		.string()
+		.min(USER_PASSWORD_MIN_LENGTH)
+		.max(USER_PASSWORD_MAX_LENGTH),
 })
 
 const UserLoginForm = () => {
 	const { toast } = useToast()
 
 	const form = useForm<z.infer<typeof formSchema>>({
-		resolver: zodResolver(
-			z.object({
-				email: z.string().email(),
-				password: z.string().min(8).max(50),
-			}),
-		),
-		// defaultValues: {
-		// 	email: 'admin@ovaia.com',
-		// 	password: '12345678',
-		// },
+		resolver: zodResolver(formSchema),
 	})
 
 	const onSubmit = async (values: z.infer<typeof formSchema>) => {

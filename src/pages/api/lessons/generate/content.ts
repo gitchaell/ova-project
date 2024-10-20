@@ -1,19 +1,25 @@
 import type { APIContext, APIRoute } from 'astro'
 import { ChatGoogleGenerativeAI } from '@langchain/google-genai'
 import * as dotenv from 'dotenv'
-import { z } from 'zod'
-import type { User } from '@/core/users/domain/User'
-import type { Course } from '@/core/courses/domain/Course'
-import { courseDateFormatter } from '@/core/courses/domain/CourseDate'
+import type { Lesson } from '@/core/lessons/domain/Lesson'
+import { courseService } from '@/services/CourseService'
+import { userService } from '@/services/UserService'
+import {
+	LESSON_CONTENT_MAX_LENGTH,
+	LESSON_CONTENT_MIN_LENGTH,
+} from '@/core/lessons/domain/LessonContent'
+import { lessonService } from '@/services/LessonService'
 
 dotenv.config()
 
 export const POST: APIRoute = async (context: APIContext) => {
 	try {
-		const { user, course } = (await context.request.json()) as {
-			user: User
-			course: Course
+		const { lesson } = (await context.request.json()) as {
+			lesson: Lesson
 		}
+
+		const course = await courseService.findCourse({ id: lesson.courseId })
+		const user = await userService.findUser({ id: course.userId })
 
 		const model = new ChatGoogleGenerativeAI({
 			modelName: 'gemini-1.5-flash',
@@ -21,58 +27,34 @@ export const POST: APIRoute = async (context: APIContext) => {
 		})
 
 		const prompt = [
+			`Rol:`,
 			`Eres un experto planificador de Objetos Virtuales de Aprendizaje (OVAs) y resursos didácticos que son de utilidad para las clases de profesores.`,
+			`Contexto:`,
 			`Mi nombre es ${user.names}, y soy profesor en ${user.school}. Mis especialidades son: ${user.skills}.`,
-			`Genera un plan de OVAs para el curso de ${course.title}. Los temas o conceptos clave de este curso son: ${course.concepts}. El nivel de mis estudiantes es: ${course.level}. El curso inicia en ${courseDateFormatter.format(new Date(course.start))} y termina en ${courseDateFormatter.format(new Date(course.end))}. Los días de la semana en las que imparto el curso son: ${course.schedules}.`,
-			'Tus instrucciones son:',
-			'1. Genera una lista de OVAs por cada sesión diaria que tendré mientras dure el curso.',
-			'2. El contenido de cada OVA debe ser muy bien pensada y adecuada para el nivel de mis estudiantes.',
-			'3. Accede a internet en busca de artículos, blogs, etc. que justifiquen y sustenten la información generada.',
-			'4. Cada OVA que generes debe respetar la estructura Flipped Learning, es decir, pensar en actividad para antes, durante y después de la clase.',
+			`El curso que imparto se titula: ${course.title}. Los temas o conceptos clave de este curso son: ${course.concepts}. El nivel de mis estudiantes es: ${course.level}.`,
+			`La lección del día se titula ${lesson.title} y el propósito es: ${lesson.caption}.`,
+			'Indicaciones:',
+			'1. Redacta el contenido de esta OVA en base a mis datos, del curso y de la lección.',
+			'2. El contenido debe ser muy bien pensado, didáctico, creativo y adecuado para el nivel de mis estudiantes.',
+			'3. Accede a internet en busca de artículos, blogs, etc. que justifiquen y sustenten la información que generes.',
+			'4. El contenido debe respetar la estructura Flipped Learning, es decir, pensar en actividades para antes, durante y después de la clase.',
 			'5. Agrega tablas y enlaces a recursos gráficos cuando lo creas necesario.',
-			'6. Tu respuesta debe respetar este esquema en formato JSON:',
-			'',
-			'[',
-			'  {',
-			'    "title": "Título de la lección/OVA o tema relacionado con el contenido de la lección/OVA. El total de caracteres debe ser entre 200 y 300",',
-			'    "caption": "Descripción resumida de la lección/OVA o tema relacionado con el contenido de la lección/OVA. El total de caracteres debe ser entre 200 y 400",',
-			'    "start": "Fecha de inicio de la lección en formato ISO 8601",',
-			'    "end": "Fecha de fin de la lección en formato ISO 8601",',
-			'    "content": "Contenido de la lección en formato markdown. El total de caracteres debe ser entre 100 y 2000."',
-			'  }',
-			']',
-			'',
-			'7. Solamente la propiedad "content" debe tener el formato mardown, tu respuesta en general debe tener formato JSON, eso significa que NO debes agregar ```json al inicio ni ``` al final.',
-			'8. Para el contenido markdown de la propiedad "content" usa \\n para los saltos de línea para su correcto parseado.',
-			'9. En cada comilla(") que uses en el contenido markdown, tebes tener en cuenta que es un contenido dentro de comillas, por lo que debes escaparlos.',
-			'10. Solo genera un único array que contenga todos los objetos según el esquema.',
+			'6. Debes dar tu respuesta en formato Markdown',
+			`7. El contenido debe tener al menos ${LESSON_CONTENT_MIN_LENGTH} caracteres y lo mucho ${
+				LESSON_CONTENT_MAX_LENGTH
+			} caracteres.`,
+			`8. Ten en cuenta que este contenido solo lo podré ver yo y lo usaré como una guía para mis sesiones educativas.`,
 		].join('\n')
 
-		const responseSchema = z.array(
-			z.object({
-				title: z.string(),
-				caption: z.string(),
-				start: z.string(),
-				end: z.string(),
-				content: z.string(),
-			}),
-		)
-
 		const output = await model.invoke(prompt)
-		// .withStructuredOutput(responseSchema)
 
-		console.log(output.content)
-		console.log(JSON.parse(output.content.toString()))
+		await lessonService.saveLesson({
+			...lesson,
+			id: lesson.id,
+			content: output.content.toString(),
+		})
 
-		return new Response(
-			JSON.stringify({
-				message: 'success',
-				lessons: JSON.parse(output.content.toString()),
-			}),
-			{
-				status: 200,
-			},
-		)
+		return new Response(JSON.stringify({ message: 'success' }), { status: 200 })
 	} catch (error) {
 		console.log(error)
 		if (error instanceof Error) {

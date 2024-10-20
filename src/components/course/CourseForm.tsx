@@ -35,16 +35,32 @@ import {
 import { cn } from '@/lib/utils'
 import { Calendar } from '@/components/ui/calendar'
 import { courseDateFormatter } from '@/core/courses/domain/CourseDate'
+import {
+	COURSE_TITLE_MAX_LENGTH,
+	COURSE_TITLE_MIN_LENGTH,
+} from '@/core/courses/domain/CourseTitle'
+import {
+	COURSE_CONCEPTS_MAX_LENGTH,
+	COURSE_CONCEPTS_MIN_LENGTH,
+} from '@/core/courses/domain/CourseConcepts'
+import {
+	COURSE_LEVEL_MAX_LENGTH,
+	COURSE_LEVEL_MIN_LENGTH,
+} from '@/core/courses/domain/CourseLevel'
+import { COURSE_SCHEDULES_MAX_LENGTH } from '@/core/courses/domain/CourseSchedule'
 
 const formSchema = z.object({
-	id: z.string(),
-	title: z.string().min(2).max(300),
-	concepts: z.string().min(2).max(700),
-	level: z.string().min(2).max(700),
+	id: z.string().uuid(),
+	title: z.string().min(COURSE_TITLE_MIN_LENGTH).max(COURSE_TITLE_MAX_LENGTH),
+	concepts: z
+		.string()
+		.min(COURSE_CONCEPTS_MIN_LENGTH)
+		.max(COURSE_CONCEPTS_MAX_LENGTH),
+	level: z.string().min(COURSE_LEVEL_MIN_LENGTH).max(COURSE_LEVEL_MAX_LENGTH),
 	start: z.date(),
 	end: z.date(),
-	schedules: z.string().max(700).optional(),
-	userId: z.string().min(2).max(700),
+	schedules: z.string().max(COURSE_SCHEDULES_MAX_LENGTH).optional(),
+	userId: z.string().uuid(),
 })
 
 const CourseForm = ({
@@ -57,18 +73,7 @@ const CourseForm = ({
 	const { toast } = useToast()
 
 	const form = useForm<z.infer<typeof formSchema>>({
-		resolver: zodResolver(
-			z.object({
-				id: z.string(),
-				title: z.string().min(2).max(300),
-				concepts: z.string().min(2).max(700),
-				level: z.string().min(2).max(700),
-				start: z.date(),
-				end: z.date(),
-				schedules: z.string().max(700).optional(),
-				userId: z.string().min(2).max(700),
-			}),
-		),
+		resolver: zodResolver(formSchema),
 		defaultValues: {
 			id: course.id,
 			title: course.title || '',

@@ -66,7 +66,7 @@ export function Menu({ courses }: { courses: Course[] }) {
 			className='fixed top-16 left-0 right-0 mx-2'
 		>
 			<Command className='rounded-lg border shadow-md md:min-w-[450px]'>
-				<CommandInput placeholder='Busca tus cursos o lecciones usando palabras clave...'  />
+				<CommandInput placeholder='Busca tus cursos usando palabras clave...'  />
 				<CommandList>
 					<CommandEmpty>0 coincidencias</CommandEmpty>
 					<CommandGroup heading='Sugerencias'>

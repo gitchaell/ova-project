@@ -18,7 +18,12 @@ const Header = ({ title, user }: { title: string; user: User }) => {
 				<House className='w-12 h-12' />
 			</Button>
 
-			<Button type='button' variant='secondary' onClick={handleOpenMenu}>
+			<Button
+				type='button'
+				variant='secondary'
+				className='line-clamp-1'
+				onClick={handleOpenMenu}
+			>
 				{title}
 			</Button>
 

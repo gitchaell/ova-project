@@ -9,5 +9,7 @@ export function isCourseLevelValid(level: string): boolean {
 }
 
 export function CourseLevelNotValidError(level: string): Error {
-	return new Error(`Level ${level} is not valid`)
+	return new Error(
+		`Level ${level} must be between ${COURSE_LEVEL_MIN_LENGTH} and ${COURSE_LEVEL_MAX_LENGTH} characters`,
+	)
 }

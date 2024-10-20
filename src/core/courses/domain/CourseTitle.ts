@@ -1,13 +1,15 @@
-export const COURSE_NAMES_MIN_LENGTH = 5
-export const COURSE_NAMES_MAX_LENGTH = 300
+export const COURSE_TITLE_MIN_LENGTH = 5
+export const COURSE_TITLE_MAX_LENGTH = 400
 
 export function isCourseTitleValid(title: string): boolean {
 	return (
-		title.length >= COURSE_NAMES_MIN_LENGTH &&
-		title.length <= COURSE_NAMES_MAX_LENGTH
+		title.length >= COURSE_TITLE_MIN_LENGTH &&
+		title.length <= COURSE_TITLE_MAX_LENGTH
 	)
 }
 
 export function CourseTitleNotValidError(title: string): Error {
-	return new Error(`Title ${title} is not valid`)
+	return new Error(
+		`Title ${title} must be between ${COURSE_TITLE_MIN_LENGTH} and ${COURSE_TITLE_MAX_LENGTH} characters`,
+	)
 }

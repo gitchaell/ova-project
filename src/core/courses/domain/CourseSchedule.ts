@@ -1,13 +1,21 @@
+export const COURSE_SCHEDULES_MAX_LENGTH = 700
+
 export function isCourseScheduleValid(schedule: string): boolean {
-	// const regexExp = new RegExp(
-	// 	/^(\*|([0-9]|1[0-9]|2[0-9]|3[0-9]|4[0-9]|5[0-9])|\*\/([0-9]|1[0-9]|2[0-9]|3[0-9]|4[0-9]|5[0-9])) (\*|([0-9]|1[0-9]|2[0-3])|\*\/([0-9]|1[0-9]|2[0-3])) (\*|([1-9]|1[0-9]|2[0-9]|3[0-1])|\*\/([1-9]|1[0-9]|2[0-9]|3[0-1])) (\*|([1-9]|1[0-2])|\*\/([1-9]|1[0-2])) (\*|([0-6])|\*\/([0-6]))$/,
-	// )
-	// return regexExp.test(schedule)
-	return !!schedule
+	if (!schedule) {
+		return false
+	}
+
+	if (schedule.length > COURSE_SCHEDULES_MAX_LENGTH) {
+		return false
+	}
+
+	return true
 }
 
 export function CourseScheduleNotValidError(schedule: string): Error {
-	return new Error(`Course schedule ${schedule} is required`)
+	return new Error(
+		`Course schedule ${schedule} is required and must be less than ${COURSE_SCHEDULES_MAX_LENGTH} characters`,
+	)
 }
 
 export const COURSE_SCHEDULE_DEFAULT = 'De lunes a viernes, 3 horas cada día'

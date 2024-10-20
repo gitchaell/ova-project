@@ -1,5 +1,5 @@
 export const LESSON_CONTENT_MIN_LENGTH = 3000
-export const LESSON_CONTENT_MAX_LENGTH = 5000
+export const LESSON_CONTENT_MAX_LENGTH = 8000
 
 export function isLessonContentValid(content: string): boolean {
 	return (

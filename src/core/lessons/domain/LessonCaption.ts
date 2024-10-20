@@ -1,5 +1,5 @@
 export const LESSON_CAPTION_MIN_LENGTH = 5
-export const LESSON_CAPTION_MAX_LENGTH = 600
+export const LESSON_CAPTION_MAX_LENGTH = 700
 
 export function isLessonCaptionValid(caption: string): boolean {
 	return (

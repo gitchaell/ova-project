@@ -19,32 +19,33 @@ import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useToast } from '@/hooks/use-toast'
+import { USER_NAMES_MAX_LENGTH } from '@/core/users/domain/UserNames'
+import {
+	USER_PASSWORD_MAX_LENGTH,
+	USER_PASSWORD_MIN_LENGTH,
+} from '@/core/users/domain/UserPasswordHash'
 
 const formSchema = z.object({
-	firstname: z.string().min(2).max(50),
-	lastname: z.string().min(2).max(50),
+	firstname: z
+		.string()
+		.min(2)
+		.max(USER_NAMES_MAX_LENGTH / 2),
+	lastname: z
+		.string()
+		.min(2)
+		.max(USER_NAMES_MAX_LENGTH / 2),
 	email: z.string().email(),
-	password: z.string().min(8).max(50),
+	password: z
+		.string()
+		.min(USER_PASSWORD_MIN_LENGTH)
+		.max(USER_PASSWORD_MAX_LENGTH),
 })
 
 const UserSignupForm = () => {
 	const { toast } = useToast()
 
 	const form = useForm<z.infer<typeof formSchema>>({
-		resolver: zodResolver(
-			z.object({
-				firstname: z.string().min(2).max(50),
-				lastname: z.string().min(2).max(50),
-				email: z.string().email(),
-				password: z.string().min(8).max(50),
-			}),
-		),
-		// defaultValues: {
-		// 	firstname: 'System',
-		// 	lastname: 'Admin',
-		// 	email: 'admin@ovaia.com',
-		// 	password: '12345678',
-		// },
+		resolver: zodResolver(formSchema),
 	})
 
 	const onSubmit = async (values: z.infer<typeof formSchema>) => {

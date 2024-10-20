@@ -49,7 +49,7 @@ const LessonListNotFound = ({
 			{enableAI &&
 				(generating ?
 					<Button disabled>
-						<LoaderCircle className='h-4 w-4 mr-2' />
+						<LoaderCircle className='h-4 w-4 mr-2 animate-spin' />
 						Generando lecciones automáticamente
 					</Button>
 				:	<Button onClick={onGenerateLessons}>

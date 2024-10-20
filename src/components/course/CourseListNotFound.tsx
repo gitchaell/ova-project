@@ -6,7 +6,7 @@ const CourseListNotFound = () => {
 		<div className='grid place-content-center gap-4 py-10'>
 			<p className='text-gray-600'>Cursos no encontrados</p>
 			<Button
-				variant='outline'
+				variant='default'
 				onClick={() => (window.location.href = '/courses/editor')}
 			>
 				<Plus className='w-4 h-4 mr-2' />

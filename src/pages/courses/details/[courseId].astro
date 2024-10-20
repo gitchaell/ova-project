@@ -27,10 +27,6 @@ const user = userResult.data
 const course = courseResult.data
 ---
 
-<MainLayout
-	title='Detalles del Curso'
-	headerTitle='Detalles del curso'
-	bodyClass='px-4'
->
+<MainLayout title={course.title} headerTitle={course.title} bodyClass='px-4'>
 	<LessonList course={course} user={user} client:load />
 </MainLayout>

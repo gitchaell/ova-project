@@ -4,6 +4,7 @@ import node from '@astrojs/node'
 import db from '@astrojs/db'
 import react from '@astrojs/react'
 import tailwind from '@astrojs/tailwind'
+import remarkToc from 'remark-toc'
 
 // https://astro.build/config
 export default defineConfig({
@@ -28,4 +29,12 @@ export default defineConfig({
 		}),
 		db(),
 	],
+	markdown: {
+		syntaxHighlight: 'shiki',
+		shikiConfig: {
+			theme: 'github-dark-default',
+		},
+		remarkPlugins: [[remarkToc, { heading: 'contents' }]],
+		rehypePlugins: [],
+	},
 })

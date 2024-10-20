@@ -27,24 +27,22 @@ import {
 	AlertDialogTitle,
 	AlertDialogTrigger,
 } from '../ui/alert-dialog'
+import {
+	USER_NAMES_MAX_LENGTH,
+	USER_NAMES_MIN_LENGTH,
+} from '@/core/users/domain/UserNames'
 
 const formSchema = z.object({
-	names: z.string().min(2).max(200),
-	school: z.string().min(2).max(320),
-	skills: z.string().min(2).max(320),
+	names: z.string().min(USER_NAMES_MIN_LENGTH).max(USER_NAMES_MAX_LENGTH),
+	school: z.string().min(2).max(700),
+	skills: z.string().min(2).max(700),
 })
 
 const UserProfileForm = ({ user }: { user: User }) => {
 	const { toast } = useToast()
 
 	const form = useForm<z.infer<typeof formSchema>>({
-		resolver: zodResolver(
-			z.object({
-				names: z.string().min(2).max(200),
-				school: z.string().min(2).max(320),
-				skills: z.string().min(2).max(320),
-			}),
-		),
+		resolver: zodResolver(formSchema),
 		defaultValues: {
 			names: user.names,
 			school: user.school || '',
