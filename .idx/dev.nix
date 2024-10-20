@@ -4,9 +4,14 @@
   # Which nixpkgs channel to use.
   channel = "stable-23.11"; # or "unstable"
   # Use https://search.nixos.org/packages to find packages
-  packages = [ pkgs.nodejs_20 ];
+  packages = [pkgs.sudo pkgs.nodejs_20 pkgs.turso-cli ];
   # Sets environment variables in the workspace
-  env = { };
+  env = {
+    ASTRO_DATABASE_FILE = ".astro/content.db";
+    GOOGLE_API_KEY = "AIzaSyAWzDZ-qnechchEjGcrNJzXALs8c06iaPk";
+    ASTRO_DB_REMOTE_URL = "libsql://ova-project-gitchaell.turso.io";
+    ASTRO_DB_APP_TOKEN = "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJhIjoicnciLCJpYXQiOjE3MjkzODU4MDcsImlkIjoiY2FhYzg0OTMtNGZiMy00NGNkLTg0NGQtZjQ2OTVmMDZlYzIxIn0.k_BLXTSXPp7pVlo3EsLcQKRL83wq768kvyR75q7jXxsXCG4ykcLnE6bY0xbmFtwLi-au2JYuckmCFUhkxun6Dw";
+  };
   idx = {
     # Search for the extensions you want on https://open-vsx.org/ and use "publisher.id"
     extensions = [ "astro-build.astro-vscode" ];

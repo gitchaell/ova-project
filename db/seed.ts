@@ -1,6 +1,8 @@
-import { Lesson } from 'astro:db'
-import { db, User, Course } from 'astro:db'
+import * as dotenv from 'dotenv'
+import { db, User, Course, Lesson } from 'astro:db'
 import { randomUUID } from 'node:crypto'
+
+dotenv.config()
 
 // https://astro.build/db/seed
 export default async function seed() {

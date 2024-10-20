@@ -1,18 +1,18 @@
 // @ts-check
 import { defineConfig } from 'astro/config'
-import node from '@astrojs/node'
 import db from '@astrojs/db'
 import react from '@astrojs/react'
 import tailwind from '@astrojs/tailwind'
 import remarkToc from 'remark-toc'
 
-// import vercel from '@astrojs/vercel/serverless'
+import vercel from '@astrojs/vercel/serverless'
+// import node from '@astrojs/node'
 
 // https://astro.build/config
 export default defineConfig({
 	output: 'server',
-	// adapter: vercel(), // to deploy
-	adapter: node({ mode: 'standalone' }), // to dev
+	adapter: vercel(), // to deploy
+	// adapter: node({ mode: 'standalone' }), // to dev
 	security: {
 		checkOrigin: false,
 	},
@@ -22,12 +22,8 @@ export default defineConfig({
 		},
 	},
 	integrations: [
-		react({
-			experimentalReactChildren: true,
-		}),
-		tailwind({
-			applyBaseStyles: false,
-		}),
+		react({ experimentalReactChildren: true }),
+		tailwind({ applyBaseStyles: false }),
 		db(),
 	],
 	markdown: {
