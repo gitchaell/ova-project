@@ -241,11 +241,11 @@ const LessonForm = ({
 
 						{!markdownContent?.length &&
 							(generating ?
-								<Button disabled>
+								<Button className='w-full mb-4' disabled>
 									<LoaderCircle className='h-4 w-4 mr-2 animate-spin' />
 									Generando contenido automáticamente
 								</Button>
-							:	<Button onClick={onGenerateContent}>
+							:	<Button className='w-full mb-4' onClick={onGenerateContent}>
 									<Sparkles className='h-4 w-4 mr-2' />
 									Generar contenido automáticamente
 								</Button>)}
