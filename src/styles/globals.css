@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@supports (font-variation-settings: normal) {
+	:root {
+		font-family: InterVariable, sans-serif;
+	}
+}
+
 @layer base {
 	:root {
 		--background: 0 0% 100%;
@@ -61,6 +67,7 @@
 @layer base {
 	* {
 		@apply border-border;
+		margin: 0;
 	}
 	body {
 		@apply bg-background text-foreground;

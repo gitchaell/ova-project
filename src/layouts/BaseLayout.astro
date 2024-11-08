@@ -25,16 +25,8 @@ const { title, description, bodyClass } = Astro.props
 		<meta name='title' content={title ? `${title} | OVA-IA` : 'OVA-IA'} />
 		<meta name='description' content={description} />
 
-		<link
-			href='https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap'
-			rel='stylesheet'
-		/>
-		<style>
-			html,
-			body {
-				margin: 0;
-			}
-		</style>
+		<link rel='preconnect' href='https://rsms.me/' />
+		<link rel='stylesheet' href='https://rsms.me/inter/inter.css' />
 	</head>
 
 	<body class={cn('min-h-screen', bodyClass)}>
