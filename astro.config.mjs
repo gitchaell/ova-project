@@ -11,7 +11,9 @@ import vercel from '@astrojs/vercel/serverless'
 // https://astro.build/config
 export default defineConfig({
 	output: 'server',
-	adapter: vercel(), // to deploy
+	adapter: vercel({
+		webAnalytics: { enabled: true },
+	}), // to deploy
 	// adapter: node({ mode: 'standalone' }), // to dev
 	security: {
 		checkOrigin: false,
