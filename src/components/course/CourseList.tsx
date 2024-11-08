@@ -9,6 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { CourseCardSkeleton } from './CourseCardSkeleton'
 import { CourseListNotFound } from './CourseListNotFound'
 import { Badge } from '../ui/badge'
+import { CourseNewButton } from './CourseNewButton'
 
 const CourseList = ({ user }: { user: User }) => {
 	const [loading, setLoading] = useState<boolean>(true)
@@ -72,46 +73,50 @@ const CourseList = ({ user }: { user: User }) => {
 	}
 
 	return (
-		<div className='grid gap-4 mt-4'>
-			<Alert className='bg-blue-50 border-blue-600'>
-				<Info className='h-4 w-4' color='rgb(37 99 235)' />
-				<AlertTitle className='text-blue-600'>
-					<strong>Bienvenid@ {user.names}</strong>
-				</AlertTitle>
-				<AlertDescription className='text-blue-600'>
-					A continuación se muestran todos los cursos que impartes.
-				</AlertDescription>
-			</Alert>
+		<>
+			<div className='grid gap-4 mt-4'>
+				<Alert className='bg-blue-50 border-blue-600'>
+					<Info className='h-4 w-4' color='rgb(37 99 235)' />
+					<AlertTitle className='text-blue-600'>
+						<strong>Bienvenid@ {user.names}</strong>
+					</AlertTitle>
+					<AlertDescription className='text-blue-600'>
+						A continuación se muestran todos los cursos que impartes.
+					</AlertDescription>
+				</Alert>
 
-			<Tabs defaultValue='IN_PROGRESS'>
-				<TabsList>
-					<TabsTrigger value='IN_PROGRESS'>
-						En Progreso
-						<Badge variant='outline' className='ml-1'>
-							{inProgressCourses.length}
-						</Badge>
-					</TabsTrigger>
-					<TabsTrigger value='UPCOMING'>
-						Próximos
-						<Badge variant='outline' className='ml-1'>
-							{upcomingCourses.length}
-						</Badge>
-					</TabsTrigger>
-					<TabsTrigger value='PAST'>
-						Pasados
-						<Badge variant='outline' className='ml-1'>
-							{pastCourses.length}
-						</Badge>
-					</TabsTrigger>
-				</TabsList>
+				<Tabs defaultValue='IN_PROGRESS'>
+					<TabsList>
+						<TabsTrigger value='IN_PROGRESS'>
+							En Progreso
+							<Badge variant='outline' className='ml-1'>
+								{inProgressCourses.length}
+							</Badge>
+						</TabsTrigger>
+						<TabsTrigger value='UPCOMING'>
+							Próximos
+							<Badge variant='outline' className='ml-1'>
+								{upcomingCourses.length}
+							</Badge>
+						</TabsTrigger>
+						<TabsTrigger value='PAST'>
+							Pasados
+							<Badge variant='outline' className='ml-1'>
+								{pastCourses.length}
+							</Badge>
+						</TabsTrigger>
+					</TabsList>
 
-				<TabsContent value='IN_PROGRESS'>
-					{getContent('IN_PROGRESS')}
-				</TabsContent>
-				<TabsContent value='UPCOMING'>{getContent('UPCOMING')}</TabsContent>
-				<TabsContent value='PAST'>{getContent('PAST')}</TabsContent>
-			</Tabs>
-		</div>
+					<TabsContent value='IN_PROGRESS'>
+						{getContent('IN_PROGRESS')}
+					</TabsContent>
+					<TabsContent value='UPCOMING'>{getContent('UPCOMING')}</TabsContent>
+					<TabsContent value='PAST'>{getContent('PAST')}</TabsContent>
+				</Tabs>
+			</div>
+
+			<CourseNewButton />
+		</>
 	)
 }
 

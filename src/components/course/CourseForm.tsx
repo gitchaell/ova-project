@@ -338,7 +338,7 @@ const CourseForm = ({
 						</Button>
 
 						{mode === 'UPDATE' && (
-							<AlertDialogTrigger>
+							<AlertDialogTrigger asChild>
 								<Button type='button' variant='destructive' className='w-full'>
 									Eliminar curso
 								</Button>

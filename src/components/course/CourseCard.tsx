@@ -84,26 +84,24 @@ const CourseCard = ({ course }: { course: Course }) => {
 							</DropdownMenuTrigger>
 						</div>
 
-						<CardDescription>
-							<div className='grid gap-1'>
-								<span className='text-slate-700 line-clamp-2'>
-									{course.concepts}
-								</span>
-								<div className='grid grid-cols-[min-content_1fr] items-center gap-2'>
-									<CalendarDays className='w-4 h-4' />
-									<span>
-										{courseDateFormatter.formatRange(
-											new Date(course.start),
-											new Date(course.end),
-										)}
-									</span>
-								</div>
-								<div className='grid grid-cols-[min-content_1fr] items-center gap-2'>
-									<Clock className='w-4 h-4' />
-									<span> {course.schedules}</span>
-								</div>
-							</div>
+						<CardDescription className='text-slate-700 line-clamp-2'>
+							{course.concepts}
 						</CardDescription>
+
+						<div className='grid grid-cols-[min-content_1fr] items-center gap-2 text-sm text-gray-500'>
+							<CalendarDays className='w-4 h-4' />
+							<span>
+								{courseDateFormatter.formatRange(
+									new Date(course.start),
+									new Date(course.end),
+								)}
+							</span>
+						</div>
+
+						<div className='grid grid-cols-[min-content_1fr] items-center gap-2 text-sm text-gray-500'>
+							<Clock className='w-4 h-4' />
+							<span> {course.schedules}</span>
+						</div>
 					</CardHeader>
 				</Card>
 
@@ -134,12 +132,12 @@ const CourseCard = ({ course }: { course: Course }) => {
 
 					<DropdownMenuSeparator />
 
-					<DropdownMenuItem className='text-red-500'>
-						<Trash />
-						<AlertDialogTrigger>
+					<AlertDialogTrigger asChild>
+						<DropdownMenuItem className='text-red-500'>
+							<Trash />
 							<span>Eliminar</span>
-						</AlertDialogTrigger>
-					</DropdownMenuItem>
+						</DropdownMenuItem>
+					</AlertDialogTrigger>
 				</DropdownMenuContent>
 			</DropdownMenu>
 

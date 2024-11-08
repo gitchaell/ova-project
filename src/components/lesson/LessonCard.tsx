@@ -84,27 +84,30 @@ const LessonCard = ({ lesson }: { lesson: Lesson }) => {
 							</DropdownMenuTrigger>
 						</div>
 
-						<CardDescription>
-							<div className='grid gap-1'>
-								<span className='text-slate-700 line-clamp-2'>
-									{lesson.caption}
-								</span>
-								<div className='grid grid-cols-[min-content_1fr_min-content] items-center gap-2'>
-									<CalendarDays className='w-4 h-4' />
-									<span>
-										{lessonDateFormatter.formatRange(
-											new Date(lesson.start),
-											new Date(lesson.end),
-										)}
-									</span>
-									{lesson.done ?
-										<Badge className='bg-green-100 border-green-500 text-green-600 hover:bg-green-200'>
-											Finalizado
-										</Badge>
-									:	<Badge variant='outline'>Pendiente</Badge>}
-								</div>
-							</div>
+						<CardDescription className='text-slate-700 line-clamp-2'>
+							{lesson.caption}
 						</CardDescription>
+
+						<div className='grid grid-cols-[1fr_min-content] items-center gap-2 '>
+							<div className='grid grid-cols-[min-content_1fr_min-content] items-center gap-2 text-sm text-gray-500'>
+								<CalendarDays className='w-4 h-4' />
+								<span>
+									{lessonDateFormatter.formatRange(
+										new Date(lesson.start),
+										new Date(lesson.end),
+									)}
+								</span>
+							</div>
+
+							{lesson.done ?
+								<Badge className='bg-green-100 border-green-500 text-green-600 hover:bg-green-200 w-fit'>
+									Finalizado
+								</Badge>
+							:	<Badge variant='outline' className='w-fit'>
+									Pendiente
+								</Badge>
+							}
+						</div>
 					</CardHeader>
 				</Card>
 
@@ -135,12 +138,12 @@ const LessonCard = ({ lesson }: { lesson: Lesson }) => {
 
 					<DropdownMenuSeparator />
 
-					<DropdownMenuItem className='text-red-500'>
-						<Trash />
-						<AlertDialogTrigger>
+					<AlertDialogTrigger asChild>
+						<DropdownMenuItem className='text-red-500'>
+							<Trash />
 							<span>Eliminar</span>
-						</AlertDialogTrigger>
-					</DropdownMenuItem>
+						</DropdownMenuItem>
+					</AlertDialogTrigger>
 				</DropdownMenuContent>
 			</DropdownMenu>
 

@@ -16,6 +16,7 @@ import type { User } from '@/core/users/domain/User'
 import { Badge } from '../ui/badge'
 import { LessonListNotFound } from './LessonListNotFound'
 import { LessonCardSkeleton } from './LessonCardSkeleton'
+import { LessonNewButton } from './LessonNewButton'
 
 interface LessonGroup {
 	key: string
@@ -84,7 +85,7 @@ const LessonList = ({ course, user }: { course: Course; user: User }) => {
 		return (
 			<>
 				{loading ?
-					[1, 2, 3].map((index) => <LessonCardSkeleton key={index} />)
+					[1, 2, 3].map((key) => <LessonCardSkeleton key={key} />)
 				: groups.length > 0 ?
 					<Accordion
 						type='multiple'
@@ -122,47 +123,51 @@ const LessonList = ({ course, user }: { course: Course; user: User }) => {
 	}
 
 	return (
-		<div className='grid gap-4 mt-4 pb-10'>
-			<Alert className='bg-blue-50 border-blue-600'>
-				<Info className='h-4 w-4' color='rgb(37 99 235)' />
-				<AlertTitle className='text-blue-600'>
-					<strong>Contenido del curso</strong>
-				</AlertTitle>
-				<AlertDescription className='text-blue-600'>
-					A continuación se muestran las lecciones que componen el contenido de
-					tu curso agrupado por semanas.
-				</AlertDescription>
-			</Alert>
+		<>
+			<div className='grid gap-4 mt-4 pb-20'>
+				<Alert className='bg-blue-50 border-blue-600'>
+					<Info className='h-4 w-4' color='rgb(37 99 235)' />
+					<AlertTitle className='text-blue-600'>
+						<strong>Contenido del curso</strong>
+					</AlertTitle>
+					<AlertDescription className='text-blue-600'>
+						A continuación se muestran las lecciones que componen el contenido
+						de tu curso agrupado por semanas.
+					</AlertDescription>
+				</Alert>
 
-			<Tabs defaultValue='ALL'>
-				<TabsList>
-					<TabsTrigger value='ALL'>
-						Todos
-						<Badge variant='outline' className='ml-1'>
-							{allLessonsCount}
-						</Badge>
-					</TabsTrigger>
+				<Tabs defaultValue='ALL'>
+					<TabsList>
+						<TabsTrigger value='ALL'>
+							Todos
+							<Badge variant='outline' className='ml-1'>
+								{allLessonsCount}
+							</Badge>
+						</TabsTrigger>
 
-					<TabsTrigger value='UNDONE'>
-						Pendientes
-						<Badge variant='outline' className='ml-1'>
-							{undoneLessonsCount}
-						</Badge>
-					</TabsTrigger>
+						<TabsTrigger value='UNDONE'>
+							Pendientes
+							<Badge variant='outline' className='ml-1'>
+								{undoneLessonsCount}
+							</Badge>
+						</TabsTrigger>
 
-					<TabsTrigger value='DONE'>
-						Finalizados
-						<Badge variant='outline' className='ml-1'>
-							{doneLessonsCount}
-						</Badge>
-					</TabsTrigger>
-				</TabsList>
+						<TabsTrigger value='DONE'>
+							Finalizados
+							<Badge variant='outline' className='ml-1'>
+								{doneLessonsCount}
+							</Badge>
+						</TabsTrigger>
+					</TabsList>
 
-				<TabsContent value='ALL'>{getContent('ALL')}</TabsContent>
-				<TabsContent value='UNDONE'>{getContent('UNDONE')}</TabsContent>
-				<TabsContent value='DONE'>{getContent('DONE')}</TabsContent>
-			</Tabs>
-		</div>
+					<TabsContent value='ALL'>{getContent('ALL')}</TabsContent>
+					<TabsContent value='UNDONE'>{getContent('UNDONE')}</TabsContent>
+					<TabsContent value='DONE'>{getContent('DONE')}</TabsContent>
+				</Tabs>
+			</div>
+
+			<LessonNewButton />
+		</>
 	)
 }
 

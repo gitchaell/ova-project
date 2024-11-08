@@ -285,7 +285,7 @@ const LessonForm = ({
 								</Button>
 
 								{mode === 'UPDATE' && (
-									<AlertDialogTrigger>
+									<AlertDialogTrigger asChild>
 										<Button
 											type='button'
 											variant='destructive'
@@ -478,7 +478,7 @@ const LessonForm = ({
 								</Button>
 
 								{mode === 'UPDATE' && (
-									<AlertDialogTrigger>
+									<AlertDialogTrigger asChild>
 										<Button
 											type='button'
 											variant='destructive'

@@ -170,7 +170,7 @@ const UserProfileForm = ({ user }: { user: User }) => {
 							<a href='/'>Volver al inicio</a>
 						</Button>
 
-						<AlertDialogTrigger>
+						<AlertDialogTrigger asChild>
 							<Button type='button' variant='destructive' className='w-full'>
 								Eliminar cuenta de usuario
 							</Button>
