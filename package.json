@@ -17,6 +17,7 @@
 		"@astrojs/tailwind": "^5.1.0",
 		"@astrojs/vercel": "^7.8.2",
 		"@hookform/resolvers": "^3.9.0",
+		"@langchain/community": "^0.3.12",
 		"@langchain/core": "^0.3.13",
 		"@langchain/google-genai": "^0.1.0",
 		"@radix-ui/react-accordion": "^1.2.1",

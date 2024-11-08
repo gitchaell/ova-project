@@ -7,5 +7,15 @@ POST http://localhost:9002/api/users HTTP/1.1
 content-type: application/json
 
 {
-	"names": "New User",
+	"names": "New User"
+}
+
+###
+
+POST http://localhost:9002/api/genimage HTTP/1.1
+'Accept': 'application/json',
+'Content-Type': 'application/json',
+
+{
+	"prompt": "Un diagrama visual del ecosistema de Astro que muestre su relación con tecnologías como HTML, CSS, JavaScript, y otros frameworks como Next.js y Nuxt.js."
 }

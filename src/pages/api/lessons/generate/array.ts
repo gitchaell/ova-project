@@ -21,8 +21,7 @@ export const POST: APIRoute = async (context: APIContext) => {
 		}
 
 		const model = new ChatGoogleGenerativeAI({
-			modelName: 'gemini-1.5-flash',
-			// modelName: 'gemini-1.5-pro',
+			modelName: 'gemini-1.5-flash', // 'gemini-1.5-pro',
 		})
 
 		const promptTemplate = PromptTemplate.fromTemplate(
