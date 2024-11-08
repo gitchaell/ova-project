@@ -1,4 +1,6 @@
 import * as dotenv from 'dotenv'
+import type { RequestInit } from 'node-fetch'
+import fetch from 'node-fetch'
 
 dotenv.config()
 
@@ -10,6 +12,8 @@ export class SerperService {
 		images: Pick<SerperImage, 'title' | 'link' | 'imageUrl' | 'thumbnailUrl'>[]
 		videos: Pick<SerperVideo, 'title' | 'link' | 'imageUrl' | 'channel'>[]
 	}> {
+		console.log({ SERPER_API_KEY: process.env.SERPER_API_KEY })
+
 		const options: RequestInit = {
 			method: 'POST',
 			headers: {
@@ -39,10 +43,10 @@ export class SerperService {
 			)
 		}
 
-		const [imagesData, videosData]: [
-			SerperImagesResponse,
-			SerperVideosResponse,
-		] = await Promise.all([imagesResponse.json(), videosResponse.json()])
+		const [imagesData, videosData] = await Promise.all([
+			imagesResponse.json() as Promise<SerperImagesResponse>,
+			videosResponse.json() as Promise<SerperVideosResponse>,
+		])
 
 		return {
 			images: imagesData.images.map(
