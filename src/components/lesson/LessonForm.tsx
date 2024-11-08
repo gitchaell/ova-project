@@ -1,3 +1,4 @@
+import { navigate } from 'astro:transitions/client'
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -169,7 +170,7 @@ const LessonForm = ({
 				title: 'Lección eliminada',
 				description: `La lección "${lesson.title}" ha sido eliminada`,
 			})
-			window.location.href = '/'
+			navigate('/')
 		} else {
 			toast({
 				title: 'Algo salió mal!',
@@ -195,9 +196,7 @@ const LessonForm = ({
 								<Button
 									variant='outline'
 									className='w-full my-4'
-									onClick={() =>
-										(window.location.href = '/lessons/preview/' + lesson.id)
-									}
+									onClick={() => navigate('/lessons/preview/' + lesson.id)}
 								>
 									<Fullscreen className='h-4 w-4 mr-2' />
 									Ver en pantalla completa

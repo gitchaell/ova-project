@@ -1,11 +1,6 @@
+import { navigate } from 'astro:transitions/client'
 import { CommandDialog } from 'cmdk'
-import {
-	User,
-	Settings,
-	BadgeCheck,
-	House,
-	LogOut,
-} from 'lucide-react'
+import { User, Settings, BadgeCheck, House, LogOut } from 'lucide-react'
 import React from 'react'
 import {
 	Command,
@@ -48,7 +43,7 @@ export function Menu({ courses }: { courses: Course[] }) {
 		const data = await response.json()
 
 		if (data.message === 'success') {
-			window.location.href = '/login'
+			navigate('/login')
 		} else {
 			toast({
 				title: 'Algo salió mal!',
@@ -65,12 +60,12 @@ export function Menu({ courses }: { courses: Course[] }) {
 			className='fixed top-16 left-0 right-0 mx-2'
 		>
 			<Command className='rounded-lg border shadow-md md:min-w-[450px]'>
-				<CommandInput placeholder='Busca tus cursos usando palabras clave...'  />
+				<CommandInput placeholder='Busca tus cursos usando palabras clave...' />
 				<CommandList>
 					<CommandEmpty>0 coincidencias</CommandEmpty>
 					<CommandGroup heading='Sugerencias'>
 						{courses.map((course) => (
-							<CommandItem key={course.id}>
+							<CommandItem key={course.id} onSelect={() => navigate(`/courses/details/${course.id}`)}>
 								<BadgeCheck className='mr-2 h-4 w-4' />
 								<span>Curso: {course.title}</span>
 							</CommandItem>
@@ -78,25 +73,25 @@ export function Menu({ courses }: { courses: Course[] }) {
 					</CommandGroup>
 					<CommandSeparator />
 					<CommandGroup heading='Menú de opciones'>
-						<CommandItem onSelect={() => (window.location.href = '/')}>
+						<CommandItem onSelect={() => navigate('/')}>
 							<House className='mr-2 h-4 w-4' />
 							<span>Inicio</span>
 							<CommandShortcut>⌘H</CommandShortcut>
 						</CommandItem>
 
-						<CommandItem onSelect={() => (window.location.href = '/profile')}>
+						<CommandItem onSelect={() => navigate('/profile')}>
 							<User className='mr-2 h-4 w-4' />
 							<span>Perfil</span>
 							<CommandShortcut>⌘P</CommandShortcut>
 						</CommandItem>
 						{/* 
-						<CommandItem onSelect={() => (window.location.href = '/billing')}>
+						<CommandItem onSelect={() => navigate('/billing')}>
 							<CreditCard className='mr-2 h-4 w-4' />
 							<span>Suscripción</span>
 							<CommandShortcut>⌘B</CommandShortcut>
 						</CommandItem> */}
 
-						<CommandItem onSelect={() => (window.location.href = '/settings')}>
+						<CommandItem onSelect={() => navigate('/profile')}>
 							<Settings className='mr-2 h-4 w-4' />
 							<span>Ajustes</span>
 							<CommandShortcut>⌘S</CommandShortcut>

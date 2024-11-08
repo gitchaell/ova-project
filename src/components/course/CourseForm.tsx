@@ -1,3 +1,4 @@
+import { navigate } from 'astro:transitions/client'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
@@ -105,7 +106,7 @@ const CourseForm = ({
 						`El curso ha sido creado`
 					:	`El curso "${values.title}" ha sido actualizado`,
 			})
-			window.location.href = '/'
+			navigate('/')
 		} else {
 			toast({
 				title: 'Algo salió mal!',
@@ -131,7 +132,7 @@ const CourseForm = ({
 				title: 'Curso eliminado',
 				description: `El curso "${course.title}" ha sido eliminado`,
 			})
-			window.location.href = '/'
+			navigate('/')
 		} else {
 			toast({
 				title: 'Algo salió mal!',

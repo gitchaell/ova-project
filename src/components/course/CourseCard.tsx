@@ -1,3 +1,4 @@
+import { navigate } from 'astro:transitions/client'
 import { useToast } from '@/hooks/use-toast'
 import {
 	Bookmark,
@@ -70,9 +71,7 @@ const CourseCard = ({ course }: { course: Course }) => {
 			<DropdownMenu>
 				<Card
 					className='cursor-pointer hover:bg-slate-50'
-					onClick={() =>
-						(window.location.href = '/courses/details/' + course.id)
-					}
+					onClick={() => navigate('/courses/details/' + course.id)}
 				>
 					<CardHeader>
 						<div className='grid grid-cols-[1fr_min-content] gap-2'>
@@ -112,18 +111,14 @@ const CourseCard = ({ course }: { course: Course }) => {
 
 					<DropdownMenuGroup>
 						<DropdownMenuItem
-							onSelect={() =>
-								(window.location.href = '/courses/editor/' + course.id)
-							}
+							onSelect={() => navigate('/courses/editor/' + course.id)}
 						>
 							<Settings />
 							<span>Editar</span>
 						</DropdownMenuItem>
 
 						<DropdownMenuItem
-							onSelect={() =>
-								(window.location.href = '/courses/details/' + course.id)
-							}
+							onSelect={() => navigate('/courses/details/' + course.id)}
 						>
 							<Bookmark />
 							<span>Ver lecciones</span>

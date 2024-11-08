@@ -1,3 +1,4 @@
+import { navigate } from 'astro:transitions/client'
 import { Button } from '@/components/ui/button'
 import {
 	Card,
@@ -53,7 +54,7 @@ const UserLoginForm = () => {
 		const data = await response.json()
 
 		if (data.message === 'success') {
-			window.location.href = '/'
+			navigate('/')
 		} else {
 			toast({
 				title: 'Algo salió mal!',

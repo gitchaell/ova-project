@@ -1,3 +1,4 @@
+import { navigate } from 'astro:transitions/client'
 import type { User } from '@/core/users/domain/User'
 import { UserAvatar } from '@/components/user/UserAvatar'
 import { Button } from '@/components/ui/button'
@@ -10,11 +11,7 @@ const Header = ({ title, user }: { title: string; user: User }) => {
 
 	return (
 		<div className='grid grid-cols-[min-content_1fr_min-content] gap-4 p-4'>
-			<Button
-				type='button'
-				size='icon'
-				onClick={() => (window.location.href = '/')}
-			>
+			<Button type='button' size='icon' onClick={() => navigate('/')}>
 				<House className='w-12 h-12' />
 			</Button>
 

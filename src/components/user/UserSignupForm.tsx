@@ -1,3 +1,4 @@
+import { navigate } from 'astro:transitions/client'
 import { Button } from '@/components/ui/button'
 import {
 	Card,
@@ -67,7 +68,7 @@ const UserSignupForm = () => {
 					'Te has registrado correctamente! Redireccionando a inicio de sesión ...',
 			})
 			setTimeout(() => {
-				window.location.href = '/login'
+				navigate('/login')
 			}, 3000)
 		} else {
 			toast({
