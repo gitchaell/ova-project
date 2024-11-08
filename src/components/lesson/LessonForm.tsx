@@ -69,6 +69,8 @@ const formSchema = z.object({
 	content: z.string().max(LESSON_CONTENT_MAX_LENGTH).optional(),
 	start: z.date(),
 	end: z.date(),
+	includeImages: z.boolean(),
+	includeVideos: z.boolean(),
 	done: z.boolean(),
 	courseId: z.string().uuid(),
 })
@@ -95,6 +97,8 @@ const LessonForm = ({
 			content: lesson.content || '',
 			start: lesson.start ? new Date(lesson.start) : undefined,
 			end: lesson.end ? new Date(lesson.end) : undefined,
+			includeImages: true,
+			includeVideos: true,
 			done: lesson.done,
 			courseId: lesson.courseId,
 		},
@@ -119,6 +123,9 @@ const LessonForm = ({
 						`La lección ha sido creada`
 					:	`La lección "${values.title}" ha sido actualizada`,
 			})
+			if (mode === 'CREATE') {
+				navigate('/courses/details/' + lesson.courseId)
+			}
 		} else {
 			toast({
 				title: 'Algo salió mal!',
@@ -183,10 +190,14 @@ const LessonForm = ({
 	return (
 		<AlertDialog>
 			<div className='grid gap-4'>
-				<Tabs defaultValue='CONTENT'>
+				<Tabs defaultValue={mode === 'CREATE' ? 'DETAIL' : 'CONTENT'}>
 					<TabsList>
-						<TabsTrigger value='CONTENT'>Contenido</TabsTrigger>
-						<TabsTrigger value='EDITOR'>Editor</TabsTrigger>
+						{mode === 'UPDATE' && (
+							<TabsTrigger value='CONTENT'>Contenido</TabsTrigger>
+						)}
+						{mode === 'UPDATE' && (
+							<TabsTrigger value='EDITOR'>Editor</TabsTrigger>
+						)}
 						<TabsTrigger value='DETAIL'>Detalles</TabsTrigger>
 					</TabsList>
 
@@ -278,6 +289,21 @@ const LessonForm = ({
 								<Button type='submit' className='w-full mt-4'>
 									Guardar cambios
 								</Button>
+
+								{markdownContent?.length &&
+									(generating ?
+										<Button className='w-full' variant='secondary' disabled>
+											<LoaderCircle className='h-4 w-4 mr-2 animate-spin' />
+											Generando contenido automáticamente
+										</Button>
+									:	<Button
+											className='w-full'
+											variant='secondary'
+											onClick={onGenerateContent}
+										>
+											<Sparkles className='h-4 w-4 mr-2' />
+											Re-generar contenido automáticamente
+										</Button>)}
 
 								<Button type='button' variant='outline' className='w-full'>
 									<a href='/'>Cancelar</a>
@@ -445,6 +471,42 @@ const LessonForm = ({
 													/>
 												</PopoverContent>
 											</Popover>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+
+								<FormField
+									control={form.control}
+									name='includeImages'
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel>¿Incluir imágenes?</FormLabel>
+											<FormControl>
+												<Switch
+													className='block'
+													checked={field.value}
+													onCheckedChange={field.onChange}
+												/>
+											</FormControl>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+
+								<FormField
+									control={form.control}
+									name='includeVideos'
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel>¿Incluir vídeos?</FormLabel>
+											<FormControl>
+												<Switch
+													className='block'
+													checked={field.value}
+													onCheckedChange={field.onChange}
+												/>
+											</FormControl>
 											<FormMessage />
 										</FormItem>
 									)}

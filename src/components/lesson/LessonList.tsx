@@ -166,7 +166,7 @@ const LessonList = ({ course, user }: { course: Course; user: User }) => {
 				</Tabs>
 			</div>
 
-			<LessonNewButton />
+			<LessonNewButton course={course} />
 		</>
 	)
 }
