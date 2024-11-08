@@ -1,13 +1,12 @@
 import { useToast } from '@/hooks/use-toast'
-import { CalendarDays } from 'lucide-react'
-import type { Lesson } from '@/core/lessons/domain/Lesson'
 import {
-	ContextMenu,
-	ContextMenuContent,
-	ContextMenuItem,
-	ContextMenuSeparator,
-	ContextMenuTrigger,
-} from '@/components/ui/context-menu'
+	CalendarDays,
+	EllipsisVertical,
+	Eye,
+	Settings,
+	Trash,
+} from 'lucide-react'
+import type { Lesson } from '@/core/lessons/domain/Lesson'
 import {
 	Card,
 	CardDescription,
@@ -24,9 +23,19 @@ import {
 	AlertDialogDescription,
 	AlertDialogCancel,
 	AlertDialogAction,
-} from '../ui/alert-dialog'
+} from '@/components/ui/alert-dialog'
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuGroup,
+	DropdownMenuItem,
+	DropdownMenuLabel,
+	DropdownMenuSeparator,
+	DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 import { lessonDateFormatter } from '@/core/lessons/domain/LessonDate'
-import { Badge } from '../ui/badge'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 
 const LessonCard = ({ lesson }: { lesson: Lesson }) => {
 	const { toast } = useToast()
@@ -58,56 +67,82 @@ const LessonCard = ({ lesson }: { lesson: Lesson }) => {
 
 	return (
 		<AlertDialog>
-			<ContextMenu>
-				<ContextMenuTrigger>
-					<Card
-						className='cursor-pointer hover:bg-slate-50'
-						onClick={() =>
-							(window.location.href = '/lessons/editor/' + lesson.id)
-						}
-					>
-						<CardHeader>
+			<DropdownMenu>
+				<Card
+					className='cursor-pointer hover:bg-slate-50'
+					onClick={() =>
+						(window.location.href = '/lessons/editor/' + lesson.id)
+					}
+				>
+					<CardHeader>
+						<div className='grid grid-cols-[1fr_min-content] gap-2'>
 							<CardTitle>{lesson.title}</CardTitle>
-							<CardDescription>
-								<div className='grid gap-1'>
-									<span className='text-slate-700 line-clamp-2'>
-										{lesson.caption}
+							<DropdownMenuTrigger asChild>
+								<Button type='button' size='icon' variant='outline'>
+									<EllipsisVertical />
+								</Button>
+							</DropdownMenuTrigger>
+						</div>
+
+						<CardDescription>
+							<div className='grid gap-1'>
+								<span className='text-slate-700 line-clamp-2'>
+									{lesson.caption}
+								</span>
+								<div className='grid grid-cols-[min-content_1fr_min-content] items-center gap-2'>
+									<CalendarDays className='w-4 h-4' />
+									<span>
+										{lessonDateFormatter.formatRange(
+											new Date(lesson.start),
+											new Date(lesson.end),
+										)}
 									</span>
-									<div className='grid grid-cols-[min-content_1fr_min-content] items-center gap-2'>
-										<CalendarDays className='w-4 h-4' />
-										<span>
-											{lessonDateFormatter.formatRange(
-												new Date(lesson.start),
-												new Date(lesson.end),
-											)}
-										</span>
-										{lesson.done ?
-											<Badge className='bg-green-100 border-green-500 text-green-600 hover:bg-green-200'>
-												Finalizado
-											</Badge>
-										:	<Badge variant='outline'>Pendiente</Badge>}
-									</div>
+									{lesson.done ?
+										<Badge className='bg-green-100 border-green-500 text-green-600 hover:bg-green-200'>
+											Finalizado
+										</Badge>
+									:	<Badge variant='outline'>Pendiente</Badge>}
 								</div>
-							</CardDescription>
-						</CardHeader>
-					</Card>
-				</ContextMenuTrigger>
-				<ContextMenuContent>
-					<ContextMenuItem
-						onSelect={() =>
-							(window.location.href = '/lessons/editor/' + lesson.id)
-						}
-					>
-						Editar
-					</ContextMenuItem>
+							</div>
+						</CardDescription>
+					</CardHeader>
+				</Card>
 
-					<ContextMenuSeparator />
+				<DropdownMenuContent className='w-56'>
+					<DropdownMenuLabel>Opciones</DropdownMenuLabel>
 
-					<ContextMenuItem className='text-red-500'>
-						<AlertDialogTrigger>Eliminar</AlertDialogTrigger>
-					</ContextMenuItem>
-				</ContextMenuContent>
-			</ContextMenu>
+					<DropdownMenuSeparator />
+
+					<DropdownMenuGroup>
+						<DropdownMenuItem
+							onSelect={() =>
+								(window.location.href = '/lessons/editor/' + lesson.id)
+							}
+						>
+							<Settings />
+							<span>Editar</span>
+						</DropdownMenuItem>
+
+						<DropdownMenuItem
+							onSelect={() =>
+								(window.location.href = '/lessons/preview/' + lesson.id)
+							}
+						>
+							<Eye />
+							<span>Previsualizar</span>
+						</DropdownMenuItem>
+					</DropdownMenuGroup>
+
+					<DropdownMenuSeparator />
+
+					<DropdownMenuItem className='text-red-500'>
+						<Trash />
+						<AlertDialogTrigger>
+							<span>Eliminar</span>
+						</AlertDialogTrigger>
+					</DropdownMenuItem>
+				</DropdownMenuContent>
+			</DropdownMenu>
 
 			<AlertDialogContent>
 				<AlertDialogHeader>

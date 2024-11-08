@@ -1,13 +1,13 @@
 import { useToast } from '@/hooks/use-toast'
-import { CalendarDays, Clock } from 'lucide-react'
-import type { Course } from '@/core/courses/domain/Course'
 import {
-	ContextMenu,
-	ContextMenuContent,
-	ContextMenuItem,
-	ContextMenuSeparator,
-	ContextMenuTrigger,
-} from '@/components/ui/context-menu'
+	Bookmark,
+	CalendarDays,
+	Clock,
+	EllipsisVertical,
+	Settings,
+	Trash,
+} from 'lucide-react'
+import type { Course } from '@/core/courses/domain/Course'
 import {
 	Card,
 	CardDescription,
@@ -26,6 +26,16 @@ import {
 	AlertDialogAction,
 } from '@/components/ui/alert-dialog'
 import { courseDateFormatter } from '@/core/courses/domain/CourseDate'
+import { Button } from '@/components/ui/button'
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuGroup,
+	DropdownMenuItem,
+	DropdownMenuLabel,
+	DropdownMenuSeparator,
+	DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 
 const CourseCard = ({ course }: { course: Course }) => {
 	const { toast } = useToast()
@@ -57,63 +67,81 @@ const CourseCard = ({ course }: { course: Course }) => {
 
 	return (
 		<AlertDialog>
-			<ContextMenu>
-				<ContextMenuTrigger>
-					<Card
-						className='cursor-pointer hover:bg-slate-50'
-						onClick={() =>
-							(window.location.href = '/courses/details/' + course.id)
-						}
-					>
-						<CardHeader>
+			<DropdownMenu>
+				<Card
+					className='cursor-pointer hover:bg-slate-50'
+					onClick={() =>
+						(window.location.href = '/courses/details/' + course.id)
+					}
+				>
+					<CardHeader>
+						<div className='grid grid-cols-[1fr_min-content] gap-2'>
 							<CardTitle>{course.title}</CardTitle>
-							<CardDescription>
-								<div className='grid gap-1'>
-									<span className='text-slate-700 line-clamp-2'>
-										{course.concepts}
+							<DropdownMenuTrigger asChild>
+								<Button type='button' size='icon' variant='outline'>
+									<EllipsisVertical />
+								</Button>
+							</DropdownMenuTrigger>
+						</div>
+
+						<CardDescription>
+							<div className='grid gap-1'>
+								<span className='text-slate-700 line-clamp-2'>
+									{course.concepts}
+								</span>
+								<div className='grid grid-cols-[min-content_1fr] items-center gap-2'>
+									<CalendarDays className='w-4 h-4' />
+									<span>
+										{courseDateFormatter.formatRange(
+											new Date(course.start),
+											new Date(course.end),
+										)}
 									</span>
-									<div className='grid grid-cols-[min-content_1fr] items-center gap-2'>
-										<CalendarDays className='w-4 h-4' />
-										<span>
-											{courseDateFormatter.formatRange(
-												new Date(course.start),
-												new Date(course.end),
-											)}
-										</span>
-									</div>
-									<div className='grid grid-cols-[min-content_1fr] items-center gap-2'>
-										<Clock className='w-4 h-4' />
-										<span> {course.schedules}</span>
-									</div>
 								</div>
-							</CardDescription>
-						</CardHeader>
-					</Card>
-				</ContextMenuTrigger>
-				<ContextMenuContent>
-					<ContextMenuItem
-						onSelect={() =>
-							(window.location.href = '/courses/editor/' + course.id)
-						}
-					>
-						Editar
-					</ContextMenuItem>
+								<div className='grid grid-cols-[min-content_1fr] items-center gap-2'>
+									<Clock className='w-4 h-4' />
+									<span> {course.schedules}</span>
+								</div>
+							</div>
+						</CardDescription>
+					</CardHeader>
+				</Card>
 
-					<ContextMenuItem
-						onSelect={() =>
-							(window.location.href = '/courses/details/' + course.id)
-						}
-					>
-						Lecciones
-					</ContextMenuItem>
+				<DropdownMenuContent className='w-56'>
+					<DropdownMenuLabel>Opciones</DropdownMenuLabel>
 
-					<ContextMenuSeparator />
+					<DropdownMenuSeparator />
 
-					<ContextMenuItem className='text-red-500'>
-						<AlertDialogTrigger>Eliminar</AlertDialogTrigger>
-					</ContextMenuItem>
-				</ContextMenuContent>
-			</ContextMenu>
+					<DropdownMenuGroup>
+						<DropdownMenuItem
+							onSelect={() =>
+								(window.location.href = '/courses/editor/' + course.id)
+							}
+						>
+							<Settings />
+							<span>Editar</span>
+						</DropdownMenuItem>
+
+						<DropdownMenuItem
+							onSelect={() =>
+								(window.location.href = '/courses/details/' + course.id)
+							}
+						>
+							<Bookmark />
+							<span>Ver lecciones</span>
+						</DropdownMenuItem>
+					</DropdownMenuGroup>
+
+					<DropdownMenuSeparator />
+
+					<DropdownMenuItem className='text-red-500'>
+						<Trash />
+						<AlertDialogTrigger>
+							<span>Eliminar</span>
+						</AlertDialogTrigger>
+					</DropdownMenuItem>
+				</DropdownMenuContent>
+			</DropdownMenu>
 
 			<AlertDialogContent>
 				<AlertDialogHeader>
