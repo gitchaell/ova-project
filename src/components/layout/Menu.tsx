@@ -99,7 +99,7 @@ export function Menu({ courses }: { courses: Course[] }) {
 
 						<CommandItem onSelect={onLogout}>
 							<LogOut className='mr-2 h-4 w-4' color='rgb(239 68 68)' />
-							<span className='text-red-500'>Logout</span>
+							<span className='text-red-500'>Cerrar sesión</span>
 						</CommandItem>
 					</CommandGroup>
 				</CommandList>
