@@ -12,8 +12,6 @@ export class SerperService {
 		images: Pick<SerperImage, 'title' | 'link' | 'imageUrl' | 'thumbnailUrl'>[]
 		videos: Pick<SerperVideo, 'title' | 'link' | 'imageUrl' | 'channel'>[]
 	}> {
-		console.log({ SERPER_API_KEY: process.env.SERPER_API_KEY })
-
 		const options: RequestInit = {
 			method: 'POST',
 			headers: {
