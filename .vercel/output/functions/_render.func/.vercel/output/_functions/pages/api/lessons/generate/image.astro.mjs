@@ -6,9 +6,9 @@ export { renderers } from '../../../../renderers.mjs';
 
 class TranslateService {
   static async translate(text, sourceLang = "auto", targetLang = "en") {
-    const escapedStr = encodeURIComponent(text);
-    const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${sourceLang}&tl=${targetLang}&dt=t&q=${escapedStr}`;
     try {
+      const escapedStr = encodeURIComponent(text);
+      const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${sourceLang}&tl=${targetLang}&dt=t&q=${escapedStr}`;
       const response = await fetch(url);
       const data = await response.json();
       const result = data?.[0]?.[0]?.[0] || text;
@@ -23,22 +23,13 @@ class TranslateService {
 dotenv.config();
 var ImageProvider = /* @__PURE__ */ ((ImageProvider2) => {
   ImageProvider2["Stability"] = "Stability";
-  ImageProvider2["Nexra"] = "Nexra";
-  ImageProvider2["DeepInfra"] = "DeepInfra";
-  ImageProvider2["Rocks"] = "Rocks";
   return ImageProvider2;
 })(ImageProvider || {});
 class ImageService {
-  static async generate(prompt, provider = "Nexra" /* Nexra */, options) {
+  static async generate(prompt, provider = "Stability" /* Stability */, options) {
     switch (provider) {
       case "Stability" /* Stability */:
         return Stability.generate(prompt, options);
-      case "Nexra" /* Nexra */:
-        return Nexra.generate(prompt, options);
-      case "DeepInfra" /* DeepInfra */:
-        return DeepInfra.generate(prompt, options);
-      case "Rocks" /* Rocks */:
-        return Rocks.generate(prompt, options);
       default:
         throw new Error("Image Provider not found.");
     }
@@ -72,103 +63,6 @@ class Stability {
     } else {
       throw new Error(`${response.status}: ${await response.text()}`);
     }
-  }
-}
-class Nexra {
-  static async generate(prompt, options) {
-    const baseResponse = await fetch(
-      "https://nexra.aryahcr.cc/api/image/complements",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          prompt,
-          model: options.model,
-          data: options.data
-        })
-      }
-    );
-    if (!baseResponse.ok) {
-      throw new Error(
-        `status: ${baseResponse.status}, error: ${await baseResponse.text()}`
-      );
-    }
-    const baseResult = await baseResponse.json();
-    let result = null;
-    let loading = true;
-    while (loading) {
-      const response = await fetch(
-        "http://nexra.aryahcr.cc/api/image/complements/" + encodeURIComponent(baseResult.id),
-        {
-          method: "GET",
-          headers: { "Content-Type": "application/json" }
-        }
-      );
-      result = await response.json();
-      switch (result.status) {
-        case "pending":
-          loading = true;
-          break;
-        case "error":
-        case "completed":
-        case "not_found":
-          loading = false;
-          break;
-      }
-    }
-    if (!result?.images?.[0]?.length)
-      throw new Error("No valid image found in response.");
-    return result.images[0];
-  }
-}
-class DeepInfra {
-  static async generate(prompt, options) {
-    const response = await fetch(
-      `https://api.deepinfra.com/v1/inference/${options.model}`,
-      {
-        method: "POST",
-        headers: {
-          "Accept": "text/event-stream",
-          "Content-Type": "application/json",
-          "User-Agent": "Custom-Agent"
-        },
-        body: JSON.stringify({ prompt, ...options.data })
-      }
-    );
-    if (!response.ok) {
-      throw new Error(
-        `status: ${response.status}, error: ${await response.text()}`
-      );
-    }
-    const result = await response.json();
-    return result.images[0].split(";base64,").pop();
-  }
-}
-class Rocks {
-  static async generate(prompt, options) {
-    const params = new URLSearchParams({ prompt, model: options.model });
-    const response = await fetch(
-      `https://api.airforce/imagine?${params.toString()}`,
-      {
-        method: "GET",
-        headers: {
-          "Accept": "application/json",
-          "User-Agent": "Custom-Agent"
-        }
-      }
-    );
-    if (!response.ok) {
-      throw new Error(
-        `status: ${response.status}, error: ${await response.text()}`
-      );
-    }
-    const binaryImage = await response.arrayBuffer();
-    const arrayBufferToBase64 = (buffer) => {
-      const bytes = new Uint8Array(buffer);
-      const binary = String.fromCharCode(...bytes);
-      return typeof window !== "undefined" ? window.btoa(binary) : Buffer.from(binary, "binary").toString("base64");
-    };
-    return arrayBufferToBase64(binaryImage);
   }
 }
 
