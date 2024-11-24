@@ -25,8 +25,6 @@ export const POST: APIRoute = async (context: APIContext) => {
 
 		const url = await StorageService.upload(file)
 
-		console.log(url)
-
 		await lessonService.saveLesson({
 			...lesson,
 			id: lesson.id,

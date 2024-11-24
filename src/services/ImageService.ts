@@ -166,8 +166,6 @@ class Stability {
 			formData.append(key, options[key as keyof StabilityOptions] as any)
 		}
 
-		console.log({ Authorization: `Bearer ${process.env.STABILITY_API_KEY}` })
-
 		const response = await fetch(
 			'https://api.stability.ai/v2beta/stable-image/generate/ultra',
 			{

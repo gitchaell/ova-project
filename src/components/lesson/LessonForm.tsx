@@ -1,5 +1,5 @@
 import { navigate } from 'astro:transitions/client'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
@@ -130,6 +130,12 @@ const LessonForm = ({
 			courseId: lesson.courseId,
 		},
 	})
+
+	useEffect(() => {
+		if (lesson?.videoId?.length && !lesson?.video?.length) {
+			getVideo()
+		}
+	}, [])
 
 	const onSubmit = async (values: z.infer<typeof formSchema>) => {
 		const response = await fetch(`/api/lessons`, {
@@ -262,6 +268,26 @@ const LessonForm = ({
 		}
 	}
 
+	const getVideo = async () => {
+		if (lesson?.videoId?.length && !lesson?.video?.length) {
+			const response = await fetch('/api/lessons/generate/video-result', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({ lesson }),
+			})
+			const data = await response.json()
+
+			if (data.message === 'success') {
+				toast({
+					title: 'El vídeo se ha generado ...',
+					description: 'El vídeo se termino de generar. Actualiza la lección.',
+				})
+			}
+		}
+	}
+
 	const onDelete = async () => {
 		const response = await fetch(`/api/lessons`, {
 			method: 'DELETE',
@@ -389,7 +415,7 @@ const LessonForm = ({
 									</Dialog>
 								</div>
 
-								{lesson?.image?.length && (
+								{lesson?.image?.length && !lesson?.video?.length && (
 									<img
 										className='block rounded-md'
 										src={lesson.image}
@@ -402,6 +428,7 @@ const LessonForm = ({
 										className='w-full block rounded-md'
 										src={lesson.video}
 										controls
+										loop
 									/>
 								)}
 
