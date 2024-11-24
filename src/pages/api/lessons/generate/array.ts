@@ -25,7 +25,7 @@ export const POST: APIRoute = async (context: APIContext) => {
 		})
 
 		const promptTemplate = PromptTemplate.fromTemplate(
-			'Rol:\n{role}\nContexto:\n{user}\n{course}\nInstrucciones:\n{instructions}\nFormat:\n{format}',
+			'Rol:\n{role}\nContexto:\n{user}\n{course}\nInstrucciones:\n{instructions}\nFormato:\n{format}',
 		)
 
 		const parser = StructuredOutputParser.fromZodSchema(
