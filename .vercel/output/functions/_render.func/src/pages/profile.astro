@@ -1,0 +1,25 @@
+---
+import MainLayout from '@/layouts/MainLayout.astro'
+import { UserProfileForm } from '@/components/user/UserProfileForm'
+import { actions } from 'astro:actions'
+
+if (!Astro.locals.user) {
+	return Astro.redirect('/login')
+}
+
+const result = await Astro.callAction(actions.user.find, {
+	id: Astro.locals.user.id,
+})
+
+if (!result || result.error || !result.data) {
+	return Astro.redirect('/login')
+}
+
+const user = result.data
+---
+
+<MainLayout title='Perfil' headerTitle='Perfil de usuario'>
+	<div class='grid place-content-center px-4 pb-10'>
+		<UserProfileForm user={user} client:load />
+	</div>
+</MainLayout>

@@ -1,0 +1,25 @@
+---
+import { LessonForm } from '@/components/lesson/LessonForm'
+import MainLayout from '@/layouts/MainLayout.astro'
+import { actions } from 'astro:actions'
+
+if (!Astro.locals.user || !Astro.params.lessonId) {
+	return Astro.redirect('/login')
+}
+
+const result = await Astro.callAction(actions.lesson.find, {
+	id: Astro.params.lessonId,
+})
+
+if (!result || result.error || !result.data) {
+	return Astro.redirect('/login')
+}
+
+const lesson = result.data
+---
+
+<MainLayout title={lesson.title} headerTitle={lesson.title} bodyClass='px-4'>
+	<div class='grid pb-20'>
+		<LessonForm lesson={lesson} mode='UPDATE' client:load />
+	</div>
+</MainLayout>

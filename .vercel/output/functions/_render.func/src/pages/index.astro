@@ -1,0 +1,23 @@
+---
+import MainLayout from '@/layouts/MainLayout.astro'
+import { CourseList } from '@/components/course/CourseList'
+import { actions } from 'astro:actions'
+
+if (!Astro.locals.user) {
+	return Astro.redirect('/login')
+}
+
+const result = await Astro.callAction(actions.user.find, {
+	id: Astro.locals.user.id,
+})
+
+if (!result || result.error || !result.data) {
+	return Astro.redirect('/login')
+}
+
+const user = result.data
+---
+
+<MainLayout title='Inicio' headerTitle='Mis cursos' bodyClass='px-4'>
+	<CourseList {user} client:load />
+</MainLayout>

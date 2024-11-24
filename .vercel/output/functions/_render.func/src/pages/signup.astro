@@ -1,0 +1,12 @@
+---
+import '@/styles/globals.css'
+import { UserSignupForm } from '@/components/user/UserSignupForm'
+import AuthLayout from '@/layouts/AuthLayout.astro'
+---
+
+<AuthLayout
+	title='Registro de usuarios'
+	description='Ingresa tu información para registrarte como nuevo usuario'
+>
+	<UserSignupForm client:load />
+</AuthLayout>

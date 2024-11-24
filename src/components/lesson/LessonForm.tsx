@@ -417,7 +417,7 @@ const LessonForm = ({
 
 								{lesson?.image?.length && !lesson?.video?.length && (
 									<img
-										className='block rounded-md'
+										className='block rounded-md min-w-xs w-full max-w-md'
 										src={lesson.image}
 										alt={lesson.title}
 									/>
@@ -425,7 +425,7 @@ const LessonForm = ({
 
 								{lesson?.video?.length && (
 									<video
-										className='w-full block rounded-md'
+										className='block rounded-md min-w-xs w-full max-w-md'
 										src={lesson.video}
 										controls
 										loop

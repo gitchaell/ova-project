@@ -1,0 +1,36 @@
+---
+import MainLayout from '@/layouts/MainLayout.astro'
+import { actions } from 'astro:actions'
+import { randomUUID } from 'node:crypto'
+import { CourseForm } from '@/components/course/CourseForm'
+import { Course } from '@/core/courses/domain/Course'
+
+if (!Astro.locals.user) {
+	return Astro.redirect('/login')
+}
+
+const result = await Astro.callAction(actions.user.find, {
+	id: Astro.locals.user.id,
+})
+
+if (!result || result.error || !result.data) {
+	return Astro.redirect('/login')
+}
+
+const user = result.data
+const course = Course.createCourse({
+	id: randomUUID(),
+	start: new Date(),
+	userId: user.id,
+})
+---
+
+<MainLayout
+	title='Formulario de Curso'
+	headerTitle='Formulario de curso'
+	bodyClass='px-4'
+>
+	<div class='grid place-content-center px-4 pb-10'>
+		<CourseForm course={course} mode='CREATE' client:load />
+	</div>
+</MainLayout>
