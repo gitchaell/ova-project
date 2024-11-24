@@ -50,19 +50,32 @@ import {
 } from '@/core/courses/domain/CourseLevel'
 import { COURSE_SCHEDULES_MAX_LENGTH } from '@/core/courses/domain/CourseSchedule'
 
-const formSchema = z.object({
-	id: z.string().uuid(),
-	title: z.string().min(COURSE_TITLE_MIN_LENGTH).max(COURSE_TITLE_MAX_LENGTH),
-	concepts: z
-		.string()
-		.min(COURSE_CONCEPTS_MIN_LENGTH)
-		.max(COURSE_CONCEPTS_MAX_LENGTH),
-	level: z.string().min(COURSE_LEVEL_MIN_LENGTH).max(COURSE_LEVEL_MAX_LENGTH),
-	start: z.date(),
-	end: z.date(),
-	schedules: z.string().max(COURSE_SCHEDULES_MAX_LENGTH).optional(),
-	userId: z.string().uuid(),
-})
+const formSchema = z
+	.object({
+		id: z.string().uuid(),
+		title: z.string().min(COURSE_TITLE_MIN_LENGTH).max(COURSE_TITLE_MAX_LENGTH),
+		concepts: z
+			.string()
+			.min(COURSE_CONCEPTS_MIN_LENGTH)
+			.max(COURSE_CONCEPTS_MAX_LENGTH),
+		level: z.string().min(COURSE_LEVEL_MIN_LENGTH).max(COURSE_LEVEL_MAX_LENGTH),
+		start: z.date(),
+		end: z.date(),
+		schedules: z.string().max(COURSE_SCHEDULES_MAX_LENGTH).optional(),
+		userId: z.string().uuid(),
+	})
+	.refine(
+		(data) => {
+			const minDuration = 6 * 24 * 60 * 60 * 1000 // 1 semana en milisegundos
+			const maxDuration = 6 * 31 * 24 * 60 * 60 * 1000 // 6 meses en milisegundos
+			const duration = data.end.getTime() - data.start.getTime()
+			return duration >= minDuration && duration <= maxDuration
+		},
+		{
+			message: 'El curso debe durar mínimo 1 semana y máximo 6 meses.',
+			path: ['end'],
+		},
+	)
 
 const CourseForm = ({
 	course,

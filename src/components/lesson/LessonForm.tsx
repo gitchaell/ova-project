@@ -58,22 +58,35 @@ import { LESSON_CONTENT_MAX_LENGTH } from '@/core/lessons/domain/LessonContent'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 
-const formSchema = z.object({
-	id: z.string().uuid(),
-	title: z.string().min(LESSON_TITLE_MIN_LENGTH).max(LESSON_TITLE_MAX_LENGTH),
-	caption: z
-		.string()
-		.min(LESSON_CAPTION_MIN_LENGTH)
-		.max(LESSON_CAPTION_MAX_LENGTH)
-		.optional(),
-	content: z.string().max(LESSON_CONTENT_MAX_LENGTH).optional(),
-	start: z.date(),
-	end: z.date(),
-	includeImages: z.boolean(),
-	includeVideos: z.boolean(),
-	done: z.boolean(),
-	courseId: z.string().uuid(),
-})
+const formSchema = z
+	.object({
+		id: z.string().uuid(),
+		title: z.string().min(LESSON_TITLE_MIN_LENGTH).max(LESSON_TITLE_MAX_LENGTH),
+		caption: z
+			.string()
+			.min(LESSON_CAPTION_MIN_LENGTH)
+			.max(LESSON_CAPTION_MAX_LENGTH)
+			.optional(),
+		content: z.string().max(LESSON_CONTENT_MAX_LENGTH).optional(),
+		start: z.date(),
+		end: z.date(),
+		includeImages: z.boolean(),
+		includeVideos: z.boolean(),
+		done: z.boolean(),
+		courseId: z.string().uuid(),
+	})
+	.refine(
+		(data) => {
+			const minDuration = 0 // 1 día en milisegundos
+			const maxDuration = 1 * 24 * 60 * 60 * 1000 // 2 días en milisegundos
+			const duration = data.end.getTime() - data.start.getTime()
+			return duration >= minDuration && duration <= maxDuration
+		},
+		{
+			message: 'La lección debe durar mínimo 1 día y máximo 2 días.',
+			path: ['end'],
+		},
+	)
 
 const LessonForm = ({
 	lesson,
