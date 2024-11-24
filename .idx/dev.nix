@@ -4,13 +4,13 @@
   # Which nixpkgs channel to use.
   channel = "stable-23.11"; # or "unstable"
   # Use https://search.nixos.org/packages to find packages
-  packages = [ pkgs.sudo pkgs.nodejs_20 pkgs.turso-cli ];
+  packages = [ pkgs.sudo pkgs.xdg-utils pkgs.nodejs_20 pkgs.turso-cli ];
   # Sets environment variables in the workspace
   env = {
     ASTRO_DATABASE_FILE = ".astro/content.db";
     GOOGLE_API_KEY = "AIzaSyAWzDZ-qnechchEjGcrNJzXALs8c06iaPk";
     SERPER_API_KEY = "cb46cfefaa5fc47b175b401f390e3f63ebbdf5d0";
-    STABILITY_API_KEY = "sk-r52D5W3JcEhnptDzTkMpQtVao2XgH3c2w9Y5evrErIQYZay0";
+    STABILITY_API_KEY = "sk-jcUP3kdcwlQ583D5j2Sctxy29ZrIkWasit5un1CshqOPROLz";
     ASTRO_DB_REMOTE_URL = "libsql://ova-project-gitchaell.turso.io";
     ASTRO_DB_APP_TOKEN = "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJhIjoicnciLCJpYXQiOjE3MjkzODU4MDcsImlkIjoiY2FhYzg0OTMtNGZiMy00NGNkLTg0NGQtZjQ2OTVmMDZlYzIxIn0.k_BLXTSXPp7pVlo3EsLcQKRL83wq768kvyR75q7jXxsXCG4ykcLnE6bY0xbmFtwLi-au2JYuckmCFUhkxun6Dw";
     BLOB_READ_WRITE_TOKEN = "vercel_blob_rw_CCreWTs3K4O0l1pX_BEpNfQ6wXDd84sY7gXMckQ5tA5LwHe";
