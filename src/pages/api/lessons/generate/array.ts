@@ -25,7 +25,7 @@ export const POST: APIRoute = async (context: APIContext) => {
 		})
 
 		const promptTemplate = PromptTemplate.fromTemplate(
-			'Rol:\n{role}\nContexto:\n{user}\n{course}\nIndicaciones:\n{indications}\nFormat:\n{format}',
+			'Rol:\n{role}\nContexto:\n{user}\n{course}\nInstrucciones:\n{instructions}\nFormat:\n{format}',
 		)
 
 		const parser = StructuredOutputParser.fromZodSchema(
@@ -34,12 +34,12 @@ export const POST: APIRoute = async (context: APIContext) => {
 					title: z
 						.string()
 						.describe(
-							'Título de la lección/OVA o tema relacionado con el contenido de la lección/OVA',
+							'Título de la lección o tema relacionado con el contenido de la lección',
 						),
 					caption: z
 						.string()
 						.describe(
-							'Descripción resumida de la lección/OVA o tema relacionado con el contenido de la lección/OVA',
+							'Descripción resumida de la lección o tema relacionado con el contenido de la lección',
 						),
 					start: z
 						.string()
@@ -52,14 +52,23 @@ export const POST: APIRoute = async (context: APIContext) => {
 		)
 
 		const prompt = {
-			role: `Eres un experto planificador de Objetos Virtuales de Aprendizaje (OVAs) y resursos didácticos que son de utilidad para las clases de profesores.`,
-			user: `Mi nombre es ${user.names}, y soy profesor en ${user.school}. Mis especialidades son: ${user.skills}.`,
-			course: `El curso que imparto se titula: ${course.title}. Los temas o conceptos clave de este curso son: ${course.concepts}. El nivel de mis estudiantes es: ${course.level}. El curso inicia en ${courseDateFormatter.format(new Date(course.start))} y termina en ${courseDateFormatter.format(new Date(course.end))}. Los días de la semana en las que imparto el curso son: ${course.schedules}.`,
-			indications: [
-				'1. Genera una lista de OVAs por cada sesión diaria que tendré mientras dure el curso.',
-				'2. La OVA debe ser muy bien pensada y adecuada para el nivel de mis estudiantes.',
-				'3. El título y descripción debes ser precisas y deben envidenciar el propósito de la lección.',
-				'4. NO agregues ```json al inicio ni ``` al final.',
+			role: `Eres un diseñador experto en Objetos Virtuales de Aprendizaje (OVAs) y recursos didácticos enfocados en facilitar clases para profesores. Tu objetivo es diseñar contenido educativo altamente personalizado y adaptado a las necesidades del curso y el nivel de los estudiantes.`,
+			user: `Información del profesor:
+		- Nombre: ${user.names}
+		- Institución: ${user.school}
+		- Especialidades: ${user.skills}`,
+			course: `Detalles del curso:
+		- Título: ${course.title}
+		- Conceptos clave: ${course.concepts}
+		- Nivel de los estudiantes: ${course.level}
+		- Fechas del curso: Inicio - ${courseDateFormatter.format(new Date(course.start))}, Fin - ${courseDateFormatter.format(new Date(course.end))}
+		- Días de clases: ${course.schedules}`,
+			instructions: [
+				'1. Diseña una lección (OVA) para cada sesión programada del curso.',
+				'2. Cada lección debe ser específica, relevante y alineada con los conceptos clave y el nivel de los estudiantes.',
+				'3. Proporciona un título y una descripción resumida que evidencien claramente el propósito de la lección.',
+				'4. Incluye las fechas de inicio y fin de cada lección en formato ISO 8601.',
+				'5. Asegúrate de que el contenido generado sea directo y no incluya texto adicional como "```json" o cualquier elemento de formato innecesario.',
 			].join('\n'),
 			format: parser.getFormatInstructions(),
 		}
