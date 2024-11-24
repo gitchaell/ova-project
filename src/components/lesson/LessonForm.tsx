@@ -397,6 +397,14 @@ const LessonForm = ({
 									/>
 								)}
 
+								{lesson?.video?.length && (
+									<video
+										className='w-full block rounded-md'
+										src={lesson.video}
+										controls
+									/>
+								)}
+
 								<ReactMarkdown
 									className='markdown-body'
 									remarkPlugins={[remarkGfm]}

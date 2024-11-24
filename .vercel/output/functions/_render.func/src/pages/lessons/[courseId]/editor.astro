@@ -1,0 +1,45 @@
+---
+import MainLayout from '@/layouts/MainLayout.astro'
+import { actions } from 'astro:actions'
+import { randomUUID } from 'node:crypto'
+import { LessonForm } from '@/components/lesson/LessonForm'
+import { Lesson } from '@/core/lessons/domain/Lesson'
+
+if (!Astro.locals.user || !Astro.params.courseId) {
+	return Astro.redirect('/login')
+}
+
+const [userResult, courseResult] = await Promise.all([
+	Astro.callAction(actions.user.find, { id: Astro.locals.user.id }),
+	Astro.callAction(actions.course.find, { id: Astro.params.courseId }),
+])
+
+if (
+	!userResult ||
+	userResult.error ||
+	!userResult.data ||
+	!courseResult ||
+	courseResult.error ||
+	!courseResult.data
+) {
+	return Astro.redirect('/login')
+}
+
+const user = userResult.data
+const course = courseResult.data
+
+const lesson = Lesson.createLesson({
+	id: randomUUID(),
+	courseId: course.id,
+})
+---
+
+<MainLayout
+	title='Formulario de la Lección'
+	headerTitle='Formulario de la Lección'
+	bodyClass='px-4'
+>
+	<div class='grid place-content-center px-4 pb-10'>
+		<LessonForm lesson={lesson} mode='CREATE' client:load />
+	</div>
+</MainLayout>

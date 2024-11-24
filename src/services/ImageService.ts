@@ -148,7 +148,7 @@ export class ImageService {
 			case ImageProvider.Rocks:
 				return Rocks.generate(prompt, options as RocksOptions)
 			default:
-				throw new Error('Provider not found.')
+				throw new Error('Image Provider not found.')
 		}
 	}
 }
@@ -165,6 +165,8 @@ class Stability {
 		for (const key in options) {
 			formData.append(key, options[key as keyof StabilityOptions] as any)
 		}
+
+		console.log({ Authorization: `Bearer ${process.env.STABILITY_API_KEY}` })
 
 		const response = await fetch(
 			'https://api.stability.ai/v2beta/stable-image/generate/ultra',

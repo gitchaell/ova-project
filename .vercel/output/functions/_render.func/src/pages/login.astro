@@ -1,0 +1,13 @@
+---
+import '@/styles/globals.css'
+import { UserLoginForm } from '@/components/user/UserLoginForm'
+import AuthLayout from '@/layouts/AuthLayout.astro'
+
+if (Astro.locals.user) {
+	return Astro.redirect('/')
+}
+---
+
+<AuthLayout title='Inicio de sesión' description='Accede a tu cuenta'>
+	<UserLoginForm client:load />
+</AuthLayout>
