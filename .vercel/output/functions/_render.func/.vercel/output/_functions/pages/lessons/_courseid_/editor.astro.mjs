@@ -1,9 +1,9 @@
-import { c as createComponent, r as renderTemplate, a as renderComponent, b as createAstro, m as maybeRenderHead } from '../../../chunks/astro/server_O0LNAV98.mjs';
+import { c as createComponent, r as renderTemplate, a as renderComponent, b as createAstro, m as maybeRenderHead } from '../../../chunks/astro/server_C-GoM-57.mjs';
 import 'kleur/colors';
-import { $ as $$MainLayout } from '../../../chunks/MainLayout_D_qiHKO5.mjs';
-import { a as actions } from '../../../chunks/_astro_actions_I8Pf5xtk.mjs';
+import { $ as $$MainLayout } from '../../../chunks/MainLayout_C6K2NQ9O.mjs';
+import { a as actions } from '../../../chunks/_astro_actions_BP7j5CaX.mjs';
 import { randomUUID } from 'node:crypto';
-import { L as LessonForm } from '../../../chunks/LessonForm_B6uoeCKE.mjs';
+import { L as LessonForm } from '../../../chunks/LessonForm_BgtITO7V.mjs';
 import { L as Lesson } from '../../../chunks/Lesson_DklW7y_n.mjs';
 export { renderers } from '../../../renderers.mjs';
 

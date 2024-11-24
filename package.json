@@ -1,7 +1,7 @@
 {
 	"name": "ova-ai",
 	"type": "module",
-	"version": "1.0.0",
+	"version": "2.0.0",
 	"scripts": {
 		"dev": "astro dev",
 		"start": "astro dev",
@@ -20,6 +20,7 @@
 		"@langchain/community": "^0.3.12",
 		"@langchain/core": "^0.3.13",
 		"@langchain/google-genai": "^0.1.0",
+		"@node-rs/argon2": "^2.0.0",
 		"@radix-ui/react-accordion": "^1.2.1",
 		"@radix-ui/react-alert-dialog": "^1.1.2",
 		"@radix-ui/react-avatar": "^1.1.0",

@@ -1,8 +1,8 @@
-import { c as createComponent, r as renderTemplate, a as renderComponent, b as createAstro } from '../../chunks/astro/server_O0LNAV98.mjs';
+import { c as createComponent, r as renderTemplate, a as renderComponent, b as createAstro } from '../../chunks/astro/server_C-GoM-57.mjs';
 import 'kleur/colors';
-import { $ as $$MainLayout } from '../../chunks/MainLayout_D_qiHKO5.mjs';
-import { C as CourseList } from '../../chunks/CourseList_DjiuxvM_.mjs';
-import { a as actions } from '../../chunks/_astro_actions_I8Pf5xtk.mjs';
+import { $ as $$MainLayout } from '../../chunks/MainLayout_C6K2NQ9O.mjs';
+import { C as CourseList } from '../../chunks/CourseList_hCFBzzDO.mjs';
+import { a as actions } from '../../chunks/_astro_actions_BP7j5CaX.mjs';
 export { renderers } from '../../renderers.mjs';
 
 const $$Astro = createAstro();

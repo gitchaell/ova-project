@@ -1,3 +1,5 @@
+import fetch from 'node-fetch'
+
 export class TranslateService {
 	static async translate(text: string, sourceLang = 'auto', targetLang = 'en') {
 		const escapedStr = encodeURIComponent(text)
@@ -5,7 +7,7 @@ export class TranslateService {
 
 		try {
 			const response = await fetch(url)
-			const data = await response.json()
+			const data = (await response.json()) as any[]
 			const result = data?.[0]?.[0]?.[0] || text
 			return result
 		} catch (error) {

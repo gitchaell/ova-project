@@ -1,5 +1,6 @@
 import * as dotenv from 'dotenv'
 import sharp from 'sharp'
+import fetch from 'node-fetch'
 
 dotenv.config()
 
@@ -75,8 +76,8 @@ class Stability {
 		)
 
 		if (response.ok) {
-			const data = await response.json()
-			return (data?.id as string) || ''
+			const data = (await response.json()) as { id: string }
+			return data?.id || ''
 		} else {
 			throw new Error(`${response.status}: ${await response.text()}`)
 		}

@@ -1,5 +1,6 @@
 import * as dotenv from 'dotenv';
 import { l as lessonService } from '../../../../chunks/LessonService_Bd77hKO8.mjs';
+import fetch from 'node-fetch';
 import { S as StorageService } from '../../../../chunks/StorageService_B90JeVMn.mjs';
 export { renderers } from '../../../../renderers.mjs';
 

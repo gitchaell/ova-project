@@ -1,5 +1,6 @@
 import * as dotenv from 'dotenv'
 import { TranslateService } from './TranslateService'
+import fetch from 'node-fetch'
 
 dotenv.config()
 
@@ -215,7 +216,7 @@ class Nexra {
 			)
 		}
 
-		const baseResult = await baseResponse.json()
+		const baseResult = (await baseResponse.json()) as { id: string }
 
 		let result = null
 		let loading = true
@@ -229,7 +230,7 @@ class Nexra {
 					headers: { 'Content-Type': 'application/json' },
 				},
 			)
-			result = await response.json()
+			result = (await response.json()) as { status: string; images: string[] }
 
 			switch (result.status) {
 				case 'pending':
@@ -274,7 +275,7 @@ class DeepInfra {
 			)
 		}
 
-		const result = await response.json()
+		const result = (await response.json()) as { images: any[] }
 
 		return result.images[0].split(';base64,').pop()
 	}
@@ -309,9 +310,9 @@ class Rocks {
 		const arrayBufferToBase64 = (buffer: ArrayBuffer): string => {
 			const bytes = new Uint8Array(buffer)
 			const binary = String.fromCharCode(...bytes)
-			return typeof window !== 'undefined' ?
-					window.btoa(binary)
-				:	Buffer.from(binary, 'binary').toString('base64')
+			return typeof window !== 'undefined'
+				? window.btoa(binary)
+				: Buffer.from(binary, 'binary').toString('base64')
 		}
 
 		return arrayBufferToBase64(binaryImage)

@@ -1,6 +1,6 @@
-import { h as hasContentType, f as formContentTypes } from '../../chunks/utils_DjK6_1cM.mjs';
-import { getAction } from '../../chunks/get-action_CmGHYD-u.mjs';
-import { s as serializeActionResult } from '../../chunks/shared_D2C_bhpS.mjs';
+import { h as hasContentType, A as ACTION_API_CONTEXT_SYMBOL, f as formContentTypes } from '../../chunks/utils_Cwo9_uli.mjs';
+import { getAction } from '../../chunks/get-action_8QF0m6yw.mjs';
+import { s as serializeActionResult } from '../../chunks/shared_C0Tkk68m.mjs';
 export { renderers } from '../../renderers.mjs';
 
 const POST = async (context) => {
@@ -24,7 +24,9 @@ const POST = async (context) => {
   } else {
     return new Response(null, { status: 415 });
   }
-  const action = baseAction.bind(context);
+  const { getActionResult, callAction, props, redirect, ...actionAPIContext } = context;
+  Reflect.set(actionAPIContext, ACTION_API_CONTEXT_SYMBOL, true);
+  const action = baseAction.bind(actionAPIContext);
   const result = await action(args);
   const serialized = serializeActionResult(result);
   if (serialized.type === "empty") {

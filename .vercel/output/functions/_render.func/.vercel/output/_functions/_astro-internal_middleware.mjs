@@ -1,11 +1,11 @@
 import { l as lucia } from './chunks/auth_D0WEpT_W.mjs';
-import { d as defineMiddleware, s as sequence } from './chunks/index_DzzBRwLJ.mjs';
+import { d as defineMiddleware, g as getOriginPathname, s as sequence } from './chunks/index_DkN7R2cE.mjs';
 import 'es-module-lexer';
-import { a as ACTION_QUERY_PARAMS, s as serializeActionResult } from './chunks/shared_D2C_bhpS.mjs';
+import { a as ACTION_QUERY_PARAMS, s as serializeActionResult } from './chunks/shared_C0Tkk68m.mjs';
 import 'cookie';
 import { yellow } from 'kleur/colors';
-import { h as hasContentType, f as formContentTypes } from './chunks/utils_DjK6_1cM.mjs';
-import { getAction } from './chunks/get-action_CmGHYD-u.mjs';
+import { h as hasContentType, A as ACTION_API_CONTEXT_SYMBOL, f as formContentTypes } from './chunks/utils_Cwo9_uli.mjs';
+import { getAction } from './chunks/get-action_8QF0m6yw.mjs';
 
 const onRequest$2 = defineMiddleware(async (context, next) => {
   const sessionId = context.cookies.get(lucia.sessionCookieName)?.value ?? null;
@@ -41,7 +41,7 @@ const onRequest$1 = defineMiddleware(async (context, next) => {
     if (context.request.method === "POST") {
       console.warn(
         yellow("[astro:actions]"),
-        'POST requests should not be sent to prerendered pages. If you\'re using Actions, disable prerendering with `export const prerender = "false".'
+        "POST requests should not be sent to prerendered pages. If you're using Actions, disable prerendering with `export const prerender = false`."
       );
     }
     return next();
@@ -92,7 +92,9 @@ async function handlePost({
   if (contentType && hasContentType(contentType, formContentTypes)) {
     formData = await request.clone().formData();
   }
-  const action = baseAction.bind(context);
+  const { getActionResult, callAction, props, redirect, ...actionAPIContext } = context;
+  Reflect.set(actionAPIContext, ACTION_API_CONTEXT_SYMBOL, true);
+  const action = baseAction.bind(actionAPIContext);
   const actionResult = await action(formData);
   if (context.url.searchParams.get(ACTION_QUERY_PARAMS.actionRedirect) === "false") {
     return renderResult({
@@ -114,10 +116,14 @@ async function redirectWithResult({
     actionResult: serializeActionResult(actionResult)
   });
   if (actionResult.error) {
-    const referer = context.request.headers.get("Referer");
-    if (!referer) {
+    const referer2 = context.request.headers.get("Referer");
+    if (!referer2) {
       throw new Error("Internal: Referer unexpectedly missing from Action POST request.");
     }
+    return context.redirect(referer2);
+  }
+  const referer = getOriginPathname(context.request);
+  if (referer) {
     return context.redirect(referer);
   }
   return context.redirect(context.url.pathname);

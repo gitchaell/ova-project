@@ -1,7 +1,7 @@
-import { c as createComponent, r as renderTemplate, a as renderComponent, b as createAstro, m as maybeRenderHead, u as unescapeHTML, e as addAttribute } from '../../../chunks/astro/server_O0LNAV98.mjs';
+import { c as createComponent, r as renderTemplate, a as renderComponent, b as createAstro, m as maybeRenderHead, u as unescapeHTML, e as addAttribute } from '../../../chunks/astro/server_C-GoM-57.mjs';
 import 'kleur/colors';
-import { $ as $$BaseLayout } from '../../../chunks/BaseLayout_CjHxtAAJ.mjs';
-import { a as actions } from '../../../chunks/_astro_actions_I8Pf5xtk.mjs';
+import { $ as $$BaseLayout } from '../../../chunks/BaseLayout_CepjJgi_.mjs';
+import { a as actions } from '../../../chunks/_astro_actions_BP7j5CaX.mjs';
 import { marked } from 'marked';
 export { renderers } from '../../../renderers.mjs';
 
@@ -22,7 +22,7 @@ const $$lessonId = createComponent(async ($$result, $$props, $$slots) => {
   }
   const lesson = result.data;
   const content = marked.parse(lesson.content || "");
-  return renderTemplate`${renderComponent($$result, "BaseLayout", $$BaseLayout, { "title": lesson.title }, { "default": ($$result2) => renderTemplate` ${maybeRenderHead()}<main> <style>${unescapeHTML(styles)}</style> <div class="w-full"> ${lesson?.image?.length && !lesson?.video?.length && renderTemplate`<img class="block"${addAttribute(lesson.image, "src")}${addAttribute(lesson.title, "alt")}>`} </div> <div class="w-full"> ${lesson?.video?.length && renderTemplate`<video class="block"${addAttribute(lesson.video, "src")} controls loop></video>`} </div> <article class="markdown-body" style="padding: 24px; max-width: 900px; margin: 0 auto;">${unescapeHTML(content)}</article> </main> ` })}`;
+  return renderTemplate`${renderComponent($$result, "BaseLayout", $$BaseLayout, { "title": lesson.title }, { "default": ($$result2) => renderTemplate` ${maybeRenderHead()}<main> <style>${unescapeHTML(styles)}</style> <div class="w-full"> ${lesson?.image?.length && !lesson?.video?.length && renderTemplate`<img class="block min-w-xs w-full max-w-md"${addAttribute(lesson.image, "src")}${addAttribute(lesson.title, "alt")}>`} </div> <div class="w-full"> ${lesson?.video?.length && renderTemplate`<video class="block min-w-xs w-full max-w-md"${addAttribute(lesson.video, "src")} controls loop></video>`} </div> <article class="markdown-body" style="padding: 24px; max-width: 900px; margin: 0 auto;">${unescapeHTML(content)}</article> </main> ` })}`;
 }, "/home/user/ova-project/src/pages/lessons/preview/[lessonId].astro", void 0);
 
 const $$file = "/home/user/ova-project/src/pages/lessons/preview/[lessonId].astro";

@@ -1,1 +1,0 @@
-import{r as e}from"./index.Cpi2Ks0G.js";var a=globalThis?.document?e.useLayoutEffect:()=>{};function s(t){const u=e.useRef(t);return e.useEffect(()=>{u.current=t}),e.useMemo(()=>(...o)=>u.current?.(...o),[])}export{s as a,a as u};

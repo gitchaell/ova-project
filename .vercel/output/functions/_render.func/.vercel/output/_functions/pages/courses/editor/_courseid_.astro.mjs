@@ -1,8 +1,8 @@
-import { c as createComponent, r as renderTemplate, a as renderComponent, b as createAstro, m as maybeRenderHead } from '../../../chunks/astro/server_O0LNAV98.mjs';
+import { c as createComponent, r as renderTemplate, a as renderComponent, b as createAstro, m as maybeRenderHead } from '../../../chunks/astro/server_C-GoM-57.mjs';
 import 'kleur/colors';
-import { C as CourseForm } from '../../../chunks/CourseForm_BHtWAO-5.mjs';
-import { $ as $$MainLayout } from '../../../chunks/MainLayout_D_qiHKO5.mjs';
-import { a as actions } from '../../../chunks/_astro_actions_I8Pf5xtk.mjs';
+import { C as CourseForm } from '../../../chunks/CourseForm_CB2jsLtJ.mjs';
+import { $ as $$MainLayout } from '../../../chunks/MainLayout_C6K2NQ9O.mjs';
+import { a as actions } from '../../../chunks/_astro_actions_BP7j5CaX.mjs';
 export { renderers } from '../../../renderers.mjs';
 
 const $$Astro = createAstro();
