@@ -17,9 +17,11 @@ import { useToast } from '@/hooks/use-toast'
 import {
 	CalendarIcon,
 	Fullscreen,
+	Image,
 	Info,
 	LoaderCircle,
 	Sparkles,
+	Video,
 } from 'lucide-react'
 import { Alert, AlertTitle, AlertDescription } from '../ui/alert'
 import { Textarea } from '@/components/ui/textarea'
@@ -57,6 +59,17 @@ import { LESSON_CONTENT_MAX_LENGTH } from '@/core/lessons/domain/LessonContent'
 
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
+import {
+	Dialog,
+	DialogClose,
+	DialogContent,
+	DialogDescription,
+	DialogFooter,
+	DialogHeader,
+	DialogTitle,
+	DialogTrigger,
+} from '../ui/dialog'
+import { Label } from '../ui/label'
 
 const formSchema = z
 	.object({
@@ -100,6 +113,8 @@ const LessonForm = ({
 		lesson.content || '',
 	)
 	const [generating, setGenerating] = useState<boolean>(false)
+	const [imagePrompt, setImagePrompt] = useState<string>('')
+	const [videoPrompt, setVideoPrompt] = useState<string>('')
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
@@ -174,6 +189,43 @@ const LessonForm = ({
 		setGenerating(false)
 	}
 
+	const onGenerateImage = async () => {
+		if (!imagePrompt?.length) {
+			toast({
+				title: 'Prompt requerido!',
+				description: 'Debes ingresar un prompt que describa la imágen',
+				variant: 'destructive',
+			})
+			return
+		}
+
+		toast({
+			title: 'Generando imágen ...',
+			description:
+				'La imágen se está generando en segundo plano. Cuando termine, se actualizará la lección.',
+		})
+
+		const response = await fetch(`/api/lessons/generate/image`, {
+			method: 'POST',
+			headers: {
+				'Accept': 'application.json',
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({ lesson, imagePrompt }),
+		})
+		const data = await response.json()
+
+		if (data.message === 'success') {
+			window.location.reload()
+		} else {
+			toast({
+				title: 'Algo salió mal!',
+				description: data.message,
+				variant: 'destructive',
+			})
+		}
+	}
+
 	const onDelete = async () => {
 		const response = await fetch(`/api/lessons`, {
 			method: 'DELETE',
@@ -216,22 +268,74 @@ const LessonForm = ({
 
 					<TabsContent value='CONTENT'>
 						{markdownContent?.length ?
-							<>
-								<Button
-									variant='outline'
-									className='w-full my-4'
-									onClick={() => navigate('/lessons/preview/' + lesson.id)}
-								>
-									<Fullscreen className='h-4 w-4 mr-2' />
-									Ver en pantalla completa
-								</Button>
+							<div className='w-dvw grid gap-4 pr-10 py-4'>
+								<div className='grid grid-cols-[1fr_min-content_min-content] gap-2'>
+									<Button
+										variant='outline'
+										onClick={() => navigate('/lessons/preview/' + lesson.id)}
+									>
+										<Fullscreen className='h-4 w-4 mr-2' />
+										Ver en pantalla completa
+									</Button>
+
+									<Dialog>
+										<DialogTrigger asChild>
+											<Button variant='default' size='icon'>
+												<Image className='h-4 w-4' />
+											</Button>
+										</DialogTrigger>
+
+										<DialogContent className='max-w-[400px]'>
+											<DialogHeader>
+												<DialogTitle>Genración de imágenes con AI</DialogTitle>
+												<DialogDescription>
+													Usa este formulario para generar una imágen para tu
+													lección en base a un prompt.
+												</DialogDescription>
+											</DialogHeader>
+											<div className='grid gap-4 py-4'>
+												<Label htmlFor='imagePrompt'>Prompt</Label>
+												<Textarea
+													id='imagePrompt'
+													placeholder='Ejm. Mapa geográfico de Perú en el año 1870'
+													maxLength={500}
+													autoComplete='off'
+													autoCorrect='on'
+													autoCapitalize='on'
+													spellCheck={true}
+													onChange={(e) => setImagePrompt(e.target.value)}
+												/>
+											</div>
+											<DialogFooter>
+												<DialogClose asChild>
+													<Button type='button' onClick={onGenerateImage}>
+														Generar imágen
+													</Button>
+												</DialogClose>
+											</DialogFooter>
+										</DialogContent>
+									</Dialog>
+
+									<Button variant='default' size='icon'>
+										<Video className='h-4 w-4' />
+									</Button>
+								</div>
+
+								{lesson?.image?.length && (
+									<img
+										className='block rounded-md'
+										src={lesson.image}
+										alt={lesson.title}
+									/>
+								)}
+
 								<ReactMarkdown
-									className='markdown-body pt-4 pr-12 w-dvw'
+									className='markdown-body'
 									remarkPlugins={[remarkGfm]}
 								>
 									{markdownContent}
 								</ReactMarkdown>
-							</>
+							</div>
 						:	<div className='grid'>
 								<span className='text-slate-600 text-center py-8'>
 									No hay contenido para previsualizar

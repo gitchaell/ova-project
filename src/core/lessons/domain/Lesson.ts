@@ -22,6 +22,8 @@ export class Lesson {
 	end!: Date
 	done!: boolean
 	content?: string | null | undefined
+	image?: string | null | undefined
+	video?: string | null | undefined
 	courseId!: string
 
 	static createLesson({
@@ -41,6 +43,8 @@ export class Lesson {
 		lesson.end = end!
 		lesson.done = false
 		lesson.content = content || ''
+		lesson.image = ''
+		lesson.video = ''
 		lesson.courseId = courseId
 		return lesson
 	}

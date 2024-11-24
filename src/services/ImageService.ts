@@ -1,4 +1,9 @@
-export enum Provider {
+import * as dotenv from 'dotenv'
+
+dotenv.config()
+
+export enum ImageProvider {
+	Stability = 'Stability',
 	Nexra = 'Nexra',
 	DeepInfra = 'DeepInfra',
 	Rocks = 'Rocks',
@@ -87,6 +92,24 @@ type NexraAndDeepInfraData = {
 		| 'toonyou_beta6.safetensors [980f6b15]'
 }
 
+interface StabilityOptions {
+	aspect_ratio:
+		| '16:9'
+		| '1:1'
+		| '21:9'
+		| '2:3'
+		| '3:2'
+		| '4:5'
+		| '5:4'
+		| '9:16'
+		| '9:21'
+	output_format: 'jpeg' | 'png' | 'webp'
+	image?: string
+	strength?: number
+	negative_prompt?: string
+	seed?: number
+}
+
 interface NexraOptions {
 	model: NexraModel
 	data: NexraAndDeepInfraData
@@ -102,26 +125,67 @@ interface RocksOptions {
 }
 
 type ProviderModelOptions = {
-	[Provider.Nexra]: NexraOptions
-	[Provider.DeepInfra]: DeepInfraOptions
-	[Provider.Rocks]: RocksOptions
+	[ImageProvider.Stability]: StabilityOptions
+	[ImageProvider.Nexra]: NexraOptions
+	[ImageProvider.DeepInfra]: DeepInfraOptions
+	[ImageProvider.Rocks]: RocksOptions
 }
 
 export class ImageService {
-	static async generate<T extends Provider>(
+	static async generate<T extends ImageProvider>(
 		prompt: string,
-		provider: T = Provider.Nexra as T,
+		provider: T = ImageProvider.Nexra as T,
 		options: ProviderModelOptions[T],
-	): Promise<string> {
+	): Promise<File | string> {
 		switch (provider) {
-			case Provider.Nexra:
+			case ImageProvider.Stability:
+				return Stability.generate(prompt, options as StabilityOptions)
+			case ImageProvider.Nexra:
 				return Nexra.generate(prompt, options as NexraOptions)
-			case Provider.DeepInfra:
+			case ImageProvider.DeepInfra:
 				return DeepInfra.generate(prompt, options as DeepInfraOptions)
-			case Provider.Rocks:
+			case ImageProvider.Rocks:
 				return Rocks.generate(prompt, options as RocksOptions)
 			default:
 				throw new Error('Provider not found.')
+		}
+	}
+}
+
+class Stability {
+	static async generate(
+		prompt: string,
+		options: StabilityOptions,
+	): Promise<File> {
+		const formData = new FormData()
+
+		formData.append('prompt', prompt)
+
+		for (const key in options) {
+			formData.append(key, options[key as keyof StabilityOptions] as any)
+		}
+
+		const response = await fetch(
+			'https://api.stability.ai/v2beta/stable-image/generate/ultra',
+			{
+				method: 'POST',
+				headers: {
+					Authorization: `Bearer ${process.env.STABILITY_API_KEY}`,
+					Accept: 'image/*',
+				},
+				body: formData,
+			},
+		)
+
+		if (response.ok) {
+			const type = `image/${options.output_format}`
+			const arrayBuffer = await response.arrayBuffer()
+			const blob = new Blob([arrayBuffer], { type })
+			const file = new File([blob], `image.${options.output_format}`, { type })
+
+			return file
+		} else {
+			throw new Error(`${response.status}: ${await response.text()}`)
 		}
 	}
 }

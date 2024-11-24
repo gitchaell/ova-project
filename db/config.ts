@@ -49,12 +49,8 @@ const Lesson = defineTable({
 		done: column.boolean({ default: false }),
 		//
 		content: column.text({ optional: true }),
-		// intro: column.text({ optional: true }),
-		// before: column.text({ optional: true }),
-		// during: column.text({ optional: true }),
-		// after: column.text({ optional: true }),
-		// quiz: column.text({ optional: true }),
-		// urls: column.json({ optional: true }),
+		image: column.text({ optional: true }),
+		video: column.text({ optional: true }),
 		//
 		courseId: column.text({
 			optional: false,
