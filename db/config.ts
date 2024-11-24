@@ -50,6 +50,7 @@ const Lesson = defineTable({
 		//
 		content: column.text({ optional: true }),
 		image: column.text({ optional: true }),
+		videoId: column.text({ optional: true }),
 		video: column.text({ optional: true }),
 		//
 		courseId: column.text({

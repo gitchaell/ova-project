@@ -16,6 +16,16 @@ if (!result || result.error || !result.data) {
 }
 
 const lesson = result.data
+
+if (lesson?.videoId?.length && !lesson?.video?.length) {
+	await fetch('/api/lessons/generate/video-result', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+		},
+		body: JSON.stringify({ lesson }),
+	})
+}
 ---
 
 <MainLayout title={lesson.title} headerTitle={lesson.title} bodyClass='px-4'>

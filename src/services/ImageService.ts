@@ -1,4 +1,5 @@
 import * as dotenv from 'dotenv'
+import { TranslateService } from './TranslateService'
 
 dotenv.config()
 
@@ -154,13 +155,13 @@ export class ImageService {
 
 class Stability {
 	static async generate(
-		prompt: string,
+		inprompt: string,
 		options: StabilityOptions,
 	): Promise<File> {
+		const prompt = await TranslateService.translate(inprompt)
+
 		const formData = new FormData()
-
 		formData.append('prompt', prompt)
-
 		for (const key in options) {
 			formData.append(key, options[key as keyof StabilityOptions] as any)
 		}

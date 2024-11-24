@@ -27,6 +27,7 @@ async function save(lesson: Lesson): Promise<void> {
 				done: lesson.done,
 				content: lesson.content,
 				image: lesson.image,
+				videoId: lesson.videoId,
 				video: lesson.video,
 			})
 			.where(eq(LessonTable.id, lesson.id))
@@ -52,6 +53,7 @@ async function save(lesson: Lesson): Promise<void> {
 				done: lesson.done,
 				content: lesson.content,
 				image: lesson.image,
+				videoId: lesson.videoId,
 				video: lesson.video,
 				courseId: lesson.courseId,
 			})

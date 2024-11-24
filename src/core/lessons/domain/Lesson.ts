@@ -23,6 +23,7 @@ export class Lesson {
 	done!: boolean
 	content?: string | null | undefined
 	image?: string | null | undefined
+	videoId?: string | null | undefined
 	video?: string | null | undefined
 	courseId!: string
 
@@ -44,6 +45,7 @@ export class Lesson {
 		lesson.done = false
 		lesson.content = content || ''
 		lesson.image = ''
+		lesson.videoId = ''
 		lesson.video = ''
 		lesson.courseId = courseId
 		return lesson

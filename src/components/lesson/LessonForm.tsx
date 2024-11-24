@@ -114,7 +114,6 @@ const LessonForm = ({
 	)
 	const [generating, setGenerating] = useState<boolean>(false)
 	const [imagePrompt, setImagePrompt] = useState<string>('')
-	const [videoPrompt, setVideoPrompt] = useState<string>('')
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
@@ -226,6 +225,43 @@ const LessonForm = ({
 		}
 	}
 
+	const onGenerateVideo = async () => {
+		if (!lesson?.image?.length) {
+			toast({
+				title: 'Imágen requerida!',
+				description: 'Antes de generar un video, debes generar una imágen',
+				variant: 'destructive',
+			})
+			return
+		}
+
+		toast({
+			title: 'Generando vídeo ...',
+			description:
+				'El vídeo se está generando en segundo plano. Cuando termine, se actualizará la lección.',
+		})
+
+		const response = await fetch(`/api/lessons/generate/video`, {
+			method: 'POST',
+			headers: {
+				'Accept': 'application.json',
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({ lesson }),
+		})
+		const data = await response.json()
+
+		if (data.message === 'success') {
+			// window.location.reload()
+		} else {
+			toast({
+				title: 'Algo salió mal!',
+				description: data.message,
+				variant: 'destructive',
+			})
+		}
+	}
+
 	const onDelete = async () => {
 		const response = await fetch(`/api/lessons`, {
 			method: 'DELETE',
@@ -287,7 +323,7 @@ const LessonForm = ({
 
 										<DialogContent className='max-w-[400px]'>
 											<DialogHeader>
-												<DialogTitle>Genración de imágenes con AI</DialogTitle>
+												<DialogTitle>Generación de imágenes con AI</DialogTitle>
 												<DialogDescription>
 													Usa este formulario para generar una imágen para tu
 													lección en base a un prompt.
@@ -316,9 +352,41 @@ const LessonForm = ({
 										</DialogContent>
 									</Dialog>
 
-									<Button variant='default' size='icon'>
-										<Video className='h-4 w-4' />
-									</Button>
+									<Dialog>
+										<DialogTrigger asChild>
+											<Button variant='default' size='icon'>
+												<Video className='h-4 w-4' />
+											</Button>
+										</DialogTrigger>
+
+										<DialogContent className='max-w-[400px]'>
+											<DialogHeader>
+												<DialogTitle>Generación de vídeos con AI</DialogTitle>
+												<DialogDescription>
+													Generar un vídeo para tu lección en base a la imágen
+													previamente generada.
+												</DialogDescription>
+											</DialogHeader>
+
+											<div className='w-full'>
+												{lesson?.image?.length && (
+													<img
+														className='block rounded-md'
+														src={lesson.image}
+														alt={lesson.title}
+													/>
+												)}
+											</div>
+
+											<DialogFooter>
+												<DialogClose asChild>
+													<Button type='button' onClick={onGenerateVideo}>
+														Generar vídeo
+													</Button>
+												</DialogClose>
+											</DialogFooter>
+										</DialogContent>
+									</Dialog>
 								</div>
 
 								{lesson?.image?.length && (

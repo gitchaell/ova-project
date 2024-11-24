@@ -19,11 +19,28 @@ if (!result || result.error || !result.data) {
 const lesson = result.data
 
 const content = marked.parse(lesson.content || '')
+
+if (lesson?.videoId?.length && !lesson?.video?.length) {
+	await fetch('/api/lessons/generate/video-result', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+		},
+		body: JSON.stringify({ lesson }),
+	})
+}
 ---
 
 <BaseLayout title={lesson.title}>
 	<main>
 		<style is:inline set:html={styles}></style>
+		<div class='w-full'>
+			{
+				lesson?.image?.length && (
+					<img class='block rounded-md' src={lesson.image} alt={lesson.title} />
+				)
+			}
+		</div>
 		<article
 			class='markdown-body'
 			style='padding: 24px; max-width: 900px; margin: 0 auto;'
