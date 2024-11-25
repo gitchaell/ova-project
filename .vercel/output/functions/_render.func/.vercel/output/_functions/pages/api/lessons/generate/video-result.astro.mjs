@@ -1,10 +1,8 @@
-import * as dotenv from 'dotenv';
 import { l as lessonService } from '../../../../chunks/LessonService_Bd77hKO8.mjs';
 import { S as StorageService } from '../../../../chunks/StorageService_B90JeVMn.mjs';
 import { V as VideoService, a as VideoProvider } from '../../../../chunks/VideoService_DfcGJ-5j.mjs';
 export { renderers } from '../../../../renderers.mjs';
 
-dotenv.config();
 const POST = async (context) => {
   try {
     const { lesson } = await context.request.json();

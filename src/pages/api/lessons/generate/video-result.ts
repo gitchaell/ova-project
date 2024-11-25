@@ -1,11 +1,8 @@
 import type { APIContext, APIRoute } from 'astro'
-import * as dotenv from 'dotenv'
 import type { Lesson } from '@/core/lessons/domain/Lesson'
 import { lessonService } from '@/services/LessonService'
 import { StorageService } from '@/services/StorageService'
 import { VideoProvider, VideoService } from '@/services/VideoService'
-
-dotenv.config()
 
 export const POST: APIRoute = async (context: APIContext) => {
 	try {
