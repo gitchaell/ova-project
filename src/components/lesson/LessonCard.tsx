@@ -73,6 +73,13 @@ const LessonCard = ({ lesson }: { lesson: Lesson }) => {
 					className='cursor-pointer hover:bg-slate-50'
 					onClick={() => navigate('/lessons/editor/' + lesson.id)}
 				>
+					{lesson.image?.length && (
+						<img
+							className='block h-[140px] w-full object-cover object-top rounded-t-md'
+							src={lesson.image}
+							alt={lesson.title}
+						/>
+					)}
 					<CardHeader>
 						<div className='grid grid-cols-[1fr_min-content] gap-2'>
 							<CardTitle>{lesson.title}</CardTitle>
