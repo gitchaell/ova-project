@@ -1,7 +1,7 @@
 import type { UserRepository } from '@/core/users/domain/UserRepository'
 import { createAstroUserRepository } from '@/core/users/infrastructure/AstroUserRepository'
-import { randomUUID } from 'node:crypto'
-import { hash, verify } from '@node-rs/argon2'
+import { promisify } from 'node:util'
+import { randomUUID, scrypt as _scrypt, randomBytes, timingSafeEqual } from 'node:crypto'
 import { User } from '@/core/users/domain/User'
 import { signupUser } from '@/core/users/application/signup/signupUser'
 import { lucia } from '@/lib/auth'
@@ -10,6 +10,8 @@ import { findUser } from '@/core/users/application/find/findUser'
 import { UserCredentialsNotValidException } from '@/core/users/domain/UserCredentialsNotValidException'
 import { saveUser } from '@/core/users/application/save/saveUser'
 import { removeUser } from '@/core/users/application/remove/removeUser'
+
+const scrypt = promisify(_scrypt)
 
 interface SignUpDTO {
 	firstname: string
@@ -32,10 +34,25 @@ class UserService {
 
 	constructor() {
 		this.repository = createAstroUserRepository()
-		// this.repository = createPostgreSQLUserRepository()
 	}
 
-	async singUp({
+	private async hashPassword(password: string): Promise<string> {
+		const salt = randomBytes(16).toString('hex') // Generate a random salt
+		const derivedKey = (await scrypt(password, salt, 64)) as Buffer // Hash the password with salt
+		return `${salt}:${derivedKey.toString('hex')}` // Store salt and hash together
+	}
+
+	private async verifyPassword(
+		password: string,
+		storedHash: string,
+	): Promise<boolean> {
+		const [salt, key] = storedHash.split(':')
+		const derivedKey = (await scrypt(password, salt, 64)) as Buffer
+		const originalKey = Buffer.from(key, 'hex')
+		return timingSafeEqual(derivedKey, originalKey) // Compare securely
+	}
+
+	async signUp({
 		firstname,
 		lastname,
 		email,
@@ -43,12 +60,7 @@ class UserService {
 	}: SignUpDTO): Promise<Cookie> {
 		const id = randomUUID()
 
-		const passwordHash = await hash(password, {
-			memoryCost: 19456,
-			timeCost: 2,
-			outputLen: 32,
-			parallelism: 1,
-		})
+		const passwordHash = await this.hashPassword(password)
 
 		const newUser = User.createUser({
 			id,
@@ -68,12 +80,7 @@ class UserService {
 	async login({ email, password }: LoginDTO): Promise<Cookie> {
 		const user = await findUser(this.repository, { email })
 
-		const validPassword = await verify(user.passwordHash, password, {
-			memoryCost: 19456,
-			timeCost: 2,
-			outputLen: 32,
-			parallelism: 1,
-		})
+		const validPassword = await this.verifyPassword(password, user.passwordHash)
 
 		if (!validPassword) {
 			throw new UserCredentialsNotValidException()
