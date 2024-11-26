@@ -1,1 +1,2 @@
+- remove sharp dependency
 - Streaming content AI generation

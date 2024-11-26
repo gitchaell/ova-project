@@ -106,6 +106,7 @@
 .markdown-body img {
 	border-style: none;
 	max-width: 100%;
+	min-width: 100%;
 	box-sizing: content-box;
 }
 
@@ -313,6 +314,7 @@
 .markdown-body p {
 	margin-top: 0;
 	margin-bottom: 10px;
+	text-wrap: balance;
 }
 
 .markdown-body blockquote {

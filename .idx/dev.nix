@@ -9,7 +9,7 @@
   env = {
     ASTRO_DATABASE_FILE = ".astro/content.db";
     GOOGLE_API_KEY = "AIzaSyAWzDZ-qnechchEjGcrNJzXALs8c06iaPk";
-    SERPER_API_KEY = "cb46cfefaa5fc47b175b401f390e3f63ebbdf5d0";
+    SERPER_API_KEY = "a0a0d559b250ff50263ccea283a83b9dd480b084";
     STABILITY_API_KEY = "sk-jcUP3kdcwlQ583D5j2Sctxy29ZrIkWasit5un1CshqOPROLz";
     ASTRO_DB_REMOTE_URL = "libsql://ova-project-gitchaell.turso.io";
     ASTRO_DB_APP_TOKEN = "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJhIjoicnciLCJpYXQiOjE3MjkzODU4MDcsImlkIjoiY2FhYzg0OTMtNGZiMy00NGNkLTg0NGQtZjQ2OTVmMDZlYzIxIn0.k_BLXTSXPp7pVlo3EsLcQKRL83wq768kvyR75q7jXxsXCG4ykcLnE6bY0xbmFtwLi-au2JYuckmCFUhkxun6Dw";

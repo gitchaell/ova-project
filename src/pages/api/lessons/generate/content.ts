@@ -9,6 +9,7 @@ import {
 	LESSON_CONTENT_MIN_LENGTH,
 } from '@/core/lessons/domain/LessonContent'
 import { lessonService } from '@/services/LessonService'
+import { SerperService } from '@/services/SerperService'
 
 dotenv.config()
 
@@ -20,6 +21,8 @@ export const POST: APIRoute = async (context: APIContext) => {
 
 		const course = await courseService.findCourse({ id: lesson.courseId })
 		const user = await userService.findUser({ id: course.userId })
+
+		const web = await SerperService.search(course.title, lesson.title)
 
 		const model = new ChatGoogleGenerativeAI({
 			modelName: 'gemini-1.5-pro',
@@ -69,12 +72,30 @@ export const POST: APIRoute = async (context: APIContext) => {
 			``,
 			`\`\`\``,
 			``,
+			`Usa los siguientes resultados de internet para ayudarte a crear e insertar enlaces en el contenido de la lección:`,
+			``,
+			JSON.stringify(web),
+			``,
 			`Por favor, asegúrate de respetar la estructura anterior y usar Markdown.`,
 		].join('\n')
 
 		const output = await model.invoke(prompt)
 
-		const content = output.content.toString()
+		const annexes: string[] = []
+		for (const image of web.images.slice(0, 6)) {
+			if (!image) continue
+			annexes.push(`### ${image.title}\n`)
+			annexes.push(`[![${image.title}](${image.imageUrl})](${image.link})\n\n`)
+		}
+		for (const video of web.videos.slice(0, 6)) {
+			if (!video) continue
+			annexes.push(`### ${video.title} - ${video.channel}\n`)
+			annexes.push(
+				`[![${video.title} - ${video.channel}](${video.imageUrl})](${video.link})\n\n`,
+			)
+		}
+		const content =
+			output.content.toString() + `\n\n## Enlaces de referencia\n\n${annexes.join('')}\n\n`
 
 		await lessonService.saveLesson({
 			...lesson,

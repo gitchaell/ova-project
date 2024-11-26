@@ -330,8 +330,8 @@ const LessonForm = ({
 
 					<TabsContent value='CONTENT'>
 						{markdownContent?.length ?
-							<div className='w-dvw grid gap-4 pr-10 py-4'>
-								<div className='grid grid-cols-[1fr_min-content_min-content] gap-2'>
+							<div className='w-dvh grid gap-4 py-4'>
+								<div className='w-dvh pr-10 grid grid-cols-[1fr_min-content_min-content] gap-2'>
 									<Button
 										variant='outline'
 										onClick={() => navigate('/lessons/preview/' + lesson.id)}
@@ -417,7 +417,7 @@ const LessonForm = ({
 
 								{lesson?.image?.length && !lesson?.video?.length && (
 									<img
-										className='block rounded-md min-w-xs w-full max-w-md'
+										className='block rounded-md min-w-xs w-dvh pr-10'
 										src={lesson.image}
 										alt={lesson.title}
 									/>
@@ -425,7 +425,7 @@ const LessonForm = ({
 
 								{lesson?.video?.length && (
 									<video
-										className='block rounded-md min-w-xs w-full max-w-md'
+										className='block rounded-md min-w-xs w-dvh pr-10'
 										src={lesson.video}
 										controls
 										loop
@@ -433,7 +433,7 @@ const LessonForm = ({
 								)}
 
 								<ReactMarkdown
-									className='markdown-body'
+									className='markdown-body w-dvw pr-10'
 									remarkPlugins={[remarkGfm]}
 								>
 									{markdownContent}
