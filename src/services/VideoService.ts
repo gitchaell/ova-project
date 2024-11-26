@@ -105,5 +105,4 @@ class Stability {
 			throw new Error(`Response ${response.status}: ${await response.text()}`)
 		}
 	}
-
 }

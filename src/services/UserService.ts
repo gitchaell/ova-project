@@ -1,7 +1,12 @@
 import type { UserRepository } from '@/core/users/domain/UserRepository'
 import { createAstroUserRepository } from '@/core/users/infrastructure/AstroUserRepository'
 import { promisify } from 'node:util'
-import { randomUUID, scrypt as _scrypt, randomBytes, timingSafeEqual } from 'node:crypto'
+import {
+	randomUUID,
+	scrypt as _scrypt,
+	randomBytes,
+	timingSafeEqual,
+} from 'node:crypto'
 import { User } from '@/core/users/domain/User'
 import { signupUser } from '@/core/users/application/signup/signupUser'
 import { lucia } from '@/lib/auth'

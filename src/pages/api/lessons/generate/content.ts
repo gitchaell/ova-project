@@ -95,7 +95,8 @@ export const POST: APIRoute = async (context: APIContext) => {
 			)
 		}
 		const content =
-			output.content.toString() + `\n\n## Enlaces de referencia\n\n${annexes.join('')}\n\n`
+			output.content.toString() +
+			`\n\n## Enlaces de referencia\n\n${annexes.join('')}\n\n`
 
 		await lessonService.saveLesson({
 			...lesson,

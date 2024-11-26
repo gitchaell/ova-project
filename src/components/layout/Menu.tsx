@@ -65,7 +65,10 @@ export function Menu({ courses }: { courses: Course[] }) {
 					<CommandEmpty>0 coincidencias</CommandEmpty>
 					<CommandGroup heading='Sugerencias'>
 						{courses.map((course) => (
-							<CommandItem key={course.id} onSelect={() => navigate(`/courses/details/${course.id}`)}>
+							<CommandItem
+								key={course.id}
+								onSelect={() => navigate(`/courses/details/${course.id}`)}
+							>
 								<BadgeCheck className='mr-2 h-4 w-4' />
 								<span>Curso: {course.title}</span>
 							</CommandItem>
