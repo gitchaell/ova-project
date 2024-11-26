@@ -5,7 +5,7 @@ export const POST: APIRoute = async (context: APIContext) => {
 	try {
 		const params = await context.request.json()
 
-		const sessionCookie = await userService.singUp(params)
+		const sessionCookie = await userService.signUp(params)
 
 		context.cookies.set(
 			sessionCookie.name,

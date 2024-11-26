@@ -1,4 +1,3 @@
-import { Linter } from 'eslint'
 import astroEslintParser from 'astro-eslint-parser'
 import tsParser from '@typescript-eslint/parser'
 import { fileURLToPath } from 'url'
