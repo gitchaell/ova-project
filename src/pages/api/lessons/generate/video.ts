@@ -32,6 +32,7 @@ export const POST: APIRoute = async (context: APIContext) => {
 			...lesson,
 			id: lesson.id,
 			videoId,
+			video: '', // reset video url
 		})
 
 		return new Response(JSON.stringify({ message: 'success' }), { status: 200 })

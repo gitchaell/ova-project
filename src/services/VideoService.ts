@@ -1,5 +1,4 @@
 import * as dotenv from 'dotenv'
-import sharp from 'sharp'
 import fetch from 'node-fetch'
 
 dotenv.config()
@@ -52,8 +51,7 @@ class Stability {
 	): Promise<string> {
 		const imageResponse = await fetch(imageUrl)
 		const imageBuffer = await imageResponse.arrayBuffer()
-		const resizedBuffer = await sharp(imageBuffer).resize(768, 768).toBuffer()
-		const imageBlob = new Blob([resizedBuffer], { type: 'image/png' })
+		const imageBlob = new Blob([imageBuffer], { type: 'image/png' })
 
 		const formData = new FormData()
 		formData.append('image', imageBlob)
@@ -107,4 +105,5 @@ class Stability {
 			throw new Error(`Response ${response.status}: ${await response.text()}`)
 		}
 	}
+
 }

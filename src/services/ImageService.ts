@@ -1,6 +1,7 @@
 import * as dotenv from 'dotenv'
 import { TranslateService } from './TranslateService'
 import fetch from 'node-fetch'
+import { createCanvas, loadImage } from 'canvas'
 
 dotenv.config()
 
@@ -19,7 +20,7 @@ interface StabilityOptions {
 		| '5:4'
 		| '9:16'
 		| '9:21'
-	output_format: 'jpeg' | 'png' | 'webp'
+	output_format: 'jpeg' | 'png' // 'webp' no available for video ai generation
 	image?: string
 	strength?: number
 	negative_prompt?: string
@@ -72,8 +73,16 @@ class Stability {
 
 		if (response.ok) {
 			const type = `image/${options.output_format}`
-			const arrayBuffer = await response.arrayBuffer()
-			const blob = new Blob([arrayBuffer], { type })
+			const buffer = Buffer.from(await response.arrayBuffer())
+
+			const image = await loadImage(buffer)
+			const canvas = createCanvas(768, 768)
+			const context = canvas.getContext('2d')
+
+			context.drawImage(image, 0, 0, 768, 768)
+
+			const resized = canvas.toBuffer('image/png')
+			const blob = new Blob([resized], { type: 'image/png' })
 			const file = new File([blob], `image.${options.output_format}`, { type })
 
 			return file
